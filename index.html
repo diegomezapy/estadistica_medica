@@ -3,69 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evidencia Técnica · Tableros Clínicos y Flujo Analítico</title>
+    <title>Diego Bernardo Meza · Estadística Clínica Asistida por IA</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
             --primary: #0c2e4a;
+            --primary-dark: #061829;
             --secondary: #1e88e5;
             --accent: #00b0ff;
+            --light: #f5f9ff;
             --bg-page: #eef3f9;
-            --bg-card: #ffffff;
             --dark: #1a1a1a;
-            --muted: #4a4a4a;
             --gradient: linear-gradient(135deg, #0c2e4a 0%, #1e88e5 100%);
-            --gradient-soft: radial-gradient(circle at 20% 20%, rgba(30,136,229,0.08) 0%, rgba(12,46,74,0) 70%);
-            --gradient-hero: radial-gradient(circle at 15% 20%, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 70%), linear-gradient(135deg,#0c2e4a 0%,#1e88e5 100%);
+            --gradient-soft: radial-gradient(circle at 20% 20%, rgba(30,136,229,0.18) 0%, rgba(12,46,74,0) 70%);
+            --card-shadow: 0 16px 40px rgba(8, 23, 38, 0.18);
+            --transition: all 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
             --radius-xl: 24px;
-            --radius-lg: 18px;
-            --radius-md: 12px;
-            --transition: all .25s cubic-bezier(.25,.8,.25,1);
-            --shadow-card: 0 18px 40px rgba(8,23,38,.22);
-            --shadow-card-hover: 0 28px 60px rgba(8,23,38,.3);
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-page);
             color: var(--dark);
-            line-height: 1.5;
+            line-height: 1.55;
+            overflow-x: hidden;
         }
 
-        a {
-            text-decoration: none;
+        /* Canvas para partículas interactivas */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #eef3f9 0%, #f5f9ff 100%);
         }
 
-        /* HEADER HERO CORTO */
-        header.hero {
-            background: var(--gradient-hero);
-            color: #fff;
-            padding: 60px 0 50px;
-            box-shadow: 0 30px 60px rgba(0,0,0,.4);
-            position: relative;
+        /* Partículas decorativas adicionales */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
         }
 
-        header.hero::after {
-            content: "";
+        .particle {
             position: absolute;
-            right: -80px;
-            bottom: -80px;
-            width: 260px;
-            height: 260px;
-            background: radial-gradient(circle, rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 70%);
-            filter: blur(30px);
-            opacity: .6;
+            display: block;
+            pointer-events: none;
+            opacity: 0.4;
+            border-radius: 50%;
         }
 
+        .particle.circle {
+            background: radial-gradient(circle, rgba(30, 136, 229, 0.3) 0%, rgba(30, 136, 229, 0) 70%);
+        }
+
+        .particle.square {
+            background: radial-gradient(circle, rgba(0, 176, 255, 0.2) 0%, rgba(0, 176, 255, 0) 70%);
+            transform: rotate(45deg);
+        }
+
+        .particle.triangle {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 25px solid rgba(12, 46, 74, 0.2);
+            background: transparent;
+            border-radius: 0;
+        }
+
+        .particle.hexagon {
+            background: radial-gradient(circle, rgba(30, 136, 229, 0.2) 0%, rgba(30, 136, 229, 0) 70%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        /* Animaciones para partículas */
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-5px); }
+            75% { transform: translateY(-30px) translateX(15px); }
+            100% { transform: translateY(0px) translateX(0px); }
+        }
+
+        @keyframes floatReverse {
+            0% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-15px) translateX(-10px); }
+            50% { transform: translateY(-25px) translateX(5px); }
+            75% { transform: translateY(-10px) translateX(-15px); }
+            100% { transform: translateY(0px) translateX(0px); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Partículas con diferentes tamaños y animaciones */
+        .particle:nth-child(1) {
+            left: 5%;
+            top: 10%;
+            width: 60px;
+            height: 60px;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .particle:nth-child(2) {
+            left: 15%;
+            top: 60%;
+            width: 40px;
+            height: 40px;
+            animation: floatReverse 15s infinite ease-in-out;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(3) {
+            left: 25%;
+            top: 30%;
+            width: 80px;
+            height: 80px;
+            animation: float 25s infinite ease-in-out;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(4) {
+            left: 40%;
+            top: 80%;
+            width: 30px;
+            height: 30px;
+            animation: floatReverse 18s infinite ease-in-out;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(5) {
+            left: 55%;
+            top: 20%;
+            width: 70px;
+            height: 70px;
+            animation: float 22s infinite ease-in-out;
+            animation-delay: 3s;
+        }
+
+        .particle:nth-child(6) {
+            left: 70%;
+            top: 50%;
+            width: 50px;
+            height: 50px;
+            animation: floatReverse 20s infinite ease-in-out;
+            animation-delay: 5s;
+        }
+
+        .particle:nth-child(7) {
+            left: 85%;
+            top: 15%;
+            width: 45px;
+            height: 45px;
+            animation: float 17s infinite ease-in-out;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(8) {
+            left: 90%;
+            top: 70%;
+            width: 35px;
+            height: 35px;
+            animation: floatReverse 19s infinite ease-in-out;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(9) {
+            left: 10%;
+            top: 85%;
+            width: 55px;
+            height: 55px;
+            animation: float 23s infinite ease-in-out;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(10) {
+            left: 75%;
+            top: 35%;
+            width: 65px;
+            height: 65px;
+            animation: floatReverse 21s infinite ease-in-out;
+            animation-delay: 3s;
+        }
+
+        /* Partículas geométricas adicionales */
+        .geo-particle {
+            position: absolute;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .geo-particle.circle-small {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(0, 176, 255, 0.4) 0%, rgba(0, 176, 255, 0) 70%);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .geo-particle.square-small {
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, rgba(30, 136, 229, 0.3) 0%, rgba(30, 136, 229, 0) 70%);
+            transform: rotate(45deg);
+            animation: rotate 30s infinite linear;
+        }
+
+        .geo-particle.diamond {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 17px solid rgba(12, 46, 74, 0.3);
+            animation: floatReverse 18s infinite ease-in-out;
+        }
+
+        /* Animaciones de entrada */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* CONTENEDOR BASE */
         .container {
             max-width: 1300px;
             margin: 0 auto;
@@ -74,1027 +290,1521 @@
             z-index: 1;
         }
 
-        .hero-top-row {
+        /* HERO / CABECERA COMERCIAL */
+        header.hero {
+            position: relative;
+            background: var(--gradient);
+            color: white;
+            padding: 80px 0 60px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+
+        header.hero::before {
+            content: "";
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(40px);
+            opacity: 0.6;
+        }
+
+        header.hero::after {
+            content: "";
+            position: absolute;
+            bottom: -10%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(30px);
+            opacity: 0.5;
+        }
+
+        header.hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 2.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.25;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-text h2 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 20px;
+            line-height: 1.4;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-text p {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.9);
+            max-width: 730px;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-highlights {
             display: flex;
             flex-wrap: wrap;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 24px;
+            gap: 12px;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
         }
 
-        .hero-brand-block {
-            max-width: 800px;
-        }
-
-        .hero-eyebrow {
-            display: inline-block;
-            font-size: .75rem;
+        .badge-pill {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 8px 16px;
+            font-size: .9rem;
             font-weight: 500;
             line-height: 1.2;
-            background: rgba(255,255,255,.18);
-            border: 1px solid rgba(255,255,255,.4);
-            padding: 6px 12px;
+            color: #fff;
             border-radius: 999px;
-            margin-bottom: 16px;
             backdrop-filter: blur(6px);
-        }
-
-        .hero-title {
-            font-size: 2rem;
-            font-weight: 600;
-            line-height: 1.25;
-            color: #fff;
-            margin-bottom: 12px;
-        }
-
-        .hero-desc {
-            font-size: 1rem;
-            font-weight: 300;
-            line-height: 1.5;
-            color: rgba(255,255,255,.9);
-            max-width: 760px;
-        }
-
-        .hero-profile-mini {
-            background: rgba(255,255,255,.07);
-            border: 1px solid rgba(255,255,255,.18);
-            border-radius: var(--radius-lg);
-            padding: 16px 20px;
-            min-width: 260px;
-            box-shadow: 0 24px 48px rgba(0,0,0,.45);
-            text-align: left;
-        }
-
-        .hero-profile-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 10px;
-        }
-
-        .hero-avatar {
-            width: 54px;
-            height: 54px;
-            border-radius: 12px;
-            background: rgba(255,255,255,.1);
-            border: 2px solid rgba(255,255,255,.5);
-            overflow: hidden;
-            box-shadow: 0 12px 24px rgba(0,0,0,.6);
-            flex-shrink: 0;
-        }
-
-        .hero-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .hero-name-role {
-            color: #fff;
-        }
-
-        .hero-name-role .name {
-            font-size: .9rem;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        .hero-name-role .role {
-            font-size: .75rem;
-            font-weight: 400;
-            line-height: 1.3;
-            color: rgba(255,255,255,.8);
-        }
-
-        .hero-contact {
-            font-size: .75rem;
-            line-height: 1.4;
-            color: rgba(255,255,255,.9);
-        }
-
-        .hero-contact div {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 4px;
-            color: rgba(255,255,255,.9);
-        }
-
-        .hero-contact i {
-            font-size: .8rem;
-            color: rgba(255,255,255,.8);
-        }
-
-        .back-link-wrap {
-            margin-top: 16px;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: .8rem;
-            font-weight: 500;
-            color: rgba(255,255,255,.9);
-            background: rgba(0,0,0,.3);
-            border: 1px solid rgba(255,255,255,.3);
-            padding: 8px 12px;
-            border-radius: 10px;
             transition: var(--transition);
         }
 
-        .back-link:hover {
-            background: rgba(0,0,0,.5);
-            box-shadow: 0 12px 24px rgba(0,0,0,.4);
-            transform: translateY(-2px);
+        .badge-pill:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        /* BLOQUES DE SECCIÓN */
-        section {
-            padding: 60px 0;
+        .hero-profile-card {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            animation: fadeInRight 0.8s ease-out;
+            transition: var(--transition);
         }
 
-        .section-header {
-            text-align: left;
-            margin-bottom: 24px;
+        .hero-profile-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
         }
 
-        .section-eyebrow {
-            font-size: .7rem;
+        .hero-photo-wrapper {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 4px solid rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.1);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .hero-profile-card:hover .hero-photo-wrapper {
+            transform: scale(1.05);
+            border-color: rgba(255,255,255,0.8);
+        }
+
+        .hero-photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .hero-profile-card:hover .hero-photo-wrapper img {
+            transform: scale(1.1);
+        }
+
+        .hero-profile-card .name {
+            font-size: 1.2rem;
             font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: .04em;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .hero-profile-card .role {
+            font-size: .9rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .hero-contact a {
+            text-decoration: none;
+            font-size: .9rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .hero-contact a:hover {
+            background: rgba(0,0,0,0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* NAV STICKY */
+        nav {
+            background: rgba(12, 46, 74, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            background: rgba(12, 46, 74, 0.98);
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            font-size: .95rem;
+            position: relative;
+            padding-bottom: 4px;
+            transition: var(--transition);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width .3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* SECCIONES GENERALES */
+        section {
+            position: relative;
+            padding: 80px 0;
+        }
+
+        section.alt {
+            background: var(--light);
         }
 
         .section-title {
+            text-align: center;
             color: var(--primary);
-            font-size: 1.4rem;
+            font-size: 2rem;
             font-weight: 600;
-            line-height: 1.3;
-            margin-bottom: 12px;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            position: relative;
         }
 
-        .section-desc {
-            font-size: .9rem;
-            color: var(--muted);
-            max-width: 900px;
+        .section-subtitle {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 400;
+            color: #444;
+            max-width: 800px;
+            margin: 0 auto 40px;
             line-height: 1.5;
         }
 
-        /* CARD GENERICA / PANEL */
-        .card {
-            background: var(--bg-card);
+        .underline-bar {
+            width: 110px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--gradient);
+            margin: 0 auto 32px;
+        }
+
+        /* BLOQUES DE OFERTA (PRODUCTO ACADÉMICO) */
+        .offer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+            gap: 30px;
+        }
+
+        .offer-card {
+            background: white;
             border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-card);
+            padding: 28px 28px 24px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
             border: 1px solid rgba(12,46,74,0.07);
-            padding: 24px;
-            margin-bottom: 30px;
+        }
+
+        .offer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .offer-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(8,23,38,0.28);
+        }
+
+        .offer-headline {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .offer-headline i {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            flex-shrink: 0;
+        }
+
+        .offer-duration {
+            font-size: .85rem;
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 16px;
+        }
+
+        .offer-card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .offer-card li {
+            margin-bottom: 12px;
+            font-size: .95rem;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .offer-card li::before {
+            content: '•';
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: -18px;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .tag {
+            background: var(--gradient-soft);
+            border-radius: 8px;
+            font-size: .75rem;
+            font-weight: 500;
+            color: var(--primary);
+            padding: 6px 10px;
+            line-height: 1.2;
+            border: 1px solid rgba(12,46,74,0.12);
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background: var(--gradient);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* CASOS REALES / IMPACTO */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(360px,1fr));
+            gap: 30px;
+        }
+
+        .case-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+            padding: 28px;
+            border: 1px solid rgba(12,46,74,0.07);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(8,23,38,0.28);
+        }
+
+        .case-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .case-title i {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            flex-shrink: 0;
+        }
+
+        .case-desc {
+            font-size: .92rem;
+            line-height: 1.45;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .case-metric {
+            background: var(--gradient);
+            color: #fff;
+            display: inline-block;
+            font-size: .8rem;
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 10px;
+            line-height: 1.2;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+            transition: var(--transition);
+        }
+
+        .case-metric:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        /* PERFIL / CV SINTÉTICO */
+        .profile-wrapper {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(12,46,74,0.07);
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .profile-photo-lg {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 30px 60px rgba(8,23,38,0.5);
+            background: #fff;
+            transition: var(--transition);
+        }
+
+        .profile-photo-lg:hover {
+            transform: scale(1.05);
+            box-shadow: 0 40px 80px rgba(8,23,38,0.6);
+        }
+
+        .profile-photo-lg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .profile-photo-lg:hover img {
+            transform: scale(1.1);
+        }
+
+        .profile-block h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .profile-block p {
+            font-size: .95rem;
+            color: #333;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .cv-list {
+            font-size: .9rem;
+            line-height: 1.4;
+            color: #222;
+        }
+
+        .cv-list .cv-label {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        /* EXPERIENCIA / TRAYECTORIA */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: calc(50% - 1px);
+            width: 2px;
+            height: 100%;
+            background: var(--gradient);
+        }
+
+        .timeline-item {
+            width: calc(50% - 40px);
+            position: relative;
+            margin-bottom: 32px;
+            transition: var(--transition);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+            padding-right: 40px;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 40px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 10px;
+            width: 18px;
+            height: 18px;
+            background: var(--secondary);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px white, 0 0 0 6px var(--secondary);
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 6px white, 0 0 0 8px var(--secondary);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot { right: -9px; }
+        .timeline-item:nth-child(even) .timeline-dot { left: -9px; }
+
+        .timeline-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(12,46,74,0.07);
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover .timeline-card {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(8,23,38,0.25);
+        }
+
+        .timeline-date {
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .timeline-role {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .timeline-inst {
+            font-size: .9rem;
+            font-style: italic;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .timeline-desc {
+            font-size: .9rem;
+            color: #333;
+            line-height: 1.45;
+        }
+
+        /* HABILIDADES */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+            gap: 24px;
+        }
+
+        .skill-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(12,46,74,0.07);
+            padding: 28px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(8,23,38,0.28);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 16px;
+            transition: var(--transition);
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: scale(1.1);
+            color: var(--accent);
+        }
+
+        .skill-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .skill-note {
+            font-size: .85rem;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        /* PUBLICACIONES */
+        .pub-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(12,46,74,0.07);
+            padding: 24px 24px 20px;
             position: relative;
             overflow: hidden;
             transition: var(--transition);
         }
 
-        .card:hover {
-            box-shadow: var(--shadow-card-hover);
-            transform: translateY(-4px);
+        .pub-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(8,23,38,0.25);
         }
 
-        .card-headline {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-            line-height: 1.4;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-
-        .card-headline i {
-            font-size: 1rem;
-            color: var(--secondary);
-            flex-shrink: 0;
-        }
-
-        .card-note {
-            font-size: .8rem;
-            line-height: 1.4;
-            color: var(--muted);
-            margin-bottom: 16px;
-        }
-
-        /* GRID 2 */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(360px,1fr));
-            gap: 24px;
-        }
-
-        /* GRID 3 */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
-            gap: 24px;
-        }
-
-        /* FORM MOCKUP */
-        .form-mockup {
-            background: #fdfefe;
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(0,0,0,0.08);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
-            padding: 16px;
-            font-size: .8rem;
-            line-height: 1.4;
-            color: #222;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .form-field label {
-            font-size: .7rem;
-            font-weight: 500;
-            color: #444;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .form-field input,
-        .form-field select,
-        .form-field textarea {
-            width: 100%;
-            background: #fff;
-            border: 1px solid rgba(0,0,0,0.15);
-            border-radius: 8px;
-            padding: 8px 10px;
-            font-size: .8rem;
-            line-height: 1.3;
-            color: #222;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-        }
-
-        .form-field small {
-            font-size: .65rem;
-            color: #666;
-            display: block;
-            margin-top: 4px;
-        }
-
-        .form-footer-hint {
-            font-size: .7rem;
-            color: #1e88e5;
-            font-weight: 500;
-            margin-top: 8px;
-        }
-
-        /* KPI CARDS */
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-            gap: 16px;
-        }
-
-        .kpi-card {
-            background: var(--gradient-soft);
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(12,46,74,0.12);
-            box-shadow: 0 16px 32px rgba(8,23,38,.15);
-            padding: 16px;
-        }
-
-        .kpi-label {
-            font-size: .7rem;
-            font-weight: 500;
-            color: var(--primary);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .kpi-label i {
-            font-size: .7rem;
-            color: var(--secondary);
-        }
-
-        .kpi-value {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--primary);
-            line-height: 1.2;
-        }
-
-        .kpi-footnote {
-            font-size: .7rem;
-            line-height: 1.3;
-            color: var(--muted);
-        }
-
-        /* TABLE MOCKUP PACIENTES */
-        .table-wrapper {
-            background: #fff;
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(0,0,0,0.08);
-            box-shadow: 0 16px 32px rgba(8,23,38,.15);
-            overflow: hidden;
-        }
-
-        table.mock-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: .75rem;
-        }
-
-        table.mock-table thead {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        table.mock-table th {
-            text-align: left;
-            font-weight: 500;
-            padding: 10px;
-            white-space: nowrap;
-            font-size: .7rem;
-        }
-
-        table.mock-table tbody tr:nth-child(even) {
-            background: #f7fafc;
-        }
-
-        table.mock-table td {
-            padding: 10px;
-            color: #222;
-            line-height: 1.4;
-            vertical-align: top;
-        }
-
-        .status-pill {
-            display: inline-block;
-            font-size: .65rem;
-            line-height: 1.2;
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-weight: 500;
-            color: #fff;
-            box-shadow: 0 8px 16px rgba(0,0,0,.2);
-        }
-
-        .critico    { background: #c62828; }
-        .estable    { background: #2e7d32; }
-        .aislamiento{ background: #ed6c02; }
-
-        /* BLOQUE ESTADÍSTICA R */
-        .r-block {
-            background: #0c2e4a;
-            color: #d3e2ff;
-            border-radius: var(--radius-md);
-            box-shadow: 0 20px 40px rgba(8,23,38,.6);
-            border: 1px solid rgba(255,255,255,.08);
-            padding: 16px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-            font-size: .7rem;
-            line-height: 1.5;
-            white-space: pre-line;
-        }
-
-        .r-block .r-header {
-            color: #fff;
-            font-weight: 600;
-            font-size: .7rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .r-block .r-header i {
-            color: #00b0ff;
-            font-size: .7rem;
-        }
-
-        .r-footnote {
-            font-size: .65rem;
-            color: #88a6d4;
-            margin-top: 8px;
-            line-height: 1.4;
-        }
-
-        /* BLOQUE PAPER MOCK */
-        .paper-mock {
-            background: #ffffff;
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(0,0,0,.08);
-            box-shadow: 0 20px 40px rgba(8,23,38,.15);
-            padding: 20px;
-            font-size: .8rem;
-            line-height: 1.5;
-            color: #1a1a1a;
-        }
-
-        .paper-heading {
-            font-size: .8rem;
-            font-weight: 600;
-            color: var(--primary);
-            letter-spacing: .02em;
-            margin: 16px 0 8px;
-            text-transform: uppercase;
-        }
-
-        .paper-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: .7rem;
-            margin-top: 10px;
-        }
-
-        .paper-table th {
-            text-align: left;
-            font-weight: 600;
-            padding: 6px;
-            border-bottom: 1px solid rgba(0,0,0,.15);
-            color: #0c2e4a;
-        }
-
-        .paper-table td {
-            padding: 6px;
-            border-bottom: 1px solid rgba(0,0,0,.08);
-        }
-
-        .cta-final {
+        .pub-year {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             background: var(--gradient);
             color: #fff;
-            border-radius: var(--radius-lg);
-            box-shadow: 0 28px 60px rgba(0,0,0,.5);
-            border: 1px solid rgba(255,255,255,.2);
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .cta-headline {
-            font-size: 1rem;
+            font-size: .75rem;
             font-weight: 600;
-            line-height: 1.4;
-        }
-
-        .cta-text {
-            font-size: .85rem;
-            line-height: 1.4;
-            color: rgba(255,255,255,.9);
-        }
-
-        .cta-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .cta-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0,0,0,.3);
-            border: 1px solid rgba(255,255,255,.4);
-            color: #fff;
-            font-size: .8rem;
-            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 999px;
             line-height: 1.2;
-            padding: 10px 14px;
-            border-radius: 10px;
+            box-shadow: 0 16px 30px rgba(0,0,0,0.4);
+        }
+
+        .pub-title {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            padding-right: 90px;
+        }
+
+        .pub-authors {
+            font-size: .85rem;
+            font-style: italic;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .pub-meta {
+            font-size: .8rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .pub-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: .8rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
             transition: var(--transition);
         }
 
-        .cta-btn:hover {
-            background: rgba(0,0,0,.55);
-            box-shadow: 0 16px 32px rgba(0,0,0,.4);
-            transform: translateY(-2px);
+        .pub-link:hover {
+            color: var(--accent);
+            transform: translateX(5px);
         }
 
-        @media(max-width:768px){
-            .hero-title { font-size: 1.6rem; }
+        .pub-link i {
+            margin-right: 6px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--gradient);
+            color: white;
+            position: relative;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+            box-shadow: 0 -20px 60px rgba(0,0,0,0.5);
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: -80px;
+            left: 0;
+            width: 100%;
+            height: 160px;
+            background: radial-gradient(circle at 50% -10%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(40px);
+            opacity: .4;
+        }
+
+        .footer-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .footer-block h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            position: relative;
+        }
+
+        .footer-block p,
+        .footer-block li {
+            font-size: .9rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .footer-block ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-block a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.85);
+            transition: var(--transition);
+            font-size: .9rem;
+        }
+
+        .footer-block a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .copyright {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.25);
+            padding-top: 24px;
+            font-size: .8rem;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* BOTÓN SCROLL TOP */
+        .scroll-top {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 16px 30px rgba(0,0,0,0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Indicador de progreso de lectura */
+        .progress-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 1001;
+            transition: width 0.2s ease;
+        }
+
+        /* Efecto de revelación al hacer scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Efecto de paralaje */
+        .parallax {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parallax-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width: 900px) {
+            header.hero-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-profile-card {
+                max-width: 320px;
+                margin: 0 auto;
+            }
+        }
+
+        @media(max-width: 768px) {
+            .section-title { font-size: 1.7rem; }
+            nav ul { gap: 16px; }
+            .timeline::before { left: 28px; }
+            .timeline-item {
+                width: calc(100% - 60px);
+                left: 60px !important;
+                text-align: left !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+            .timeline-dot {
+                left: -28px !important;
+                right: auto !important;
+            }
+            .profile-wrapper {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .profile-photo-lg {
+                margin: 0 auto;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- Canvas para partículas interactivas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Partículas de fondo adicionales -->
+    <div class="particles">
+        <span class="particle circle"></span>
+        <span class="particle square"></span>
+        <span class="particle triangle"></span>
+        <span class="particle hexagon"></span>
+        <span class="particle circle"></span>
+        <span class="particle square"></span>
+        <span class="particle triangle"></span>
+        <span class="particle hexagon"></span>
+        <span class="particle circle"></span>
+        <span class="particle square"></span>
+    </div>
+
+    <!-- Partículas geométricas adicionales -->
+    <div class="geo-particles">
+        <div class="geo-particle circle-small" style="left: 8%; top: 25%;"></div>
+        <div class="geo-particle square-small" style="left: 18%; top: 75%;"></div>
+        <div class="geo-particle diamond" style="left: 28%; top: 45%;"></div>
+        <div class="geo-particle circle-small" style="left: 38%; top: 15%;"></div>
+        <div class="geo-particle square-small" style="left: 48%; top: 65%;"></div>
+        <div class="geo-particle diamond" style="left: 58%; top: 35%;"></div>
+        <div class="geo-particle circle-small" style="left: 68%; top: 85%;"></div>
+        <div class="geo-particle square-small" style="left: 78%; top: 25%;"></div>
+        <div class="geo-particle diamond" style="left: 88%; top: 55%;"></div>
+        <div class="geo-particle circle-small" style="left: 12%; top: 40%;"></div>
+        <div class="geo-particle square-small" style="left: 22%; top: 90%;"></div>
+        <div class="geo-particle diamond" style="left: 32%; top: 10%;"></div>
+        <div class="geo-particle circle-small" style="left: 42%; top: 60%;"></div>
+        <div class="geo-particle square-small" style="left: 52%; top: 30%;"></div>
+        <div class="geo-particle diamond" style="left: 62%; top: 80%;"></div>
+        <div class="geo-particle circle-small" style="left: 72%; top: 20%;"></div>
+        <div class="geo-particle square-small" style="left: 82%; top: 70%;"></div>
+        <div class="geo-particle diamond" style="left: 92%; top: 40%;"></div>
+    </div>
+
+    <!-- Indicador de progreso de lectura -->
+    <div class="progress-indicator" id="progressIndicator"></div>
+
     <!-- HERO -->
     <header class="hero">
-        <div class="container hero-top-row">
-            <div class="hero-brand-block">
-                <div class="hero-eyebrow">Demostración técnica en entorno seguro</div>
-                <div class="hero-title">Tablero clínico, trazabilidad de datos y análisis estadístico reproducible</div>
-                <div class="hero-desc">
-                    A continuación se presentan ejemplos simulados del flujo completo que se transfiere al servicio clínico del cliente. Incluye: captura estructurada de datos del paciente, tablero operativo en tiempo casi real para jefatura, análisis estadístico en R y borrador de manuscrito científico en formato reproducible. Todo el proceso es trazable y puede ser auditado.
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <h1>Programa de Entrenamiento Clínico-Estadístico Asistido por IA</h1>
+                <h2>Captura estructurada de datos clínicos, tableros en tiempo casi real, análisis estadístico reproducible y reporte publicable</h2>
+                <p>
+                    Formación dirigida a médicos en formación, residentes e investigadores clínicos. El objetivo es dotar al equipo de salud de capacidad instalada para: diseñar instrumentos de captura de datos limpios y auditables, analizar resultados clínicos con métodos descriptivos e inferenciales correctos en R, monitorear en tableros vivos la evolución de indicadores asistenciales y generar reportes científicos listos para enviar a un tutor metodológico o a revista. Todo con soporte de inteligencia artificial responsable.
+                </p>
+
+                <div class="hero-highlights">
+                    <div class="badge-pill"><i class="fa-solid fa-stethoscope"></i> Aplicado en UCI y quirófano reales</div>
+                    <div class="badge-pill"><i class="fa-solid fa-chart-line"></i> Tableros clínicos en vivo</div>
+                    <div class="badge-pill"><i class="fa-solid fa-robot"></i> IA al servicio del método</div>
+                    <div class="badge-pill"><i class="fa-solid fa-book"></i> Publicación reproducible en RMarkdown</div>
                 </div>
             </div>
 
-            <aside class="hero-profile-mini">
-                <div class="hero-profile-header">
-                    <div class="hero-avatar">
-                        <img src="https://postimg.cc/D8D2CGK0" alt="Diego Bernardo Meza">
-                    </div>
-                    <div class="hero-name-role">
-                        <div class="name">Diego Bernardo Meza</div>
-                        <div class="role">
-                            Máster en Estadística<br>
-                            Tesista de Doctorado en Ciencias Exactas y Naturales, FACEN - UNA<br>
-                            Asesor en análisis clínico y tableros asistenciales
-                        </div>
-                    </div>
+            <aside class="hero-profile-card">
+                <div class="hero-photo-wrapper">
+                    <img src="https://postimg.cc/D8D2CGK0" alt="Diego Bernardo Meza">
                 </div>
-                <div class="hero-contact">
-                    <div><i class="fa-solid fa-envelope"></i> dmeza.py@gmail.com</div>
-                    <div><i class="fa-solid fa-phone"></i> +595 971 100835</div>
-                    <div><i class="fa-brands fa-linkedin"></i> linkedin.com/in/diego-meza</div>
+                <div class="name">Diego Bernardo Meza</div>
+                <div class="role">
+                    Máster en Estadística.  
+                    Tesista de Doctorado en Ciencias Exactas y Naturales, FACEN, Universidad Nacional de Asunción.  
+                    Profesor universitario y asesor en análisis clínico y tableros asistenciales.
                 </div>
 
-                <div class="back-link-wrap">
-                    <a class="back-link" href="index.html">
-                        <i class="fa-solid fa-arrow-left"></i>
-                        <span>Volver al programa académico</span>
-                    </a>
+                <div class="hero-contact">
+                    <a href="mailto:dmeza.py@gmail.com"><i class="fa-solid fa-envelope"></i><span>dmeza.py@gmail.com</span></a>
+                    <a href="tel:+595971100835"><i class="fa-solid fa-phone"></i><span>+595 971 100835</span></a>
+                    <a href="https://www.linkedin.com/in/diego-meza/"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span></a>
                 </div>
             </aside>
         </div>
     </header>
 
-    <main>
+    <!-- NAV -->
+    <nav id="navbar">
+        <div class="container">
+            <ul>
+                <li><a href="#oferta">Oferta Académica</a></li>
+                <li><a href="#casos">Implementaciones Reales</a></li>
+                <li><a href="#perfil">Perfil Profesional</a></li>
+                <li><a href="#trayectoria">Trayectoria</a></li>
+                <li><a href="#habilidades">Capacidades Técnicas</a></li>
+                <li><a href="#publicaciones">Publicaciones</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
 
-        <!-- SECCIÓN 1: CAPTURA DE DATOS -->
-        <section>
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-eyebrow">01 · Captura de datos clínicos</div>
-                    <div class="section-title">Formulario de ingreso UCI con validación incorporada</div>
-                    <div class="section-desc">
-                        El servicio recibe un formulario digital estandarizado, con lista de variables mínimas obligatorias, controles de coherencia y campos restringidos. Esto permite que los residentes y el personal carguen datos limpios, sin necesidad de software propietario.
-                    </div>
-                </div>
-
-                <div class="grid-2">
-
-                    <div class="card">
-                        <div class="card-headline">
-                            <i class="fa-solid fa-clipboard-list"></i>
-                            <span>Admisión paciente crítico, ejemplo estructurado</span>
-                        </div>
-                        <div class="card-note">
-                            Fragmento simulado de la planilla inicial. Los campos marcados como obligatorios no permiten continuar sin completarse. Se registra automáticamente fecha, hora y operador.
-                        </div>
-
-                        <div class="form-mockup">
-
-                            <div class="form-row">
-                                <div class="form-field">
-                                    <label>ID interno de paciente *</label>
-                                    <input type="text" value="UCI-2025-0348">
-                                    <small>Generado automáticamente, evita duplicados</small>
-                                </div>
-                                <div class="form-field">
-                                    <label>Fecha y hora de ingreso *</label>
-                                    <input type="datetime-local" value="2025-10-27T14:35">
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-field">
-                                    <label>Edad (años) *</label>
-                                    <input type="number" value="67" min="0" max="120">
-                                    <small>Validación rango fisiológicamente plausible</small>
-                                </div>
-                                <div class="form-field">
-                                    <label>Sexo *</label>
-                                    <select>
-                                        <option>Femenino</option>
-                                        <option>Masculino</option>
-                                        <option>Otro / No declara</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-field">
-                                    <label>Motivo principal de ingreso *</label>
-                                    <select>
-                                        <option>Sepsis / Shock séptico</option>
-                                        <option>SDRA / fallo respiratorio</option>
-                                        <option>Postoperatorio inmediato</option>
-                                        <option>Evento cardiovascular agudo</option>
-                                    </select>
-                                    <small>Lista controlada, estandariza diagnósticos iniciales</small>
-                                </div>
-                                <div class="form-field">
-                                    <label>Ventilación mecánica inicial *</label>
-                                    <select>
-                                        <option>Invasiva</option>
-                                        <option>No invasiva</option>
-                                        <option>No requiere</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-field">
-                                    <label>SOFA score al ingreso *</label>
-                                    <input type="number" value="9" min="0" max="24">
-                                    <small>Advertencia si supera umbral crítico predefinido</small>
-                                </div>
-                                <div class="form-field">
-                                    <label>Uso de antibiótico de reserva *</label>
-                                    <select>
-                                        <option>Meropenem</option>
-                                        <option>Colistina</option>
-                                        <option>Ninguno</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-field">
-                                <label>Observaciones clínicas relevantes</label>
-                                <textarea rows="3">Shock séptico abdominal, drenaje reciente, soporte vasoactivo</textarea>
-                            </div>
-
-                            <div class="form-footer-hint">
-                                Registro guardado 2025-10-27 14:37 por usuario: residente_guardia_A
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-headline">
-                            <i class="fa-solid fa-shield-halved"></i>
-                            <span>Por qué esto importa para auditoría y publicación</span>
-                        </div>
-                        <div class="card-note">
-                            Beneficios inmediatos para el servicio clínico y para el comité académico.
-                        </div>
-
-                        <ul style="font-size:.85rem; line-height:1.5; color:#1a1a1a; padding-left:20px;">
-                            <li style="margin-bottom:10px; position:relative;">
-                                <span style="position:absolute; left:-20px; color:var(--accent); font-weight:600;">•</span>
-                                Toda la información crítica se captura de forma homogénea a lo largo del tiempo, lo que permite análisis longitudinales y comparaciones entre cohortes.
-                            </li>
-                            <li style="margin-bottom:10px; position:relative;">
-                                <span style="position:absolute; left:-20px; color:var(--accent); font-weight:600;">•</span>
-                                Se documenta quién cargó qué dato y cuándo, lo que facilita auditoría interna y respalda decisiones de calidad asistencial.
-                            </li>
-                            <li style="margin-bottom:10px; position:relative;">
-                                <span style="position:absolute; left:-20px; color:var(--accent); font-weight:600;">•</span>
-                                La estructura del formulario sirve directamente como sección de "Variables y criterios de inclusión" en un artículo científico.
-                            </li>
-                            <li style="position:relative;">
-                                <span style="position:absolute; left:-20px; color:var(--accent); font-weight:600;">•</span>
-                                La base generada es analizable sin limpieza manual extensa. Esto reduce meses de retraso entre el fin de la recolección de datos y la redacción del manuscrito.
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
+    <!-- OFERTA -->
+    <section id="oferta">
+        <div class="container">
+            <div class="section-title reveal">Oferta Académica para Médicos en Formación</div>
+            <div class="underline-bar reveal"></div>
+            <div class="section-subtitle reveal">
+                La propuesta consta de dos instancias progresivas, diseñada para programas de residencia, internado y servicios clínicos, y pensada para ser aprobada por dirección académica de Facultad de Medicina: una charla-taller estratégica, seguida de un curso aplicado intensivo con notebook. Ambas pueden impartirse en formato presencial o híbrido.
             </div>
-        </section>
 
-        <!-- SECCIÓN 2: TABLERO OPERATIVO -->
-        <section style="background:#f5f9ff;">
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-eyebrow">02 · Tablero del servicio</div>
-                    <div class="section-title">Indicadores operativos en tiempo casi real</div>
-                    <div class="section-desc">
-                        El objetivo es que la jefatura clínica y académica tenga, en una sola vista, ocupación de camas, estado de pacientes críticos, uso de antibióticos de reserva y mortalidad intrahospitalaria reciente. Este panel se actualiza directamente desde la misma base que alimenta el formulario.
+            <div class="offer-grid">
+                <!-- CHARLA 1H -->
+                <div class="offer-card reveal">
+                    <div class="offer-headline"><i class="fa-solid fa-microscope"></i>Charla - Taller: "Del paciente al paper"</div>
+                    <div class="offer-duration">Duración 1 hora</div>
+                    <ul>
+                        <li>Cómo evitar que el proyecto de investigación clínica fracase en la etapa de captura de datos.</li>
+                        <li>Diseño de formularios clínicos digitales con apoyo de IA, evitando incoherencias y datos faltantes críticos.</li>
+                        <li>Importancia de la trazabilidad del dato para auditoría interna, docencia y publicación.</li>
+                        <li>Ejemplo real de UCI: variables de severidad (SOFA, APACHE), soporte ventilatorio, antibióticos críticos y desenlace.</li>
+                        <li>Cómo la estadística descriptiva e inferencial básica en R se convierte en la sección de Resultados de un manuscrito.</li>
+                    </ul>
+                    <div class="tag-row">
+                        <div class="tag">Ética y confidencialidad</div>
+                        <div class="tag">Sesgos y validez</div>
+                        <div class="tag">Publicación científica</div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-headline">
-                        <i class="fa-solid fa-chart-line"></i>
-                        <span>Indicadores resumidos últimos 30 días</span>
-                    </div>
-
-                    <div class="kpi-grid">
-                        <div class="kpi-card">
-                            <div class="kpi-label"><i class="fa-solid fa-bed-pulse"></i>Ocupación promedio UCI</div>
-                            <div class="kpi-value">92 %</div>
-                            <div class="kpi-footnote">Capacidad crítica sostenida, riesgo de saturación estructural</div>
-                        </div>
-
-                        <div class="kpi-card">
-                            <div class="kpi-label"><i class="fa-solid fa-skull-crossbones"></i>Mortalidad intrahospitalaria</div>
-                            <div class="kpi-value">8,3 %</div>
-                            <div class="kpi-footnote">Cierre observado en cohorte séptica adulta</div>
-                        </div>
-
-                        <div class="kpi-card">
-                            <div class="kpi-label"><i class="fa-solid fa-virus-covid"></i>IAAS notificadas</div>
-                            <div class="kpi-value">5 casos</div>
-                            <div class="kpi-footnote">Definición comité de control de infecciones</div>
-                        </div>
-
-                        <div class="kpi-card">
-                            <div class="kpi-label"><i class="fa-solid fa-syringe"></i>Uso de antibióticos de reserva</div>
-                            <div class="kpi-value">34 %</div>
-                            <div class="kpi-footnote">Pacientes que recibieron carbapenémicos o colistina</div>
-                        </div>
-
-                        <div class="kpi-card">
-                            <div class="kpi-label"><i class="fa-solid fa-stopwatch"></i>Estancia media UCI</div>
-                            <div class="kpi-value">4,7 días</div>
-                            <div class="kpi-footnote">Cálculo en alta vs. ingreso. Excluye fallecidos < 24h</div>
-                        </div>
+                <!-- CURSO 4H -->
+                <div class="offer-card reveal">
+                    <div class="offer-headline"><i class="fa-solid fa-laptop-code"></i>Curso Intensivo Aplicado: "Gestión de Datos Clínicos + Análisis Estadístico + Reporte Publicable"</div>
+                    <div class="offer-duration">Duración 4 horas (4 módulos de 1 hora)</div>
+                    <ul>
+                        <li>Construcción de un registro clínico estructurado del servicio, con validaciones, diccionario de variables y control de duplicados.</li>
+                        <li>Tableros clínicos en tiempo casi real, sin licencias comerciales, a partir de planillas compartidas y R.</li>
+                        <li>Análisis descriptivo e inferencial en R: tasas de mortalidad, riesgo relativo, comparación entre grupos, regresión logística para desenlaces binarios, regresión lineal para días de internación.</li>
+                        <li>Generación automática de un informe científico en RMarkdown (Introducción, Método, Resultados, Tablas y Figuras) listo para tutor metodológico o envío preliminar a revista.</li>
+                    </ul>
+                    <div class="tag-row">
+                        <div class="tag">R + RStudio</div>
+                        <div class="tag">RMarkdown / RPubs</div>
+                        <div class="tag">Indicadores asistenciales</div>
+                        <div class="tag">Trazabilidad interna</div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-headline">
-                        <i class="fa-solid fa-table-list"></i>
-                        <span>Pacientes activos en UCI, vista resumida para pase de guardia</span>
-                    </div>
-                    <div class="card-note">
-                        Esta tabla es un extracto operativo. No incluye datos personales de identificación. Se diseñan colores y etiquetas de estado para priorización clínica y trazabilidad docente.
-                    </div>
-
-                    <div class="table-wrapper">
-                        <table class="mock-table">
-                            <thead>
-                                <tr>
-                                    <th>ID Paciente</th>
-                                    <th>Edad</th>
-                                    <th>Dx Ingreso</th>
-                                    <th>SOFA</th>
-                                    <th>Ventilación</th>
-                                    <th>Estado actual</th>
-                                    <th>Días en UCI</th>
-                                    <th>AB reserva</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>UCI-2025-0348</td>
-                                    <td>67</td>
-                                    <td>Sepsis abdominal</td>
-                                    <td>9</td>
-                                    <td>Invasiva</td>
-                                    <td><span class="status-pill critico">Crítico</span></td>
-                                    <td>2</td>
-                                    <td>Meropenem</td>
-                                </tr>
-                                <tr>
-                                    <td>UCI-2025-0351</td>
-                                    <td>54</td>
-                                    <td>SDRA post neumonía</td>
-                                    <td>7</td>
-                                    <td>No invasiva</td>
-                                    <td><span class="status-pill aislamiento">Aislamiento</span></td>
-                                    <td>4</td>
-                                    <td>Colistina</td>
-                                </tr>
-                                <tr>
-                                    <td>UCI-2025-0352</td>
-                                    <td>73</td>
-                                    <td>Postop. vascular</td>
-                                    <td>4</td>
-                                    <td>No requiere</td>
-                                    <td><span class="status-pill estable">Estable</span></td>
-                                    <td>1</td>
-                                    <td>Ninguno</td>
-                                </tr>
-                                <tr>
-                                    <td>UCI-2025-0356</td>
-                                    <td>61</td>
-                                    <td>Shock séptico</td>
-                                    <td>11</td>
-                                    <td>Invasiva</td>
-                                    <td><span class="status-pill critico">Crítico</span></td>
-                                    <td>5</td>
-                                    <td>Meropenem</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="card-note" style="margin-top:16px;">
-                        La misma vista puede personalizarse por servicio, por ejemplo: Postquirúrgico inmediato, Quemados, Nefrología crítica, Neonatal, etcétera. La facultad puede exigir métricas mínimas comunes para uso docente.
+                <!-- CONTINUIDAD -->
+                <div class="offer-card reveal">
+                    <div class="offer-headline"><i class="fa-solid fa-diagram-project"></i>Acompañamiento Metodológico al Servicio</div>
+                    <div class="offer-duration">Plan opcional posterior</div>
+                    <ul>
+                        <li>Diseño final del formulario clínico propio del servicio, en plataforma ligera tipo Google Apps Script más planilla en la nube.</li>
+                        <li>Tablero operativo para jefatura: ocupación de camas, uso de antibióticos de reserva, tiempos críticos de respuesta, complicaciones postquirúrgicas.</li>
+                        <li>Plantilla reproducible de manuscrito científico con resultados actualizados automáticamente.</li>
+                        <li>Entrenamiento focalizado a residentes para sostener el flujo de datos sin depender de terceros.</li>
+                    </ul>
+                    <div class="tag-row">
+                        <div class="tag">Transferencia de capacidad</div>
+                        <div class="tag">Auditoría interna</div>
+                        <div class="tag">Gestión basada en evidencia</div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- SECCIÓN 3: ANÁLISIS ESTADÍSTICO EN R -->
-        <section>
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-eyebrow">03 · Análisis en R</div>
-                    <div class="section-title">Comparación de desenlaces e inferencia básica</div>
-                    <div class="section-desc">
-                        A partir de la base consolidada se ejecuta análisis estadístico reproducible. El objetivo práctico no es solo describir la cohorte, sino cuantificar diferencias entre subgrupos de pacientes y estimar la fuerza de asociación entre factores de riesgo y eventos adversos.
-                    </div>
-                </div>
-
-                <div class="grid-2">
-                    <div class="card">
-                        <div class="card-headline">
-                            <i class="fa-solid fa-code"></i>
-                            <span>Salida simulada de R: resumen descriptivo y prueba de hipótesis</span>
-                        </div>
-                        <div class="card-note">
-                            Ejemplo didáctico. Se muestra cómo se contrastan tasas de mortalidad entre pacientes con soporte ventilatorio invasivo vs. no invasivo, y cómo se modela el desenlace con regresión logística.
-                        </div>
-
-                        <div class="r-block">
-                            <div class="r-header"><i class="fa-brands fa-r-project"></i>R · Resumen de cohorte (n = 82)</div>
-                            Grupo VM invasiva: mortalidad = 10 / 38 (26.3 %)
-                            Grupo VM no invasiva: mortalidad = 4 / 44 (9.1 %)
-
-                            Prueba Chi-cuadrado:
-                            X-squared = 4.92, p-value = 0.026
-
-                            Interpretación:
-                            Mortalidad significativamente mayor en pacientes con ventilación mecánica invasiva.
-
-                            Modelo logístico (desenlace = mortalidad intrahospitalaria):
-                            logit(p) = β0 + β1*(VM_invasiva) + β2*(SOFA_ingreso)
-
-                            Estimación β1(VM_invasiva):
-                            OR ajustado = 2.9
-                            IC95% = [1.2 , 7.3]
-                            p = 0.019
-                        </div>
-
-                        <div class="r-footnote">
-                            Estos resultados alimentan de forma directa la sección Resultados y la discusión clínica. No requieren intervención manual en Excel.
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-headline">
-                            <i class="fa-solid fa-square-poll-horizontal"></i>
-                            <span>Ventajas académicas y éticas</span>
-                        </div>
-                        <ul style="font-size:.85rem; line-height:1.5; color:#1a1a1a; padding-left:20px;">
-                            <li style="margin-bottom:10px; position:relative;">
-                                <span style="position:absolute; left:-20px; color:var(--accent); font-weight:600;">•</span>
-                                El código R, junto con la base anonimizada, puede ser puesto a disposición del tutor metodológico de la residencia y del comité científico de la facultad.
-                            </li>
-                            <li style="margin-bottom:10px; position:relative;">
-                                <span style="position:absolute; left:-20px; color:var(--accent); font-weight:600;">•</span>
-                                Esto permite trazabilidad metodológica, evita “cocina de datos” y mejora la reproducibilidad científica.
-                            </li>
-                            <li style="margin-bottom:10px; position:relative;">
-                                <span style="position:absolute; left:-20px; color:var(--accent); font-weight:600;">•</span>
-                                El residente aprende a interpretar odds ratios, intervalos de confianza y valor p, sin depender exclusivamente de un bioestadístico externo.
-                            </li>
-                            <li style="position:relative;">
-                                <span style="position:absolute; left:-20px; color:var(--accent); font-weight:600;">•</span>
-                                La misma salida puede exportarse a tablas de publicación en RMarkdown, sin reescritura manual.
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
+    <!-- CASOS REALES -->
+    <section id="casos" class="alt">
+        <div class="container">
+            <div class="section-title reveal">Implementaciones Reales en Entornos Hospitalarios</div>
+            <div class="underline-bar reveal"></div>
+            <div class="section-subtitle reveal">
+                Esta no es formación teórica. Cada módulo surge de soluciones aplicadas en hospitales públicos y servicios críticos, con datos clínicos reales, cuadros de guardia, quirófanos y seguimiento de pacientes de alta complejidad.
             </div>
-        </section>
 
-        <!-- SECCIÓN 4: REPORTE REPRODUCIBLE -->
-        <section style="background:#f5f9ff;">
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-eyebrow">04 · Reporte reproducible</div>
-                    <div class="section-title">Borrador tipo artículo científico en RMarkdown / RPubs</div>
-                    <div class="section-desc">
-                        Este es el producto final que se entrega al equipo docente y al comité científico. Se genera automáticamente con RMarkdown, contiene tablas y figuras creadas directamente desde los datos capturados en sala y está listo para revisión formal.
+            <div class="cases-grid">
+                <div class="case-card reveal">
+                    <div class="case-title"><i class="fa-solid fa-heart-pulse"></i>UCI de Adultos · Registro Clínico Estandarizado</div>
+                    <div class="case-desc">
+                        Diseño de formulario digital para pacientes críticos, con captura de puntuaciones de severidad (SOFA / APACHE), soporte ventilatorio, uso de antibióticos de reserva, evolución diaria y desenlace. Incorporación de controles automáticos para evitar datos imposibles y reducir carga manual.
                     </div>
+                    <div class="case-metric">Trazabilidad completa de la evolución del paciente crítico</div>
                 </div>
 
-                <div class="grid-2">
-
-                    <div class="card">
-                        <div class="card-headline">
-                            <i class="fa-solid fa-file-medical"></i>
-                            <span>Estructura de salida tipo manuscrito</span>
-                        </div>
-
-                        <div class="paper-mock">
-                            <div class="paper-heading">Título propuesto</div>
-                            Evolución clínica y mortalidad intrahospitalaria en pacientes críticos con soporte ventilatorio invasivo en una unidad de cuidados intensivos de adultos
-
-                            <div class="paper-heading">Introducción</div>
-                            El objetivo del estudio fue describir la mortalidad intrahospitalaria asociada al uso de ventilación mecánica invasiva en una cohorte de pacientes críticos adultos e identificar factores clínicos asociados al desenlace adverso temprano.
-
-                            <div class="paper-heading">Métodos</div>
-                            Estudio observacional analítico con inclusión consecutiva de pacientes adultos ingresados a UCI entre el 01/09/2025 y el 30/09/2025. Se registraron edad, sexo, motivo de ingreso, puntuación SOFA inicial, tipo de soporte ventilatorio y evolución clínica. El desenlace primario fue mortalidad intrahospitalaria. Se utilizó regresión logística multivariable.
-
-                            <div class="paper-heading">Resultados (extracto)</div>
-                            La mortalidad intrahospitalaria global fue 8,3 %. En pacientes con ventilación mecánica invasiva la mortalidad fue 26,3 % versus 9,1 % en aquellos con soporte no invasivo. El uso de ventilación mecánica invasiva se asoció de forma independiente con mayor probabilidad de mortalidad intrahospitalaria (OR ajustado 2,9, IC95 % 1,2 a 7,3, p = 0,019), controlando por SOFA inicial.
-
-                            <div class="paper-heading">Tabla 1. Características basales de la cohorte</div>
-                            <table class="paper-table">
-                                <thead>
-                                    <tr>
-                                        <th>Variable</th>
-                                        <th>Total (n=82)</th>
-                                        <th>VM invasiva</th>
-                                        <th>VM no invasiva</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Edad, mediana (RIQ)</td>
-                                        <td>64 (54-72)</td>
-                                        <td>66 (58-74)</td>
-                                        <td>61 (51-69)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>SOFA inicial, mediana (RIQ)</td>
-                                        <td>7 (4-10)</td>
-                                        <td>9 (7-12)</td>
-                                        <td>5 (3-7)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mortalidad intrahospitalaria</td>
-                                        <td>8,3 %</td>
-                                        <td>26,3 %</td>
-                                        <td>9,1 %</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Uso de carbapenémicos o colistina</td>
-                                        <td>34 %</td>
-                                        <td>47 %</td>
-                                        <td>23 %</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <div class="paper-heading">Conclusión preliminar</div>
-                            En este entorno UCI, la ventilación mecánica invasiva se asocia con mayor mortalidad intrahospitalaria, incluso tras ajustar por severidad inicial medida mediante SOFA. Este hallazgo es consistente con la hipótesis fisiopatológica de mayor gravedad al ingreso y apoya la necesidad de intervenciones tempranas estandarizadas.
-                        </div>
+                <div class="case-card reveal">
+                    <div class="case-title"><i class="fa-solid fa-chart-simple"></i>Tablero Clínico en Tiempo Casi Real</div>
+                    <div class="case-desc">
+                        Integración directa entre planilla de registro y tablero web para jefatura. Indicadores disponibles: ocupación de camas, mortalidad intrahospitalaria, días promedio de internación, frecuencia de eventos infecciosos, tasa de reingreso. Sin licencias comerciales y con actualización continua.
                     </div>
-
-                    <div class="card">
-                        <div class="card-headline">
-                            <i class="fa-solid fa-building-columns"></i>
-                            <span>Valor directo para el hospital y para la Facultad de Medicina</span>
-                        </div>
-
-                        <div style="font-size:.85rem; line-height:1.5; color:#1a1a1a;">
-                            <p style="margin-bottom:12px;">
-                                1. El hospital obtiene tablero operativo inmediato para decisión clínica y de gestión de camas.
-                            </p>
-                            <p style="margin-bottom:12px;">
-                                2. La jefatura de servicio dispone de evidencia cuantitativa trazable para auditorías internas, comités de morbimortalidad y negociación de recursos.
-                            </p>
-                            <p style="margin-bottom:12px;">
-                                3. La Facultad de Medicina recibe documentación metodológica reproducible, útil para evaluación académica de residentes, rotantes e internos.
-                            </p>
-                            <p style="margin-bottom:12px;">
-                                4. El grupo de investigación clínica obtiene un manuscrito preliminar con resultados estables y verificables, apto para discusión con un tutor metodológico o envío inicial a revista.
-                            </p>
-                            <p>
-                                5. Todo el flujo es sustentable con software libre, R y entornos de planillas en la nube, sin necesidad de adquirir sistemas comerciales cerrados.
-                            </p>
-                        </div>
-                    </div>
+                    <div class="case-metric">Visibilidad operativa para decisiones clínicas y de gestión</div>
                 </div>
 
+                <div class="case-card reveal">
+                    <div class="case-title"><i class="fa-solid fa-syringe"></i>Gestión de Quirófano y Recursos Críticos</div>
+                    <div class="case-desc">
+                        Desarrollo de panel para monitorear actividad quirúrgica, personal de guardia, uso de kits e insumos críticos. Implementación de formularios internos que registran qué se usó, cuándo, y con qué equipo, permitiendo auditoría posterior y análisis de eficiencia.
+                    </div>
+                    <div class="case-metric">Control interno y evidencia documentada</div>
+                </div>
+
+                <div class="case-card reveal">
+                    <div class="case-title"><i class="fa-solid fa-user-doctor"></i>Monitoreo de Equipos Profesionales</div>
+                    <div class="case-desc">
+                        Formularios automatizados, desarrollados con Apps Script, para documentar actividades de personal asistencial, licencias, rotaciones y disponibilidad. Resulta en bases limpias para análisis estadístico posterior sobre cobertura de personal y carga asistencial.
+                    </div>
+                    <div class="case-metric">Base consolidada lista para análisis y reporte</div>
+                </div>
+
+                <div class="case-card reveal">
+                    <div class="case-title"><i class="fa-solid fa-file-circle-check"></i>Reporte Científico Reproducible</div>
+                    <div class="case-desc">
+                        A partir de la base clínica depurada se genera automáticamente un documento RMarkdown con Introducción, Metodología, Resultados Descriptivos, Comparaciones entre Grupos y Tablas y Figuras. Publicable en RPubs o remitible al comité interno.
+                    </div>
+                    <div class="case-metric">Del tablero interno al borrador de artículo</div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- CTA FINAL -->
-        <section>
-            <div class="container">
-                <div class="cta-final">
-                    <div class="cta-headline">
-                        Implementación en su servicio
-                    </div>
-                    <div class="cta-text">
-                        Se entrega al servicio clínico un entorno funcional inicial y entrenable: formulario con validaciones, tablero con indicadores operativos, scripts de análisis en R y plantilla RMarkdown de reporte. A partir de esa base se personalizan variables, umbrales, definiciones clínicas y estructura de resultados según el estándar docente y asistencial de la institución.
-                    </div>
-                    <div class="cta-actions">
-                        <a class="cta-btn" href="mailto:dmeza.py@gmail.com">
-                            <i class="fa-solid fa-envelope"></i>
-                            <span>Solicitar reunión técnica</span>
-                        </a>
-                        <a class="cta-btn" href="tel:+595971100835">
-                            <i class="fa-solid fa-phone"></i>
-                            <span>Hablar con Diego Meza</span>
-                        </a>
-                        <a class="cta-btn" href="index.html">
-                            <i class="fa-solid fa-house"></i>
-                            <span>Volver a la presentación académica</span>
-                        </a>
+    <!-- PERFIL PROFESIONAL -->
+    <section id="perfil">
+        <div class="container">
+            <div class="section-title reveal">Perfil Profesional</div>
+            <div class="underline-bar reveal"></div>
+
+            <div class="profile-wrapper reveal">
+                <div class="profile-photo-lg">
+                    <img src="https://postimg.cc/D8D2CGK0" alt="Diego Bernardo Meza">
+                </div>
+                <div class="profile-block">
+                    <h3>Diego Bernardo Meza</h3>
+                    <p>
+                        Máster en Estadística. Tesista de Doctorado en Ciencias Exactas y Naturales en la Facultad de Ciencias Exactas y Naturales de la Universidad Nacional de Asunción. Profesor universitario y asesor técnico en gestión y análisis de datos clínicos.
+                    </p>
+                    <p>
+                        Experiencia directa en el diseño de infraestructuras ligeras para captura de datos hospitalarios, seguimiento de indicadores asistenciales, monitoreo de recursos críticos y generación de reportes reproducibles orientados a publicación científica.
+                    </p>
+                    <p>
+                        Acompañamiento a equipos clínicos en unidades de terapia intensiva y quirófano para la construcción de tableros operativos inmediatos, así como en el desarrollo de bases consolidadas aptas para análisis inferencial, incluyendo tasas de desenlace, riesgo relativo, comparaciones entre grupos de pacientes y evidencia para comités de morbimortalidad.
+                    </p>
+
+                    <div class="cv-list">
+                        <div><span class="cv-label">Investigación doctoral:</span> Aplicación de métodos estadísticos avanzados y herramientas reproducibles de análisis de datos clínicos, con énfasis en estructuras de captura estandarizada y trazable que permitan obtener resultados válidos y auditables desde servicios asistenciales reales.</div>
+                        <div><span class="cv-label">Docencia:</span> Profesor escalafonado del Departamento de Estadística y tutor virtual en el Departamento de Educación a Distancia, Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción.</div>
+                        <div><span class="cv-label">Sector público:</span> Jefe del Departamento de Investigación y Estudios Socio-laborales en el Ministerio de Trabajo, Empleo y Seguridad Social. Más de 14 años coordinando análisis de datos administrativos y poblacionales en entornos de alta responsabilidad técnica y sensibilidad institucional.</div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
+    <!-- TRAYECTORIA -->
+    <section id="trayectoria" class="alt">
+        <div class="container">
+            <div class="section-title reveal">Trayectoria Profesional Seleccionada</div>
+            <div class="underline-bar reveal"></div>
 
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">2025 - Actualidad</div>
+                        <div class="timeline-role">Asesoría Estadística en Servicios Hospitalarios</div>
+                        <div class="timeline-inst">Entornos críticos: UCI, quirófano, gestión de personal asistencial</div>
+                        <div class="timeline-desc">
+                            Implementación de registros clínicos estructurados, paneles de control asistencial y reportes para comités clínicos. Integración de IA para acelerar la documentación y el resumen analítico.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">2011 - 2025</div>
+                        <div class="timeline-role">Coordinación Técnica de Análisis de Datos Complejos</div>
+                        <div class="timeline-inst">Instituto de Previsión Social, Paraguay</div>
+                        <div class="timeline-desc">
+                            Dirección técnica de equipos encargados de explotar grandes bases administrativas para proyecciones demográficas, del mercado laboral, económicas y actuariales. Desarrollo de insumos estadísticos estratégicos para la toma de decisión institucional.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">2013 - Actualidad</div>
+                        <div class="timeline-role">Docente Universitario en Estadística Inferencial y Metodología Cuantitativa</div>
+                        <div class="timeline-inst">Facultad de Ciencias Exactas y Naturales, UNA</div>
+                        <div class="timeline-desc">
+                            Formación de grado y posgrado en inferencia estadística, diseño de estudios, control de calidad de datos y análisis aplicado con R y Stata. Tutoría metodológica a proyectos de investigación.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- HABILIDADES -->
+    <section id="habilidades">
+        <div class="container">
+            <div class="section-title reveal">Capacidades Técnicas Relevantes para la Facultad de Medicina</div>
+            <div class="underline-bar reveal"></div>
+
+            <div class="skills-grid">
+                <div class="skill-card reveal">
+                    <div class="skill-icon"><i class="fa-solid fa-database"></i></div>
+                    <div class="skill-name">Diseño de Formularios Clínicos Estandarizados</div>
+                    <div class="skill-note">
+                        Captura estructurada de datos clínicos usando Google Apps Script y planillas en la nube con validaciones y diccionario de variables. Preparado para auditoría interna y análisis posterior.
+                    </div>
+                </div>
+
+                <div class="skill-card reveal">
+                    <div class="skill-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="skill-name">Tableros Asistenciales en Tiempo Casi Real</div>
+                    <div class="skill-note">
+                        Desarrollo de paneles tipo UCI y quirófano. Ocupación, complicaciones, mortalidad, uso de antibióticos de reserva, rotación de personal. Sin licencias comerciales.
+                    </div>
+                </div>
+
+                <div class="skill-card reveal">
+                    <div class="skill-icon"><i class="fa-brands fa-r-project"></i></div>
+                    <div class="skill-name">Análisis Estadístico en R</div>
+                    <div class="skill-note">
+                        Estadística descriptiva aplicada a pacientes reales. Comparaciones entre grupos, regresión logística para desenlaces binarios, regresión lineal para estancia. Preparación de tablas clínicas.
+                    </div>
+                </div>
+
+                <div class="skill-card reveal">
+                    <div class="skill-icon"><i class="fa-solid fa-robot"></i></div>
+                    <div class="skill-name">IA Asistiendo al Proceso Científico</div>
+                    <div class="skill-note">
+                        IA utilizada de forma responsable para proponer estructuras de recolección de datos, redactar primera versión de secciones Métodos y Resultados descriptivos y estandarizar interpretación clínica.
+                    </div>
+                </div>
+
+                <div class="skill-card reveal">
+                    <div class="skill-icon"><i class="fa-solid fa-file-contract"></i></div>
+                    <div class="skill-name">Reporte Científico Reproducible</div>
+                    <div class="skill-note">
+                        Generación automática de reportes en RMarkdown con tablas y gráficos listos para discusión en comité, morbimortalidad o sumisión inicial a revista, vía RPubs u otros repositorios abiertos.
+                    </div>
+                </div>
+
+                <div class="skill-card reveal">
+                    <div class="skill-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="skill-name">Ética y Confidencialidad</div>
+                    <div class="skill-note">
+                        Separación estricta entre tablero interno (gestión clínica continua) y documento público (sin identificadores personales). Enfoque en trazabilidad, no en exposición de datos sensibles.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PUBLICACIONES -->
+    <section id="publicaciones" class="alt">
+        <div class="container">
+            <div class="section-title reveal">Publicaciones y Producción Técnica Seleccionada</div>
+            <div class="underline-bar reveal"></div>
+
+            <div class="pub-card reveal">
+                <div class="pub-year">2021</div>
+                <div class="pub-title">Estudio Actuarial del Fondo de Jubilaciones y Pensiones del Instituto de Previsión Social 2021-2100</div>
+                <div class="pub-authors">Asesoría Actuarial del IPS</div>
+                <div class="pub-meta">Instituto de Previsión Social, Asunción</div>
+                <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Documento técnico institucional</a>
+            </div>
+
+            <div class="pub-card reveal">
+                <div class="pub-year">2018</div>
+                <div class="pub-title">Estudio Actuarial del Fondo de Jubilaciones y Pensiones del Instituto de Previsión Social 2018-2100</div>
+                <div class="pub-authors">Asesoría Actuarial del IPS</div>
+                <div class="pub-meta">Instituto de Previsión Social, Asunción</div>
+                <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Documento técnico institucional</a>
+            </div>
+
+            <div class="pub-card reveal">
+                <div class="pub-year">2017</div>
+                <div class="pub-title">Determinantes del Desempleo Juvenil. Revisión histórica con la Encuesta Permanente de Hogares 2006-2015</div>
+                <div class="pub-authors">Meza, D.; Rivas, G.</div>
+                <div class="pub-meta">Centro de Información y Recursos de Desarrollo, Asunción</div>
+                <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Análisis econométrico aplicado</a>
+            </div>
+
+            <div class="pub-card reveal">
+                <div class="pub-year">2014</div>
+                <div class="pub-title">Determinantes de la Probabilidad de Aportar al Sistema de Seguridad Social del Paraguay</div>
+                <div class="pub-authors">Meza, D.</div>
+                <div class="pub-meta">XI Congreso Latinoamericano de Sociedades de Estadística (CLATSE), La Serena, Chile</div>
+                <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Comunicación científica</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CONTACTO / FOOTER -->
+    <footer id="contacto">
+        <div class="container footer-grid">
+            <div class="footer-block reveal">
+                <h3>Información de Contacto</h3>
+                <p><i class="fa-solid fa-location-dot"></i> Paraguay</p>
+                <p><i class="fa-solid fa-phone"></i> +595 971 100835</p>
+                <p><i class="fa-solid fa-envelope"></i> <a href="mailto:dmeza.py@gmail.com">dmeza.py@gmail.com</a></p>
+                <p><i class="fa-brands fa-linkedin"></i> <a href="https://www.linkedin.com/in/diego-meza/">linkedin.com/in/diego-meza</a></p>
+            </div>
+
+            <div class="footer-block reveal">
+                <h3>Formación Académica</h3>
+                <p><strong>Doctorado en Ciencias Exactas y Naturales</strong><br>Tesista, Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción</p>
+                <p><strong>Máster en Estadística</strong><br>Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción</p>
+                <p><strong>Diplomado en Técnicas Actuariales</strong><br>Universidad de Chile</p>
+                <p><strong>Diplomado en Modelos Actuariales para la Seguridad Social</strong><br>Centro de Entrenamiento Internacional de la OIT, Italia</p>
+                <p>Formación en Didáctica Universitaria, Metodología de la Investigación Científica y Tutoría Virtual</p>
+            </div>
+
+            <div class="footer-block reveal">
+                <h3>Áreas de Especialización</h3>
+                <ul>
+                    <li>Análisis de datos clínicos y epidemiológicos</li>
+                    <li>Diseño de registros clínicos estructurados y trazables</li>
+                    <li>Tableros de monitoreo asistencial y quirúrgico en tiempo casi real</li>
+                    <li>Análisis descriptivo e inferencial con R</li>
+                    <li>Reportes reproducibles con RMarkdown y publicación en RPubs</li>
+                    <li>Evaluación de desempeño de servicios y soporte a auditorías clínicas</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="copyright">
+            © 2025 Diego Bernardo Meza · Todos los derechos reservados
+        </div>
+    </footer>
+
+    <!-- BOTÓN SCROLL TOP -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fa-solid fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Sistema de partículas interactivo con canvas
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.color = `rgba(30, 136, 229, ${this.opacity})`;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width || this.x < 0) {
+                    this.speedX = -this.speedX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.speedY = -this.speedY;
+                }
+                
+                this.x = Math.max(0, Math.min(canvas.width, this.x));
+                this.y = Math.max(0, Math.min(canvas.height, this.y));
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        const particles = [];
+        const particleCount = 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+        
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 120) {
+                        const opacity = (1 - distance / 120) * 0.2;
+                        ctx.strokeStyle = `rgba(30, 136, 229, ${opacity})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+                
+                const mouseDistance = Math.sqrt(
+                    Math.pow(particles[i].x - mouseX, 2) + 
+                    Math.pow(particles[i].y - mouseY, 2)
+                );
+                
+                if (mouseDistance < 100) {
+                    const opacity = (1 - mouseDistance / 100) * 0.3;
+                    ctx.strokeStyle = `rgba(0, 176, 255, ${opacity})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouseX, mouseY);
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            connectParticles();
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // Indicador de progreso de lectura
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressIndicator').style.width = scrolled + '%';
+        });
+        
+        // Efecto sticky nav / cambio de padding
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            const scrollTopBtn = document.getElementById('scrollTop');
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('active');
+            } else {
+                scrollTopBtn.classList.remove('active');
+            }
+        });
+
+        // Scroll suave en los enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: target.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Botón scroll-top
+        document.getElementById('scrollTop').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Animación de revelación al hacer scroll
+        const reveals = document.querySelectorAll('.reveal');
+        
+        function checkReveal() {
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', checkReveal);
+        checkReveal();
+        
+        // Efecto de paralaje suave en el hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
 </body>
 </html>
