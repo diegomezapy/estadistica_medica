@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diego Bernardo Meza · Estadística Clínica Asistida por IA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0c2e4a;
+            --primary-dark: #061829;
+            --secondary: #1e88e5;
+            --accent: #00b0ff;
+            --light: #f5f9ff;
+            --bg-page: #eef3f9;
+            --dark: #1a1a1a;
+            --gradient: linear-gradient(135deg, #0c2e4a 0%, #1e88e5 100%);
+            --gradient-soft: radial-gradient(circle at 20% 20%, rgba(30,136,229,0.18) 0%, rgba(12,46,74,0) 70%);
+            --card-shadow: 0 16px 40px rgba(8, 23, 38, 0.18);
+            --transition: all 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--dark);
+            line-height: 1.55;
+            overflow-x: hidden;
+        }
+
+        /* CONTENEDOR BASE */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* HERO / CABECERA COMERCIAL */
+        header.hero {
+            position: relative;
+            background: var(--gradient);
+            color: white;
+            padding: 80px 0 60px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+
+        header.hero::before {
+            content: "";
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(40px);
+            opacity: 0.6;
+        }
+
+        header.hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 2.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.25;
+        }
+
+        .hero-text h2 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .hero-text p {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.9);
+            max-width: 730px;
+            margin-bottom: 24px;
+        }
+
+        .hero-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .badge-pill {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 8px 16px;
+            font-size: .9rem;
+            font-weight: 500;
+            line-height: 1.2;
+            color: #fff;
+            border-radius: 999px;
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-profile-card {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+
+        .hero-photo-wrapper {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 4px solid rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        .hero-photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-profile-card .name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .hero-profile-card .role {
+            font-size: .9rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .hero-contact a {
+            text-decoration: none;
+            font-size: .9rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .hero-contact a:hover {
+            background: rgba(0,0,0,0.5);
+        }
+
+        /* NAV STICKY */
+        nav {
+            background: rgba(12, 46, 74, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            background: rgba(12, 46, 74, 0.98);
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            font-size: .95rem;
+            position: relative;
+            padding-bottom: 4px;
+            transition: var(--transition);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width .3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* SECCIONES GENERALES */
+        section {
+            position: relative;
+            padding: 80px 0;
+        }
+
+        section.alt {
+            background: var(--light);
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 400;
+            color: #444;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.5;
+        }
+
+        .underline-bar {
+            width: 110px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--gradient);
+            margin: 0 auto 32px;
+        }
+
+        /* BLOQUES DE OFERTA (PRODUCTO ACADÉMICO) */
+        .offer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+            gap: 30px;
+        }
+
+        .offer-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 28px 28px 24px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(12,46,74,0.07);
+        }
+
+        .offer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .offer-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(8,23,38,0.28);
+        }
+
+        .offer-headline {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .offer-headline i {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            flex-shrink: 0;
+        }
+
+        .offer-duration {
+            font-size: .85rem;
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 16px;
+        }
+
+        .offer-card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .offer-card li {
+            margin-bottom: 12px;
+            font-size: .95rem;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .offer-card li::before {
+            content: '•';
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: -18px;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .tag {
+            background: var(--gradient-soft);
+            border-radius: 8px;
+            font-size: .75rem;
+            font-weight: 500;
+            color: var(--primary);
+            padding: 6px 10px;
+            line-height: 1.2;
+            border: 1px solid rgba(12,46,74,0.12);
+        }
+
+        /* CASOS REALES / IMPACTO */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(360px,1fr));
+            gap: 30px;
+        }
+
+        .case-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+            padding: 28px;
+            border: 1px solid rgba(12,46,74,0.07);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(8,23,38,0.28);
+        }
+
+        .case-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .case-title i {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            flex-shrink: 0;
+        }
+
+        .case-desc {
+            font-size: .92rem;
+            line-height: 1.45;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .case-metric {
+            background: var(--gradient);
+            color: #fff;
+            display: inline-block;
+            font-size: .8rem;
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 10px;
+            line-height: 1.2;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+
+        /* PERFIL / CV SINTÉTICO */
+        .profile-wrapper {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(12,46,74,0.07);
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .profile-photo-lg {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 30px 60px rgba(8,23,38,0.5);
+            background: #fff;
+        }
+
+        .profile-photo-lg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-block h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .profile-block p {
+            font-size: .95rem;
+            color: #333;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .cv-list {
+            font-size: .9rem;
+            line-height: 1.4;
+            color: #222;
+        }
+
+        .cv-list .cv-label {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        /* EXPERIENCIA / TRAYECTORIA */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: calc(50% - 1px);
+            width: 2px;
+            height: 100%;
+            background: var(--gradient);
+        }
+
+        .timeline-item {
+            width: calc(50% - 40px);
+            position: relative;
+            margin-bottom: 32px;
+            transition: var(--transition);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+            padding-right: 40px;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 40px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 10px;
+            width: 18px;
+            height: 18px;
+            background: var(--secondary);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px white, 0 0 0 6px var(--secondary);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot { right: -9px; }
+        .timeline-item:nth-child(even) .timeline-dot { left: -9px; }
+
+        .timeline-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(12,46,74,0.07);
+        }
+
+        .timeline-date {
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .timeline-role {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .timeline-inst {
+            font-size: .9rem;
+            font-style: italic;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .timeline-desc {
+            font-size: .9rem;
+            color: #333;
+            line-height: 1.45;
+        }
+
+        /* HABILIDADES */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+            gap: 24px;
+        }
+
+        .skill-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(12,46,74,0.07);
+            padding: 28px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(8,23,38,0.28);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 16px;
+        }
+
+        .skill-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .skill-note {
+            font-size: .85rem;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        /* PUBLICACIONES */
+        .pub-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(12,46,74,0.07);
+            padding: 24px 24px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pub-year {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient);
+            color: #fff;
+            font-size: .75rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 999px;
+            line-height: 1.2;
+            box-shadow: 0 16px 30px rgba(0,0,0,0.4);
+        }
+
+        .pub-title {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            padding-right: 90px;
+        }
+
+        .pub-authors {
+            font-size: .85rem;
+            font-style: italic;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .pub-meta {
+            font-size: .8rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .pub-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: .8rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .pub-link i {
+            margin-right: 6px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--gradient);
+            color: white;
+            position: relative;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+            box-shadow: 0 -20px 60px rgba(0,0,0,0.5);
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: -80px;
+            left: 0;
+            width: 100%;
+            height: 160px;
+            background: radial-gradient(circle at 50% -10%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(40px);
+            opacity: .4;
+        }
+
+        .footer-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .footer-block h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            position: relative;
+        }
+
+        .footer-block p,
+        .footer-block li {
+            font-size: .9rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .footer-block ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-block a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.85);
+            transition: var(--transition);
+            font-size: .9rem;
+        }
+
+        .footer-block a:hover {
+            color: white;
+        }
+
+        .copyright {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.25);
+            padding-top: 24px;
+            font-size: .8rem;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* BOTÓN SCROLL TOP */
+        .scroll-top {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 16px 30px rgba(0,0,0,0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width: 900px) {
+            header.hero-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-profile-card {
+                max-width: 320px;
+                margin: 0 auto;
+            }
+        }
+
+        @media(max-width: 768px) {
+            .section-title { font-size: 1.7rem; }
+            nav ul { gap: 16px; }
+            .timeline::before { left: 28px; }
+            .timeline-item {
+                width: calc(100% - 60px);
+                left: 60px !important;
+                text-align: left !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+            .timeline-dot {
+                left: -28px !important;
+                right: auto !important;
+            }
+            .profile-wrapper {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .profile-photo-lg {
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <h1>Programa de Entrenamiento Clínico-Estadístico Asistido por IA</h1>
+                <h2>Captura estructurada de datos clínicos, tableros en tiempo casi real, análisis estadístico reproducible y reporte publicable</h2>
+                <p>
+                    Formación dirigida a médicos en formación, residentes e investigadores clínicos. El objetivo es dotar al equipo de salud de capacidad instalada para: diseñar instrumentos de captura de datos limpios y auditables, analizar resultados clínicos con métodos descriptivos e inferenciales correctos en R, monitorear en tableros vivos la evolución de indicadores asistenciales y generar reportes científicos listos para enviar a un tutor metodológico o a revista. Todo con soporte de inteligencia artificial responsable.
+                </p>
+
+                <div class="hero-highlights">
+                    <div class="badge-pill"><i class="fa-solid fa-stethoscope"></i> Aplicado en UCI y quirófano reales</div>
+                    <div class="badge-pill"><i class="fa-solid fa-chart-line"></i> Tableros clínicos en vivo</div>
+                    <div class="badge-pill"><i class="fa-solid fa-robot"></i> IA al servicio del método</div>
+                    <div class="badge-pill"><i class="fa-solid fa-book"></i> Publicación reproducible en RMarkdown</div>
+                </div>
+            </div>
+
+            <aside class="hero-profile-card">
+                <div class="hero-photo-wrapper">
+                    <!-- Idealmente aquí debería ir la URL directa de la imagen. Se coloca la URL proporcionada. -->
+                    <img src="https://postimg.cc/D8D2CGK0" alt="Diego Bernardo Meza">
+                </div>
+                <div class="name">Diego Bernardo Meza</div>
+                <div class="role">
+                    Máster en Estadística.  
+                    Profesor universitario.  
+                    Asesor en análisis clínico y tableros asistenciales.
+                </div>
+
+                <div class="hero-contact">
+                    <a href="mailto:dmeza.py@gmail.com"><i class="fa-solid fa-envelope"></i><span>dmeza.py@gmail.com</span></a>
+                    <a href="tel:+595971100835"><i class="fa-solid fa-phone"></i><span>+595 971 100835</span></a>
+                    <a href="https://www.linkedin.com/in/diego-meza/"><i class="fa-brands fa-linkedin"></i><span>LinkedIn</span></a>
+                </div>
+            </aside>
+        </div>
+    </header>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <div class="container">
+            <ul>
+                <li><a href="#oferta">Oferta Académica</a></li>
+                <li><a href="#casos">Implementaciones Reales</a></li>
+                <li><a href="#perfil">Perfil Profesional</a></li>
+                <li><a href="#trayectoria">Trayectoria</a></li>
+                <li><a href="#habilidades">Capacidades Técnicas</a></li>
+                <li><a href="#publicaciones">Publicaciones</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- OFERTA -->
+    <section id="oferta">
+        <div class="container">
+            <div class="section-title">Oferta Académica para Médicos en Formación</div>
+            <div class="underline-bar"></div>
+            <div class="section-subtitle">
+                La propuesta consta de dos instancias progresivas, diseñadas para la Facultad de Medicina y servicios clínicos: una charla-taller estratégica, seguida de un curso aplicado intensivo con notebook. Ambas pueden impartirse en formato presencial o híbrido.
+            </div>
+
+            <div class="offer-grid">
+                <!-- CHARLA 1H -->
+                <div class="offer-card">
+                    <div class="offer-headline"><i class="fa-solid fa-microscope"></i>Charla - Taller: "Del paciente al paper"</div>
+                    <div class="offer-duration">Duración 1 hora</div>
+                    <ul>
+                        <li>Cómo evitar que el proyecto de investigación clínica fracase en la etapa de captura de datos.</li>
+                        <li>Diseño de formularios clínicos digitales con apoyo de IA, evitando incoherencias y datos faltantes críticos.</li>
+                        <li>Por qué la trazabilidad del dato importa, tanto para auditoría interna como para publicación.</li>
+                        <li>Ejemplo real de UCI: variables de severidad (SOFA, APACHE), soporte ventilatorio, antibióticos críticos y desenlace.</li>
+                        <li>Cómo la estadística descriptiva e inferencial básica en R se convierte en la sección de Resultados de un manuscrito.</li>
+                    </ul>
+                    <div class="tag-row">
+                        <div class="tag">Ética y confidencialidad</div>
+                        <div class="tag">Sesgos y validez</div>
+                        <div class="tag">Publicación científica</div>
+                    </div>
+                </div>
+
+                <!-- CURSO 4H -->
+                <div class="offer-card">
+                    <div class="offer-headline"><i class="fa-solid fa-laptop-code"></i>Curso Intensivo Aplicado: "Gestión de Datos Clínicos + Análisis Estadístico + Reporte Publicable"</div>
+                    <div class="offer-duration">Duración 4 horas (4 módulos de 1 hora)</div>
+                    <ul>
+                        <li>Construcción de un registro clínico estructurado del servicio, con validaciones, diccionario de variables y control de duplicados.</li>
+                        <li>Tableros clínicos en tiempo casi real, sin licencias comerciales, a partir de hojas de cálculo y R.</li>
+                        <li>Análisis descriptivo e inferencial en R: tasas de mortalidad, riesgo relativo, comparación entre grupos, regresión logística para desenlaces binarios, regresión lineal para días de internación.</li>
+                        <li>Generación automática de un informe científico en RMarkdown (Introducción, Método, Resultados, Tablas y Figuras) listo para tutor metodológico o envío preliminar a revista.</li>
+                    </ul>
+                    <div class="tag-row">
+                        <div class="tag">R + RStudio</div>
+                        <div class="tag">RMarkdown / RPubs</div>
+                        <div class="tag">Indicadores asistenciales</div>
+                        <div class="tag">Trazabilidad interna</div>
+                    </div>
+                </div>
+
+                <!-- CONTINUIDAD -->
+                <div class="offer-card">
+                    <div class="offer-headline"><i class="fa-solid fa-diagram-project"></i>Acompañamiento Metodológico al Servicio</div>
+                    <div class="offer-duration">Plan opcional posterior</div>
+                    <ul>
+                        <li>Diseño final del formulario clínico propio del servicio, en plataforma ligera tipo Google Apps Script + planilla en la nube.</li>
+                        <li>Tablero operativo para jefatura: ocupación de camas, uso de antibióticos de reserva, tiempos críticos de respuesta, complicaciones postquirúrgicas.</li>
+                        <li>Plantilla reproducible de manuscrito científico con resultados actualizados automáticamente.</li>
+                        <li>Entrenamiento focalizado a residentes para sostener el flujo de datos sin depender de terceros.</li>
+                    </ul>
+                    <div class="tag-row">
+                        <div class="tag">Transferencia de capacidad</div>
+                        <div class="tag">Auditoría interna</div>
+                        <div class="tag">Gestión basada en evidencia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASOS REALES -->
+    <section id="casos" class="alt">
+        <div class="container">
+            <div class="section-title">Implementaciones Reales en Entornos Hospitalarios</div>
+            <div class="underline-bar"></div>
+            <div class="section-subtitle">
+                Esta no es formación abstracta. Todo lo ofrecido surge de soluciones ya implementadas en hospitales públicos y servicios críticos, con datos clínicos reales, cuadros de guardia, quirófanos y seguimiento de pacientes de alta complejidad.
+            </div>
+
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-title"><i class="fa-solid fa-heart-pulse"></i>UCI de Adultos · Registro Clínico Estandarizado</div>
+                    <div class="case-desc">
+                        Diseño de formulario digital para pacientes críticos, con captura de puntuaciones de severidad (SOFA / APACHE), soporte ventilatorio, uso de antibióticos de reserva, evolución diaria y desenlace. Incorporación de controles automáticos para evitar datos imposibles y reducir carga manual.
+                    </div>
+                    <div class="case-metric">Trazabilidad completa de la evolución del paciente crítico</div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-title"><i class="fa-solid fa-chart-simple"></i>Tablero Clínico en Tiempo Casi Real</div>
+                    <div class="case-desc">
+                        Integración directa entre planilla de registro y tablero web para jefatura. Indicadores disponibles: ocupación de camas, mortalidad intrahospitalaria, días promedio de internación, frecuencia de eventos infecciosos, tasa de reingreso. Sin licencias comerciales y con actualización continua.
+                    </div>
+                    <div class="case-metric">Visibilidad operativa para decisiones clínicas y de gestión</div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-title"><i class="fa-solid fa-syringe"></i>Gestión de Quirófano y Recursos Críticos</div>
+                    <div class="case-desc">
+                        Desarrollo de panel para monitorear actividad quirúrgica, personal de guardia, uso de kits e insumos críticos. Implementación de formularios internos que registran qué se usó, cuándo, y con qué equipo, permitiendo auditoría posterior y análisis de eficiencia.
+                    </div>
+                    <div class="case-metric">Control interno y evidencia documentada</div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-title"><i class="fa-solid fa-user-doctor"></i>Monitoreo de Equipos Profesionales</div>
+                    <div class="case-desc">
+                        Formularios automatizados, desarrollados con Apps Script, para documentar actividades de personal asistencial, licencias, rotaciones y disponibilidad. Resulta en bases limpias para análisis estadístico posterior sobre cobertura de personal y carga asistencial.
+                    </div>
+                    <div class="case-metric">Base consolidada lista para análisis y reporte</div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-title"><i class="fa-solid fa-file-circle-check"></i>Reporte Científico Reproducible</div>
+                    <div class="case-desc">
+                        A partir de la base clínica depurada se genera automáticamente un documento RMarkdown con Introducción, Metodología, Resultados Descriptivos, Comparaciones entre Grupos y Tablas y Figuras. Publicable en RPubs o remitible al comité interno.
+                    </div>
+                    <div class="case-metric">Del tablero interno al borrador de artículo</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PERFIL PROFESIONAL -->
+    <section id="perfil">
+        <div class="container">
+            <div class="section-title">Perfil Profesional</div>
+            <div class="underline-bar"></div>
+
+            <div class="profile-wrapper">
+                <div class="profile-photo-lg">
+                    <img src="https://postimg.cc/D8D2CGK0" alt="Diego Bernardo Meza">
+                </div>
+                <div class="profile-block">
+                    <h3>Diego Bernardo Meza</h3>
+                    <p>
+                        Máster en Estadística, profesor universitario y asesor técnico en gestión y análisis de datos clínicos. Experiencia directa en la creación de infraestructuras ligeras para captura de datos hospitalarios, seguimiento de indicadores asistenciales, monitoreo de recursos críticos y generación de reportes reproducibles orientados a publicación científica.
+                    </p>
+                    <p>
+                        Ha acompañado a equipos clínicos en unidades de terapia intensiva y quirófano en la construcción de tableros operativos inmediatos, así como en el desarrollo de bases consolidadas aptas para análisis inferencial (tasas de desenlace, riesgo relativo, comparaciones entre grupos de pacientes) y para uso en comités de morbimortalidad.
+                    </p>
+
+                    <div class="cv-list">
+                        <div><span class="cv-label">Formación:</span> Máster en Estadística. Diplomados en Técnicas Actuariales y en Modelos Actuariales para la Seguridad Social (OIT, Italia). Formación en Metodología de la Investigación Científica y Didáctica Universitaria.</div>
+                        <div><span class="cv-label">Docencia:</span> Profesor escalafonado del Departamento de Estadística y tutor virtual en el Departamento de Educación a Distancia, Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción.</div>
+                        <div><span class="cv-label">Sector público:</span> Jefe del Departamento de Investigación y Estudios Socio-laborales en el Ministerio de Trabajo, Empleo y Seguridad Social. Más de 14 años coordinando análisis de datos administrativos y poblacionales en entornos de alta responsabilidad técnica y sensibilidad institucional.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRAYECTORIA -->
+    <section id="trayectoria" class="alt">
+        <div class="container">
+            <div class="section-title">Trayectoria Profesional Seleccionada</div>
+            <div class="underline-bar"></div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">2025 - Actualidad</div>
+                        <div class="timeline-role">Asesoría Estadística en Servicios Hospitalarios</div>
+                        <div class="timeline-inst">Entornos críticos: UCI, quirófano, gestión de personal asistencial</div>
+                        <div class="timeline-desc">
+                            Implementación de registros clínicos estructurados, paneles de control asistencial y reportes para comités clínicos. Integración de IA para acelerar la documentación y el resumen analítico.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">2011 - 2025</div>
+                        <div class="timeline-role">Coordinación Técnica de Análisis de Datos Complejos</div>
+                        <div class="timeline-inst">Instituto de Previsión Social, Paraguay</div>
+                        <div class="timeline-desc">
+                            Dirección técnica de equipos encargados de explotar grandes bases administrativas para proyecciones demográficas, del mercado laboral, económicas y actuariales. Desarrollo de insumos estadísticos estratégicos para la toma de decisión institucional.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="timeline-date">2013 - Actualidad</div>
+                        <div class="timeline-role">Docente Universitario en Estadística Inferencial y Metodología Cuantitativa</div>
+                        <div class="timeline-inst">Facultad de Ciencias Exactas y Naturales, UNA</div>
+                        <div class="timeline-desc">
+                            Formación de grado y posgrado en inferencia estadística, diseño de estudios, control de calidad de datos y análisis aplicado con R y Stata. Tutoría metodológica a proyectos de investigación.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- HABILIDADES -->
+    <section id="habilidades">
+        <div class="container">
+            <div class="section-title">Capacidades Técnicas Relevantes para la Facultad de Medicina</div>
+            <div class="underline-bar"></div>
+
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fa-solid fa-database"></i></div>
+                    <div class="skill-name">Diseño de Formularios Clínicos Estandarizados</div>
+                    <div class="skill-note">
+                        Captura estructurada de datos clínicos usando Google Apps Script y planillas en la nube con validaciones y diccionario de variables. Preparado para auditoría interna y análisis posterior.
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="skill-name">Tableros Asistenciales en Tiempo Casi Real</div>
+                    <div class="skill-note">
+                        Desarrollo de paneles tipo UCI y quirófano. Ocupación, complicaciones, mortalidad, uso de antibióticos de reserva, rotación de personal. Sin licencias comerciales.
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fa-brands fa-r-project"></i></div>
+                    <div class="skill-name">Análisis Estadístico en R</div>
+                    <div class="skill-note">
+                        Estadística descriptiva aplicada a pacientes reales. Comparaciones entre grupos, regresión logística para desenlaces binarios, regresión lineal para estancia. Preparación de tablas clínicas.
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fa-solid fa-robot"></i></div>
+                    <div class="skill-name">IA Asistiendo al Proceso Científico</div>
+                    <div class="skill-note">
+                        IA utilizada de forma responsable para proponer estructuras de recolección de datos, redactar primera versión de secciones Métodos y Resultados descriptivos y estandarizar interpretación clínica.
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fa-solid fa-file-contract"></i></div>
+                    <div class="skill-name">Reporte Científico Reproducible</div>
+                    <div class="skill-note">
+                        Generación automática de reportes en RMarkdown con tablas y gráficos listos para discusión en comité, morbimortalidad o sumisión inicial a revista, vía RPubs u otros repositorios abiertos.
+                    </div>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="skill-name">Ética y Confidencialidad</div>
+                    <div class="skill-note">
+                        Separación estricta entre tablero interno (gestión clínica continua) y documento público (sin identificadores personales). Enfoque en trazabilidad, no en exposición de datos sensibles.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PUBLICACIONES -->
+    <section id="publicaciones" class="alt">
+        <div class="container">
+            <div class="section-title">Publicaciones y Producción Técnica Seleccionada</div>
+            <div class="underline-bar"></div>
+
+            <div class="pub-card">
+                <div class="pub-year">2021</div>
+                <div class="pub-title">Estudio Actuarial del Fondo de Jubilaciones y Pensiones del Instituto de Previsión Social 2021-2100</div>
+                <div class="pub-authors">Asesoría Actuarial del IPS</div>
+                <div class="pub-meta">Instituto de Previsión Social, Asunción</div>
+                <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Documento técnico institucional</a>
+            </div>
+
+            <div class="pub-card">
+                <div class="pub-year">2018</div>
+                <div class="pub-title">Estudio Actuarial del Fondo de Jubilaciones y Pensiones del Instituto de Previsión Social 2018-2100</div>
+                <div class="pub-authors">Asesoría Actuarial del IPS</div>
+                <div class="pub-meta">Instituto de Previsión Social, Asunción</div>
+                <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Documento técnico institucional</a>
+            </div>
+
+            <div class="pub-card">
+                <div class="pub-year">2017</div>
+                <div class="pub-title">Determinantes del Desempleo Juvenil. Revisión histórica con la Encuesta Permanente de Hogares 2006-2015</div>
+                <div class="pub-authors">Meza, D.; Rivas, G.</div>
+                <div class="pub-meta">Centro de Información y Recursos de Desarrollo, Asunción</div>
+                <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Análisis econométrico aplicado</a>
+            </div>
+
+            <div class="pub-card">
+                <div class="pub-year">2014</div>
+                <div class="pub-title">Determinantes de la Probabilidad de Aportar al Sistema de Seguridad Social del Paraguay</div>
+                <div class="pub-authors">Meza, D.</div>
+                <div class="pub-meta">XI Congreso Latinoamericano de Sociedades de Estadística (CLATSE), La Serena, Chile</div>
+                <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Comunicación científica</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CONTACTO / FOOTER -->
+    <footer id="contacto">
+        <div class="container footer-grid">
+            <div class="footer-block">
+                <h3>Información de Contacto</h3>
+                <p><i class="fa-solid fa-location-dot"></i> Paraguay</p>
+                <p><i class="fa-solid fa-phone"></i> +595 971 100835</p>
+                <p><i class="fa-solid fa-envelope"></i> <a href="mailto:dmeza.py@gmail.com">dmeza.py@gmail.com</a></p>
+                <p><i class="fa-brands fa-linkedin"></i> <a href="https://www.linkedin.com/in/diego-meza/">linkedin.com/in/diego-meza</a></p>
+            </div>
+
+            <div class="footer-block">
+                <h3>Formación Académica</h3>
+                <p><strong>Máster en Estadística</strong><br>Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción</p>
+                <p><strong>Diplomado en Técnicas Actuariales</strong><br>Universidad de Chile</p>
+                <p><strong>Diplomado en Modelos Actuariales para la Seguridad Social</strong><br>Centro de Entrenamiento Internacional de la OIT, Italia</p>
+                <p>Formación en Didáctica Universitaria, Metodología de la Investigación Científica y Tutoría Virtual</p>
+            </div>
+
+            <div class="footer-block">
+                <h3>Áreas de Especialización</h3>
+                <ul>
+                    <li>Análisis de datos clínicos y epidemiológicos</li>
+                    <li>Diseño de registros clínicos estructurados y trazables</li>
+                    <li>Tableros de monitoreo asistencial y quirúrgico en tiempo casi real</li>
+                    <li>Análisis descriptivo e inferencial con R</li>
+                    <li>Reportes reproducibles con RMarkdown y publicación en RPubs</li>
+                    <li>Evaluación de desempeño de servicios y soporte a auditorías clínicas</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="copyright">
+            © 2025 Diego Bernardo Meza · Todos los derechos reservados
+        </div>
+    </footer>
+
+    <!-- BOTÓN SCROLL TOP -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fa-solid fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Efecto sticky nav / cambio de padding
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            const scrollTopBtn = document.getElementById('scrollTop');
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('active');
+            } else {
+                scrollTopBtn.classList.remove('active');
+            }
+        });
+
+        // Scroll suave en los enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: target.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Botón scroll-top
+        document.getElementById('scrollTop').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Animación de aparición al hacer scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        const animatedBlocks = [
+            '.offer-card', '.case-card', '.profile-wrapper',
+            '.timeline-item', '.skill-card', '.pub-card'
+        ];
+        animatedBlocks.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(24px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
