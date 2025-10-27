@@ -6,6 +6,9 @@
     <title>Diego Bernardo Meza · Estadística Clínica Asistida por IA</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Preload de la imagen principal para mejorar la carga -->
+    <link rel="preload" as="image" href="https://github.com/diegomezapy/estadistica_medica/blob/diego/imagenCV.jpeg?raw=1" crossorigin="anonymous">
 
     <style>
         :root {
@@ -37,18 +40,18 @@
             overflow-x: hidden;
         }
 
-        /* Canvas para partículas interactivas */
+        /* Canvas para partículas interactivas - z-index bajo para no interferir */
         #particles-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -2;
             background: linear-gradient(135deg, #eef3f9 0%, #f5f9ff 100%);
         }
 
-        /* Partículas decorativas adicionales */
+        /* Partículas decorativas adicionales - z-index bajo */
         .particles {
             position: fixed;
             top: 0;
@@ -281,13 +284,20 @@
             }
         }
 
+        /* Contenedor principal con z-index alto */
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            background: var(--bg-page);
+        }
+
         /* CONTENEDOR BASE */
         .container {
             max-width: 1300px;
             margin: 0 auto;
             padding: 0 24px;
             position: relative;
-            z-index: 1;
+            z-index: 11;
         }
 
         /* HERO / CABECERA COMERCIAL */
@@ -298,6 +308,7 @@
             padding: 80px 0 60px;
             overflow: hidden;
             box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            z-index: 12;
         }
 
         header.hero::before {
@@ -310,6 +321,7 @@
             background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
             filter: blur(40px);
             opacity: 0.6;
+            z-index: 1;
         }
 
         header.hero::after {
@@ -322,6 +334,7 @@
             background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 70%);
             filter: blur(30px);
             opacity: 0.5;
+            z-index: 1;
         }
 
         header.hero-grid {
@@ -329,6 +342,8 @@
             grid-template-columns: 1fr 320px;
             gap: 40px;
             align-items: center;
+            position: relative;
+            z-index: 13;
         }
 
         .hero-text h1 {
@@ -396,6 +411,8 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.4);
             animation: fadeInRight 0.8s ease-out;
             transition: var(--transition);
+            position: relative;
+            z-index: 14;
         }
 
         .hero-profile-card:hover {
@@ -413,6 +430,8 @@
             background: rgba(255,255,255,0.1);
             overflow: hidden;
             transition: var(--transition);
+            position: relative;
+            z-index: 15;
         }
 
         .hero-profile-card:hover .hero-photo-wrapper {
@@ -425,6 +444,7 @@
             height: 100%;
             object-fit: cover;
             transition: var(--transition);
+            display: block;
         }
 
         .hero-profile-card:hover .hero-photo-wrapper img {
@@ -475,7 +495,7 @@
             padding: 14px 0;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
             box-shadow: 0 8px 30px rgba(0,0,0,0.3);
             transition: var(--transition);
         }
@@ -526,6 +546,7 @@
         section {
             position: relative;
             padding: 80px 0;
+            z-index: 5;
         }
 
         section.alt {
@@ -576,6 +597,7 @@
             overflow: hidden;
             transition: var(--transition);
             border: 1px solid rgba(12,46,74,0.07);
+            z-index: 6;
         }
 
         .offer-card::before {
@@ -586,6 +608,7 @@
             width: 100%;
             height: 5px;
             background: var(--gradient);
+            z-index: 1;
         }
 
         .offer-card:hover {
@@ -602,6 +625,8 @@
             align-items: flex-start;
             gap: 10px;
             line-height: 1.4;
+            position: relative;
+            z-index: 2;
         }
 
         .offer-headline i {
@@ -620,6 +645,8 @@
         .offer-card ul {
             padding-left: 20px;
             margin: 0;
+            position: relative;
+            z-index: 2;
         }
 
         .offer-card li {
@@ -642,6 +669,8 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 16px;
+            position: relative;
+            z-index: 2;
         }
 
         .tag {
@@ -678,6 +707,7 @@
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            z-index: 6;
         }
 
         .case-card:hover {
@@ -694,6 +724,8 @@
             gap: 10px;
             margin-bottom: 10px;
             line-height: 1.4;
+            position: relative;
+            z-index: 2;
         }
 
         .case-title i {
@@ -707,6 +739,8 @@
             line-height: 1.45;
             color: #333;
             margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
         }
 
         .case-metric {
@@ -720,6 +754,8 @@
             line-height: 1.2;
             box-shadow: 0 12px 24px rgba(0,0,0,0.3);
             transition: var(--transition);
+            position: relative;
+            z-index: 3;
         }
 
         .case-metric:hover {
@@ -727,7 +763,7 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.4);
         }
 
-        /* PERFIL / CV SINTÉTICO */
+        /* PERFIL / CV SINTÉTICO - CORREGIDO */
         .profile-wrapper {
             background: white;
             border-radius: var(--radius-xl);
@@ -738,6 +774,9 @@
             grid-template-columns: 220px 1fr;
             gap: 32px;
             align-items: start;
+            position: relative;
+            z-index: 7;
+            overflow: hidden;
         }
 
         .profile-photo-lg {
@@ -749,6 +788,8 @@
             box-shadow: 0 30px 60px rgba(8,23,38,0.5);
             background: #fff;
             transition: var(--transition);
+            position: relative;
+            z-index: 8;
         }
 
         .profile-photo-lg:hover {
@@ -761,10 +802,16 @@
             height: 100%;
             object-fit: cover;
             transition: var(--transition);
+            display: block;
         }
 
         .profile-photo-lg:hover img {
             transform: scale(1.1);
+        }
+
+        .profile-block {
+            position: relative;
+            z-index: 9;
         }
 
         .profile-block h3 {
@@ -797,6 +844,7 @@
         .timeline {
             position: relative;
             padding: 20px 0;
+            z-index: 5;
         }
 
         .timeline::before {
@@ -807,6 +855,7 @@
             width: 2px;
             height: 100%;
             background: var(--gradient);
+            z-index: 1;
         }
 
         .timeline-item {
@@ -814,6 +863,7 @@
             position: relative;
             margin-bottom: 32px;
             transition: var(--transition);
+            z-index: 6;
         }
 
         .timeline-item:nth-child(odd) {
@@ -836,6 +886,7 @@
             border-radius: 50%;
             box-shadow: 0 0 0 4px white, 0 0 0 6px var(--secondary);
             transition: var(--transition);
+            z-index: 7;
         }
 
         .timeline-item:hover .timeline-dot {
@@ -853,6 +904,8 @@
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(12,46,74,0.07);
             transition: var(--transition);
+            position: relative;
+            z-index: 6;
         }
 
         .timeline-item:hover .timeline-card {
@@ -903,6 +956,8 @@
             padding: 28px;
             text-align: center;
             transition: var(--transition);
+            position: relative;
+            z-index: 6;
         }
 
         .skill-card:hover {
@@ -945,6 +1000,7 @@
             position: relative;
             overflow: hidden;
             transition: var(--transition);
+            z-index: 6;
         }
 
         .pub-card:hover {
@@ -964,6 +1020,7 @@
             border-radius: 999px;
             line-height: 1.2;
             box-shadow: 0 16px 30px rgba(0,0,0,0.4);
+            z-index: 7;
         }
 
         .pub-title {
@@ -973,6 +1030,8 @@
             line-height: 1.4;
             margin-bottom: 8px;
             padding-right: 90px;
+            position: relative;
+            z-index: 2;
         }
 
         .pub-authors {
@@ -980,12 +1039,16 @@
             font-style: italic;
             color: #333;
             margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
         }
 
         .pub-meta {
             font-size: .8rem;
             color: var(--secondary);
             font-weight: 500;
+            position: relative;
+            z-index: 2;
         }
 
         .pub-link {
@@ -996,6 +1059,8 @@
             text-decoration: none;
             font-weight: 500;
             transition: var(--transition);
+            position: relative;
+            z-index: 3;
         }
 
         .pub-link:hover {
@@ -1015,6 +1080,7 @@
             padding: 60px 0 30px;
             margin-top: 60px;
             box-shadow: 0 -20px 60px rgba(0,0,0,0.5);
+            z-index: 8;
         }
 
         footer::before {
@@ -1027,11 +1093,12 @@
             background: radial-gradient(circle at 50% -10%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 70%);
             filter: blur(40px);
             opacity: .4;
+            z-index: 1;
         }
 
         .footer-grid {
             position: relative;
-            z-index: 1;
+            z-index: 9;
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
             gap: 32px;
@@ -1071,7 +1138,7 @@
 
         .copyright {
             position: relative;
-            z-index: 1;
+            z-index: 9;
             text-align: center;
             border-top: 1px solid rgba(255,255,255,0.25);
             padding-top: 24px;
@@ -1097,7 +1164,7 @@
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
-            z-index: 1000;
+            z-index: 100;
         }
 
         .scroll-top.active {
@@ -1117,7 +1184,7 @@
             left: 0;
             height: 3px;
             background: var(--accent);
-            z-index: 1001;
+            z-index: 101;
             transition: width 0.2s ease;
         }
 
@@ -1145,6 +1212,58 @@
             left: 0;
             right: 0;
             bottom: 0;
+        }
+
+        /* Loader para imágenes */
+        .image-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(12, 46, 74, 0.2);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Contenedor de imagen con fallback */
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(12, 46, 74, 0.1);
+            color: var(--primary);
+            font-size: 0.8rem;
+            z-index: 1;
         }
 
         /* RESPONSIVE */
@@ -1176,9 +1295,11 @@
             .profile-wrapper {
                 grid-template-columns: 1fr;
                 text-align: center;
+                gap: 24px;
             }
             .profile-photo-lg {
                 margin: 0 auto;
+                max-width: 200px;
             }
         }
     </style>
@@ -1227,6 +1348,9 @@
     <!-- Indicador de progreso de lectura -->
     <div class="progress-indicator" id="progressIndicator"></div>
 
+    <!-- Contenedor principal para asegurar z-index correcto -->
+    <div class="main-wrapper">
+
     <!-- HERO -->
     <header class="hero">
         <div class="container hero-grid">
@@ -1246,8 +1370,17 @@
             </div>
 
             <aside class="hero-profile-card">
-                <div class="hero-photo-wrapper">
-                    <img src="https://postimg.cc/D8D2CGK0" alt="Diego Bernardo Meza">
+                <div class="hero-photo-wrapper image-container">
+                    <div class="image-loader">
+                        <div class="spinner"></div>
+                    </div>
+                    <img 
+                        src="https://github.com/diegomezapy/estadistica_medica/blob/diego/imagenCV.jpeg?raw=1" 
+                        alt="Diego Bernardo Meza - Máster en Estadística y Tesista de Doctorado en Ciencias Exactas y Naturales"
+                        loading="lazy"
+                        onload="this.parentElement.querySelector('.image-loader').style.display='none'"
+                        onerror="this.src='https://picsum.photos/seed/diegomezapy/140/140.jpg'; this.parentElement.querySelector('.image-loader').style.display='none'"
+                    >
                 </div>
                 <div class="name">Diego Bernardo Meza</div>
                 <div class="role">
@@ -1406,8 +1539,17 @@
             <div class="underline-bar reveal"></div>
 
             <div class="profile-wrapper reveal">
-                <div class="profile-photo-lg">
-                    <img src="https://postimg.cc/D8D2CGK0" alt="Diego Bernardo Meza">
+                <div class="profile-photo-lg image-container">
+                    <div class="image-loader">
+                        <div class="spinner"></div>
+                    </div>
+                    <img 
+                        src="https://github.com/diegomezapy/estadistica_medica/blob/diego/imagenCV.jpeg?raw=1" 
+                        alt="Diego Bernardo Meza - Máster en Estadística y Tesista de Doctorado"
+                        loading="lazy"
+                        onload="this.parentElement.querySelector('.image-loader').style.display='none'"
+                        onerror="this.src='https://picsum.photos/seed/diegomezapy/200/200.jpg'; this.parentElement.querySelector('.image-loader').style.display='none'"
+                    >
                 </div>
                 <div class="profile-block">
                     <h3>Diego Bernardo Meza</h3>
@@ -1619,6 +1761,8 @@
     <div class="scroll-top" id="scrollTop">
         <i class="fa-solid fa-arrow-up"></i>
     </div>
+
+    </div> <!-- Cierre del main-wrapper -->
 
     <script>
         // Sistema de partículas interactivo con canvas
