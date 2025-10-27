@@ -37,6 +37,250 @@
             overflow-x: hidden;
         }
 
+        /* Canvas para partículas interactivas */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #eef3f9 0%, #f5f9ff 100%);
+        }
+
+        /* Partículas decorativas adicionales */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            display: block;
+            pointer-events: none;
+            opacity: 0.4;
+            border-radius: 50%;
+        }
+
+        .particle.circle {
+            background: radial-gradient(circle, rgba(30, 136, 229, 0.3) 0%, rgba(30, 136, 229, 0) 70%);
+        }
+
+        .particle.square {
+            background: radial-gradient(circle, rgba(0, 176, 255, 0.2) 0%, rgba(0, 176, 255, 0) 70%);
+            transform: rotate(45deg);
+        }
+
+        .particle.triangle {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 25px solid rgba(12, 46, 74, 0.2);
+            background: transparent;
+            border-radius: 0;
+        }
+
+        .particle.hexagon {
+            background: radial-gradient(circle, rgba(30, 136, 229, 0.2) 0%, rgba(30, 136, 229, 0) 70%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        /* Animaciones para partículas */
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-5px); }
+            75% { transform: translateY(-30px) translateX(15px); }
+            100% { transform: translateY(0px) translateX(0px); }
+        }
+
+        @keyframes floatReverse {
+            0% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-15px) translateX(-10px); }
+            50% { transform: translateY(-25px) translateX(5px); }
+            75% { transform: translateY(-10px) translateX(-15px); }
+            100% { transform: translateY(0px) translateX(0px); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Partículas con diferentes tamaños y animaciones */
+        .particle:nth-child(1) {
+            left: 5%;
+            top: 10%;
+            width: 60px;
+            height: 60px;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .particle:nth-child(2) {
+            left: 15%;
+            top: 60%;
+            width: 40px;
+            height: 40px;
+            animation: floatReverse 15s infinite ease-in-out;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(3) {
+            left: 25%;
+            top: 30%;
+            width: 80px;
+            height: 80px;
+            animation: float 25s infinite ease-in-out;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(4) {
+            left: 40%;
+            top: 80%;
+            width: 30px;
+            height: 30px;
+            animation: floatReverse 18s infinite ease-in-out;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(5) {
+            left: 55%;
+            top: 20%;
+            width: 70px;
+            height: 70px;
+            animation: float 22s infinite ease-in-out;
+            animation-delay: 3s;
+        }
+
+        .particle:nth-child(6) {
+            left: 70%;
+            top: 50%;
+            width: 50px;
+            height: 50px;
+            animation: floatReverse 20s infinite ease-in-out;
+            animation-delay: 5s;
+        }
+
+        .particle:nth-child(7) {
+            left: 85%;
+            top: 15%;
+            width: 45px;
+            height: 45px;
+            animation: float 17s infinite ease-in-out;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(8) {
+            left: 90%;
+            top: 70%;
+            width: 35px;
+            height: 35px;
+            animation: floatReverse 19s infinite ease-in-out;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(9) {
+            left: 10%;
+            top: 85%;
+            width: 55px;
+            height: 55px;
+            animation: float 23s infinite ease-in-out;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(10) {
+            left: 75%;
+            top: 35%;
+            width: 65px;
+            height: 65px;
+            animation: floatReverse 21s infinite ease-in-out;
+            animation-delay: 3s;
+        }
+
+        /* Partículas geométricas adicionales */
+        .geo-particle {
+            position: absolute;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .geo-particle.circle-small {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(0, 176, 255, 0.4) 0%, rgba(0, 176, 255, 0) 70%);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .geo-particle.square-small {
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, rgba(30, 136, 229, 0.3) 0%, rgba(30, 136, 229, 0) 70%);
+            transform: rotate(45deg);
+            animation: rotate 30s infinite linear;
+        }
+
+        .geo-particle.diamond {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 17px solid rgba(12, 46, 74, 0.3);
+            animation: floatReverse 18s infinite ease-in-out;
+        }
+
+        /* Animaciones de entrada */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
         /* CONTENEDOR BASE */
         .container {
             max-width: 1300px;
@@ -68,6 +312,18 @@
             opacity: 0.6;
         }
 
+        header.hero::after {
+            content: "";
+            position: absolute;
+            bottom: -10%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(30px);
+            opacity: 0.5;
+        }
+
         header.hero-grid {
             display: grid;
             grid-template-columns: 1fr 320px;
@@ -80,6 +336,7 @@
             font-weight: 600;
             margin-bottom: 10px;
             line-height: 1.25;
+            animation: fadeInUp 0.8s ease-out;
         }
 
         .hero-text h2 {
@@ -88,6 +345,7 @@
             color: rgba(255,255,255,0.9);
             margin-bottom: 20px;
             line-height: 1.4;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero-text p {
@@ -96,12 +354,14 @@
             color: rgba(255,255,255,0.9);
             max-width: 730px;
             margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         .hero-highlights {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
         }
 
         .badge-pill {
@@ -117,6 +377,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: var(--transition);
+        }
+
+        .badge-pill:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .hero-profile-card {
@@ -127,6 +394,13 @@
             backdrop-filter: blur(10px);
             text-align: center;
             box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            animation: fadeInRight 0.8s ease-out;
+            transition: var(--transition);
+        }
+
+        .hero-profile-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
         }
 
         .hero-photo-wrapper {
@@ -138,12 +412,23 @@
             border: 4px solid rgba(255,255,255,0.6);
             background: rgba(255,255,255,0.1);
             overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .hero-profile-card:hover .hero-photo-wrapper {
+            transform: scale(1.05);
+            border-color: rgba(255,255,255,0.8);
         }
 
         .hero-photo-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .hero-profile-card:hover .hero-photo-wrapper img {
+            transform: scale(1.1);
         }
 
         .hero-profile-card .name {
@@ -179,6 +464,8 @@
 
         .hero-contact a:hover {
             background: rgba(0,0,0,0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
         /* NAV STICKY */
@@ -229,6 +516,10 @@
 
         nav a:hover::after {
             width: 100%;
+        }
+
+        nav a:hover {
+            color: var(--accent);
         }
 
         /* SECCIONES GENERALES */
@@ -362,6 +653,13 @@
             padding: 6px 10px;
             line-height: 1.2;
             border: 1px solid rgba(12,46,74,0.12);
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background: var(--gradient);
+            color: white;
+            transform: translateY(-2px);
         }
 
         /* CASOS REALES / IMPACTO */
@@ -421,6 +719,12 @@
             border-radius: 10px;
             line-height: 1.2;
             box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+            transition: var(--transition);
+        }
+
+        .case-metric:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
         }
 
         /* PERFIL / CV SINTÉTICO */
@@ -444,12 +748,23 @@
             border: 4px solid white;
             box-shadow: 0 30px 60px rgba(8,23,38,0.5);
             background: #fff;
+            transition: var(--transition);
+        }
+
+        .profile-photo-lg:hover {
+            transform: scale(1.05);
+            box-shadow: 0 40px 80px rgba(8,23,38,0.6);
         }
 
         .profile-photo-lg img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .profile-photo-lg:hover img {
+            transform: scale(1.1);
         }
 
         .profile-block h3 {
@@ -520,6 +835,12 @@
             background: var(--secondary);
             border-radius: 50%;
             box-shadow: 0 0 0 4px white, 0 0 0 6px var(--secondary);
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 6px white, 0 0 0 8px var(--secondary);
         }
 
         .timeline-item:nth-child(odd) .timeline-dot { right: -9px; }
@@ -531,6 +852,12 @@
             padding: 20px;
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(12,46,74,0.07);
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover .timeline-card {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(8,23,38,0.25);
         }
 
         .timeline-date {
@@ -587,6 +914,12 @@
             font-size: 2rem;
             color: var(--secondary);
             margin-bottom: 16px;
+            transition: var(--transition);
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: scale(1.1);
+            color: var(--accent);
         }
 
         .skill-name {
@@ -611,6 +944,12 @@
             padding: 24px 24px 20px;
             position: relative;
             overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .pub-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(8,23,38,0.25);
         }
 
         .pub-year {
@@ -656,6 +995,12 @@
             color: var(--secondary);
             text-decoration: none;
             font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .pub-link:hover {
+            color: var(--accent);
+            transform: translateX(5px);
         }
 
         .pub-link i {
@@ -721,6 +1066,7 @@
 
         .footer-block a:hover {
             color: white;
+            transform: translateX(5px);
         }
 
         .copyright {
@@ -757,6 +1103,48 @@
         .scroll-top.active {
             opacity: 1;
             visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Indicador de progreso de lectura */
+        .progress-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 1001;
+            transition: width 0.2s ease;
+        }
+
+        /* Efecto de revelación al hacer scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Efecto de paralaje */
+        .parallax {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parallax-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
 
         /* RESPONSIVE */
@@ -797,6 +1185,48 @@
 </head>
 <body>
 
+    <!-- Canvas para partículas interactivas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Partículas de fondo adicionales -->
+    <div class="particles">
+        <span class="particle circle"></span>
+        <span class="particle square"></span>
+        <span class="particle triangle"></span>
+        <span class="particle hexagon"></span>
+        <span class="particle circle"></span>
+        <span class="particle square"></span>
+        <span class="particle triangle"></span>
+        <span class="particle hexagon"></span>
+        <span class="particle circle"></span>
+        <span class="particle square"></span>
+    </div>
+
+    <!-- Partículas geométricas adicionales -->
+    <div class="geo-particles">
+        <div class="geo-particle circle-small" style="left: 8%; top: 25%;"></div>
+        <div class="geo-particle square-small" style="left: 18%; top: 75%;"></div>
+        <div class="geo-particle diamond" style="left: 28%; top: 45%;"></div>
+        <div class="geo-particle circle-small" style="left: 38%; top: 15%;"></div>
+        <div class="geo-particle square-small" style="left: 48%; top: 65%;"></div>
+        <div class="geo-particle diamond" style="left: 58%; top: 35%;"></div>
+        <div class="geo-particle circle-small" style="left: 68%; top: 85%;"></div>
+        <div class="geo-particle square-small" style="left: 78%; top: 25%;"></div>
+        <div class="geo-particle diamond" style="left: 88%; top: 55%;"></div>
+        <div class="geo-particle circle-small" style="left: 12%; top: 40%;"></div>
+        <div class="geo-particle square-small" style="left: 22%; top: 90%;"></div>
+        <div class="geo-particle diamond" style="left: 32%; top: 10%;"></div>
+        <div class="geo-particle circle-small" style="left: 42%; top: 60%;"></div>
+        <div class="geo-particle square-small" style="left: 52%; top: 30%;"></div>
+        <div class="geo-particle diamond" style="left: 62%; top: 80%;"></div>
+        <div class="geo-particle circle-small" style="left: 72%; top: 20%;"></div>
+        <div class="geo-particle square-small" style="left: 82%; top: 70%;"></div>
+        <div class="geo-particle diamond" style="left: 92%; top: 40%;"></div>
+    </div>
+
+    <!-- Indicador de progreso de lectura -->
+    <div class="progress-indicator" id="progressIndicator"></div>
+
     <!-- HERO -->
     <header class="hero">
         <div class="container hero-grid">
@@ -817,14 +1247,13 @@
 
             <aside class="hero-profile-card">
                 <div class="hero-photo-wrapper">
-                    <!-- Idealmente aquí debería ir la URL directa de la imagen. Se coloca la URL proporcionada. -->
                     <img src="https://postimg.cc/D8D2CGK0" alt="Diego Bernardo Meza">
                 </div>
                 <div class="name">Diego Bernardo Meza</div>
                 <div class="role">
                     Máster en Estadística.  
-                    Profesor universitario.  
-                    Asesor en análisis clínico y tableros asistenciales.
+                    Tesista de Doctorado en Ciencias Exactas y Naturales, FACEN, Universidad Nacional de Asunción.  
+                    Profesor universitario y asesor en análisis clínico y tableros asistenciales.
                 </div>
 
                 <div class="hero-contact">
@@ -854,21 +1283,21 @@
     <!-- OFERTA -->
     <section id="oferta">
         <div class="container">
-            <div class="section-title">Oferta Académica para Médicos en Formación</div>
-            <div class="underline-bar"></div>
-            <div class="section-subtitle">
-                La propuesta consta de dos instancias progresivas, diseñadas para la Facultad de Medicina y servicios clínicos: una charla-taller estratégica, seguida de un curso aplicado intensivo con notebook. Ambas pueden impartirse en formato presencial o híbrido.
+            <div class="section-title reveal">Oferta Académica para Médicos en Formación</div>
+            <div class="underline-bar reveal"></div>
+            <div class="section-subtitle reveal">
+                La propuesta consta de dos instancias progresivas, diseñada para programas de residencia, internado y servicios clínicos, y pensada para ser aprobada por dirección académica de Facultad de Medicina: una charla-taller estratégica, seguida de un curso aplicado intensivo con notebook. Ambas pueden impartirse en formato presencial o híbrido.
             </div>
 
             <div class="offer-grid">
                 <!-- CHARLA 1H -->
-                <div class="offer-card">
+                <div class="offer-card reveal">
                     <div class="offer-headline"><i class="fa-solid fa-microscope"></i>Charla - Taller: "Del paciente al paper"</div>
                     <div class="offer-duration">Duración 1 hora</div>
                     <ul>
                         <li>Cómo evitar que el proyecto de investigación clínica fracase en la etapa de captura de datos.</li>
                         <li>Diseño de formularios clínicos digitales con apoyo de IA, evitando incoherencias y datos faltantes críticos.</li>
-                        <li>Por qué la trazabilidad del dato importa, tanto para auditoría interna como para publicación.</li>
+                        <li>Importancia de la trazabilidad del dato para auditoría interna, docencia y publicación.</li>
                         <li>Ejemplo real de UCI: variables de severidad (SOFA, APACHE), soporte ventilatorio, antibióticos críticos y desenlace.</li>
                         <li>Cómo la estadística descriptiva e inferencial básica en R se convierte en la sección de Resultados de un manuscrito.</li>
                     </ul>
@@ -880,12 +1309,12 @@
                 </div>
 
                 <!-- CURSO 4H -->
-                <div class="offer-card">
+                <div class="offer-card reveal">
                     <div class="offer-headline"><i class="fa-solid fa-laptop-code"></i>Curso Intensivo Aplicado: "Gestión de Datos Clínicos + Análisis Estadístico + Reporte Publicable"</div>
                     <div class="offer-duration">Duración 4 horas (4 módulos de 1 hora)</div>
                     <ul>
                         <li>Construcción de un registro clínico estructurado del servicio, con validaciones, diccionario de variables y control de duplicados.</li>
-                        <li>Tableros clínicos en tiempo casi real, sin licencias comerciales, a partir de hojas de cálculo y R.</li>
+                        <li>Tableros clínicos en tiempo casi real, sin licencias comerciales, a partir de planillas compartidas y R.</li>
                         <li>Análisis descriptivo e inferencial en R: tasas de mortalidad, riesgo relativo, comparación entre grupos, regresión logística para desenlaces binarios, regresión lineal para días de internación.</li>
                         <li>Generación automática de un informe científico en RMarkdown (Introducción, Método, Resultados, Tablas y Figuras) listo para tutor metodológico o envío preliminar a revista.</li>
                     </ul>
@@ -898,11 +1327,11 @@
                 </div>
 
                 <!-- CONTINUIDAD -->
-                <div class="offer-card">
+                <div class="offer-card reveal">
                     <div class="offer-headline"><i class="fa-solid fa-diagram-project"></i>Acompañamiento Metodológico al Servicio</div>
                     <div class="offer-duration">Plan opcional posterior</div>
                     <ul>
-                        <li>Diseño final del formulario clínico propio del servicio, en plataforma ligera tipo Google Apps Script + planilla en la nube.</li>
+                        <li>Diseño final del formulario clínico propio del servicio, en plataforma ligera tipo Google Apps Script más planilla en la nube.</li>
                         <li>Tablero operativo para jefatura: ocupación de camas, uso de antibióticos de reserva, tiempos críticos de respuesta, complicaciones postquirúrgicas.</li>
                         <li>Plantilla reproducible de manuscrito científico con resultados actualizados automáticamente.</li>
                         <li>Entrenamiento focalizado a residentes para sostener el flujo de datos sin depender de terceros.</li>
@@ -920,14 +1349,14 @@
     <!-- CASOS REALES -->
     <section id="casos" class="alt">
         <div class="container">
-            <div class="section-title">Implementaciones Reales en Entornos Hospitalarios</div>
-            <div class="underline-bar"></div>
-            <div class="section-subtitle">
-                Esta no es formación abstracta. Todo lo ofrecido surge de soluciones ya implementadas en hospitales públicos y servicios críticos, con datos clínicos reales, cuadros de guardia, quirófanos y seguimiento de pacientes de alta complejidad.
+            <div class="section-title reveal">Implementaciones Reales en Entornos Hospitalarios</div>
+            <div class="underline-bar reveal"></div>
+            <div class="section-subtitle reveal">
+                Esta no es formación teórica. Cada módulo surge de soluciones aplicadas en hospitales públicos y servicios críticos, con datos clínicos reales, cuadros de guardia, quirófanos y seguimiento de pacientes de alta complejidad.
             </div>
 
             <div class="cases-grid">
-                <div class="case-card">
+                <div class="case-card reveal">
                     <div class="case-title"><i class="fa-solid fa-heart-pulse"></i>UCI de Adultos · Registro Clínico Estandarizado</div>
                     <div class="case-desc">
                         Diseño de formulario digital para pacientes críticos, con captura de puntuaciones de severidad (SOFA / APACHE), soporte ventilatorio, uso de antibióticos de reserva, evolución diaria y desenlace. Incorporación de controles automáticos para evitar datos imposibles y reducir carga manual.
@@ -935,7 +1364,7 @@
                     <div class="case-metric">Trazabilidad completa de la evolución del paciente crítico</div>
                 </div>
 
-                <div class="case-card">
+                <div class="case-card reveal">
                     <div class="case-title"><i class="fa-solid fa-chart-simple"></i>Tablero Clínico en Tiempo Casi Real</div>
                     <div class="case-desc">
                         Integración directa entre planilla de registro y tablero web para jefatura. Indicadores disponibles: ocupación de camas, mortalidad intrahospitalaria, días promedio de internación, frecuencia de eventos infecciosos, tasa de reingreso. Sin licencias comerciales y con actualización continua.
@@ -943,7 +1372,7 @@
                     <div class="case-metric">Visibilidad operativa para decisiones clínicas y de gestión</div>
                 </div>
 
-                <div class="case-card">
+                <div class="case-card reveal">
                     <div class="case-title"><i class="fa-solid fa-syringe"></i>Gestión de Quirófano y Recursos Críticos</div>
                     <div class="case-desc">
                         Desarrollo de panel para monitorear actividad quirúrgica, personal de guardia, uso de kits e insumos críticos. Implementación de formularios internos que registran qué se usó, cuándo, y con qué equipo, permitiendo auditoría posterior y análisis de eficiencia.
@@ -951,7 +1380,7 @@
                     <div class="case-metric">Control interno y evidencia documentada</div>
                 </div>
 
-                <div class="case-card">
+                <div class="case-card reveal">
                     <div class="case-title"><i class="fa-solid fa-user-doctor"></i>Monitoreo de Equipos Profesionales</div>
                     <div class="case-desc">
                         Formularios automatizados, desarrollados con Apps Script, para documentar actividades de personal asistencial, licencias, rotaciones y disponibilidad. Resulta en bases limpias para análisis estadístico posterior sobre cobertura de personal y carga asistencial.
@@ -959,7 +1388,7 @@
                     <div class="case-metric">Base consolidada lista para análisis y reporte</div>
                 </div>
 
-                <div class="case-card">
+                <div class="case-card reveal">
                     <div class="case-title"><i class="fa-solid fa-file-circle-check"></i>Reporte Científico Reproducible</div>
                     <div class="case-desc">
                         A partir de la base clínica depurada se genera automáticamente un documento RMarkdown con Introducción, Metodología, Resultados Descriptivos, Comparaciones entre Grupos y Tablas y Figuras. Publicable en RPubs o remitible al comité interno.
@@ -973,24 +1402,27 @@
     <!-- PERFIL PROFESIONAL -->
     <section id="perfil">
         <div class="container">
-            <div class="section-title">Perfil Profesional</div>
-            <div class="underline-bar"></div>
+            <div class="section-title reveal">Perfil Profesional</div>
+            <div class="underline-bar reveal"></div>
 
-            <div class="profile-wrapper">
+            <div class="profile-wrapper reveal">
                 <div class="profile-photo-lg">
                     <img src="https://postimg.cc/D8D2CGK0" alt="Diego Bernardo Meza">
                 </div>
                 <div class="profile-block">
                     <h3>Diego Bernardo Meza</h3>
                     <p>
-                        Máster en Estadística, profesor universitario y asesor técnico en gestión y análisis de datos clínicos. Experiencia directa en la creación de infraestructuras ligeras para captura de datos hospitalarios, seguimiento de indicadores asistenciales, monitoreo de recursos críticos y generación de reportes reproducibles orientados a publicación científica.
+                        Máster en Estadística. Tesista de Doctorado en Ciencias Exactas y Naturales en la Facultad de Ciencias Exactas y Naturales de la Universidad Nacional de Asunción. Profesor universitario y asesor técnico en gestión y análisis de datos clínicos.
                     </p>
                     <p>
-                        Ha acompañado a equipos clínicos en unidades de terapia intensiva y quirófano en la construcción de tableros operativos inmediatos, así como en el desarrollo de bases consolidadas aptas para análisis inferencial (tasas de desenlace, riesgo relativo, comparaciones entre grupos de pacientes) y para uso en comités de morbimortalidad.
+                        Experiencia directa en el diseño de infraestructuras ligeras para captura de datos hospitalarios, seguimiento de indicadores asistenciales, monitoreo de recursos críticos y generación de reportes reproducibles orientados a publicación científica.
+                    </p>
+                    <p>
+                        Acompañamiento a equipos clínicos en unidades de terapia intensiva y quirófano para la construcción de tableros operativos inmediatos, así como en el desarrollo de bases consolidadas aptas para análisis inferencial, incluyendo tasas de desenlace, riesgo relativo, comparaciones entre grupos de pacientes y evidencia para comités de morbimortalidad.
                     </p>
 
                     <div class="cv-list">
-                        <div><span class="cv-label">Formación:</span> Máster en Estadística. Diplomados en Técnicas Actuariales y en Modelos Actuariales para la Seguridad Social (OIT, Italia). Formación en Metodología de la Investigación Científica y Didáctica Universitaria.</div>
+                        <div><span class="cv-label">Investigación doctoral:</span> Aplicación de métodos estadísticos avanzados y herramientas reproducibles de análisis de datos clínicos, con énfasis en estructuras de captura estandarizada y trazable que permitan obtener resultados válidos y auditables desde servicios asistenciales reales.</div>
                         <div><span class="cv-label">Docencia:</span> Profesor escalafonado del Departamento de Estadística y tutor virtual en el Departamento de Educación a Distancia, Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción.</div>
                         <div><span class="cv-label">Sector público:</span> Jefe del Departamento de Investigación y Estudios Socio-laborales en el Ministerio de Trabajo, Empleo y Seguridad Social. Más de 14 años coordinando análisis de datos administrativos y poblacionales en entornos de alta responsabilidad técnica y sensibilidad institucional.</div>
                     </div>
@@ -1002,11 +1434,11 @@
     <!-- TRAYECTORIA -->
     <section id="trayectoria" class="alt">
         <div class="container">
-            <div class="section-title">Trayectoria Profesional Seleccionada</div>
-            <div class="underline-bar"></div>
+            <div class="section-title reveal">Trayectoria Profesional Seleccionada</div>
+            <div class="underline-bar reveal"></div>
 
             <div class="timeline">
-                <div class="timeline-item">
+                <div class="timeline-item reveal">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card">
                         <div class="timeline-date">2025 - Actualidad</div>
@@ -1018,7 +1450,7 @@
                     </div>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item reveal">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card">
                         <div class="timeline-date">2011 - 2025</div>
@@ -1030,7 +1462,7 @@
                     </div>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item reveal">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card">
                         <div class="timeline-date">2013 - Actualidad</div>
@@ -1049,11 +1481,11 @@
     <!-- HABILIDADES -->
     <section id="habilidades">
         <div class="container">
-            <div class="section-title">Capacidades Técnicas Relevantes para la Facultad de Medicina</div>
-            <div class="underline-bar"></div>
+            <div class="section-title reveal">Capacidades Técnicas Relevantes para la Facultad de Medicina</div>
+            <div class="underline-bar reveal"></div>
 
             <div class="skills-grid">
-                <div class="skill-card">
+                <div class="skill-card reveal">
                     <div class="skill-icon"><i class="fa-solid fa-database"></i></div>
                     <div class="skill-name">Diseño de Formularios Clínicos Estandarizados</div>
                     <div class="skill-note">
@@ -1061,7 +1493,7 @@
                     </div>
                 </div>
 
-                <div class="skill-card">
+                <div class="skill-card reveal">
                     <div class="skill-icon"><i class="fa-solid fa-chart-line"></i></div>
                     <div class="skill-name">Tableros Asistenciales en Tiempo Casi Real</div>
                     <div class="skill-note">
@@ -1069,7 +1501,7 @@
                     </div>
                 </div>
 
-                <div class="skill-card">
+                <div class="skill-card reveal">
                     <div class="skill-icon"><i class="fa-brands fa-r-project"></i></div>
                     <div class="skill-name">Análisis Estadístico en R</div>
                     <div class="skill-note">
@@ -1077,7 +1509,7 @@
                     </div>
                 </div>
 
-                <div class="skill-card">
+                <div class="skill-card reveal">
                     <div class="skill-icon"><i class="fa-solid fa-robot"></i></div>
                     <div class="skill-name">IA Asistiendo al Proceso Científico</div>
                     <div class="skill-note">
@@ -1085,7 +1517,7 @@
                     </div>
                 </div>
 
-                <div class="skill-card">
+                <div class="skill-card reveal">
                     <div class="skill-icon"><i class="fa-solid fa-file-contract"></i></div>
                     <div class="skill-name">Reporte Científico Reproducible</div>
                     <div class="skill-note">
@@ -1093,7 +1525,7 @@
                     </div>
                 </div>
 
-                <div class="skill-card">
+                <div class="skill-card reveal">
                     <div class="skill-icon"><i class="fa-solid fa-shield-halved"></i></div>
                     <div class="skill-name">Ética y Confidencialidad</div>
                     <div class="skill-note">
@@ -1107,10 +1539,10 @@
     <!-- PUBLICACIONES -->
     <section id="publicaciones" class="alt">
         <div class="container">
-            <div class="section-title">Publicaciones y Producción Técnica Seleccionada</div>
-            <div class="underline-bar"></div>
+            <div class="section-title reveal">Publicaciones y Producción Técnica Seleccionada</div>
+            <div class="underline-bar reveal"></div>
 
-            <div class="pub-card">
+            <div class="pub-card reveal">
                 <div class="pub-year">2021</div>
                 <div class="pub-title">Estudio Actuarial del Fondo de Jubilaciones y Pensiones del Instituto de Previsión Social 2021-2100</div>
                 <div class="pub-authors">Asesoría Actuarial del IPS</div>
@@ -1118,7 +1550,7 @@
                 <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Documento técnico institucional</a>
             </div>
 
-            <div class="pub-card">
+            <div class="pub-card reveal">
                 <div class="pub-year">2018</div>
                 <div class="pub-title">Estudio Actuarial del Fondo de Jubilaciones y Pensiones del Instituto de Previsión Social 2018-2100</div>
                 <div class="pub-authors">Asesoría Actuarial del IPS</div>
@@ -1126,7 +1558,7 @@
                 <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Documento técnico institucional</a>
             </div>
 
-            <div class="pub-card">
+            <div class="pub-card reveal">
                 <div class="pub-year">2017</div>
                 <div class="pub-title">Determinantes del Desempleo Juvenil. Revisión histórica con la Encuesta Permanente de Hogares 2006-2015</div>
                 <div class="pub-authors">Meza, D.; Rivas, G.</div>
@@ -1134,7 +1566,7 @@
                 <a class="pub-link" href="#"><i class="fa-solid fa-link"></i>Análisis econométrico aplicado</a>
             </div>
 
-            <div class="pub-card">
+            <div class="pub-card reveal">
                 <div class="pub-year">2014</div>
                 <div class="pub-title">Determinantes de la Probabilidad de Aportar al Sistema de Seguridad Social del Paraguay</div>
                 <div class="pub-authors">Meza, D.</div>
@@ -1148,7 +1580,7 @@
     <!-- CONTACTO / FOOTER -->
     <footer id="contacto">
         <div class="container footer-grid">
-            <div class="footer-block">
+            <div class="footer-block reveal">
                 <h3>Información de Contacto</h3>
                 <p><i class="fa-solid fa-location-dot"></i> Paraguay</p>
                 <p><i class="fa-solid fa-phone"></i> +595 971 100835</p>
@@ -1156,15 +1588,16 @@
                 <p><i class="fa-brands fa-linkedin"></i> <a href="https://www.linkedin.com/in/diego-meza/">linkedin.com/in/diego-meza</a></p>
             </div>
 
-            <div class="footer-block">
+            <div class="footer-block reveal">
                 <h3>Formación Académica</h3>
+                <p><strong>Doctorado en Ciencias Exactas y Naturales</strong><br>Tesista, Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción</p>
                 <p><strong>Máster en Estadística</strong><br>Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Asunción</p>
                 <p><strong>Diplomado en Técnicas Actuariales</strong><br>Universidad de Chile</p>
                 <p><strong>Diplomado en Modelos Actuariales para la Seguridad Social</strong><br>Centro de Entrenamiento Internacional de la OIT, Italia</p>
                 <p>Formación en Didáctica Universitaria, Metodología de la Investigación Científica y Tutoría Virtual</p>
             </div>
 
-            <div class="footer-block">
+            <div class="footer-block reveal">
                 <h3>Áreas de Especialización</h3>
                 <ul>
                     <li>Análisis de datos clínicos y epidemiológicos</li>
@@ -1188,6 +1621,125 @@
     </div>
 
     <script>
+        // Sistema de partículas interactivo con canvas
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.color = `rgba(30, 136, 229, ${this.opacity})`;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width || this.x < 0) {
+                    this.speedX = -this.speedX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.speedY = -this.speedY;
+                }
+                
+                this.x = Math.max(0, Math.min(canvas.width, this.x));
+                this.y = Math.max(0, Math.min(canvas.height, this.y));
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        const particles = [];
+        const particleCount = 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+        
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 120) {
+                        const opacity = (1 - distance / 120) * 0.2;
+                        ctx.strokeStyle = `rgba(30, 136, 229, ${opacity})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+                
+                const mouseDistance = Math.sqrt(
+                    Math.pow(particles[i].x - mouseX, 2) + 
+                    Math.pow(particles[i].y - mouseY, 2)
+                );
+                
+                if (mouseDistance < 100) {
+                    const opacity = (1 - mouseDistance / 100) * 0.3;
+                    ctx.strokeStyle = `rgba(0, 176, 255, ${opacity})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouseX, mouseY);
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            connectParticles();
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // Indicador de progreso de lectura
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressIndicator').style.width = scrolled + '%';
+        });
+        
         // Efecto sticky nav / cambio de padding
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
@@ -1227,30 +1779,31 @@
             });
         });
 
-        // Animación de aparición al hacer scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+        // Animación de revelación al hacer scroll
+        const reveals = document.querySelectorAll('.reveal');
+        
+        function checkReveal() {
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
                 }
             });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -40px 0px'
-        });
-
-        const animatedBlocks = [
-            '.offer-card', '.case-card', '.profile-wrapper',
-            '.timeline-item', '.skill-card', '.pub-card'
-        ];
-        animatedBlocks.forEach(sel => {
-            document.querySelectorAll(sel).forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(24px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
+        }
+        
+        window.addEventListener('scroll', checkReveal);
+        checkReveal();
+        
+        // Efecto de paralaje suave en el hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
         });
     </script>
 </body>
