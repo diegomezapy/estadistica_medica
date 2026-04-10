@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diego Bernardo Meza · Estadística Clínica Asistida por IA</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Programa de Entrenamiento Clínico-Estadístico Asistido por IA. Captura de datos clínicos, tableros en tiempo real, análisis en R y reportes reproducibles. Diego Bernardo Meza.">
+    <meta property="og:title" content="Diego Bernardo Meza · Estadística Clínica Asistida por IA">
+    <meta property="og:description" content="Formación para médicos en formación, residentes e investigadores clínicos. Diseño de instrumentos de captura, análisis en R y reportes publicables.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://diegomezapy.github.io/estadistica_medica/">
+    <meta property="og:image" content="https://raw.githubusercontent.com/diegomezapy/estadistica_medica/diego/imagenCV.jpeg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Preload de la imagen principal para mejorar la carga -->
-    <link rel="preload" as="image" href="https://github.com/diegomezapy/estadistica_medica/blob/diego/imagenCV.jpeg?raw=1" crossorigin="anonymous">
+    <link rel="preload" as="image" href="https://raw.githubusercontent.com/diegomezapy/estadistica_medica/diego/imagenCV.jpeg" crossorigin="anonymous">
 
     <style>
         :root {
@@ -540,6 +546,481 @@
 
         nav a:hover {
             color: var(--accent);
+        }
+
+        /* Hamburger button */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        @media(max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            nav .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                padding-top: 12px;
+            }
+            nav ul.open {
+                display: flex;
+            }
+            nav .container {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* ========== DEMOS EN VIVO ========== */
+        .demos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            margin-top: 40px;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 32px 28px 28px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 56px rgba(8, 23, 38, 0.22);
+        }
+
+        .demo-card .demo-icon {
+            font-size: 2.4rem;
+            color: var(--secondary);
+            margin-bottom: 16px;
+        }
+
+        .demo-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .demo-card p {
+            font-size: .92rem;
+            color: #555;
+            flex: 1;
+            margin-bottom: 18px;
+        }
+
+        .demo-btn {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-size: .9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(30, 136, 229, 0.35);
+        }
+
+        /* ========== GALERIA TABLEROS ========== */
+        .gallery-section {
+            background: var(--gradient);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .gallery-section .section-title,
+        .gallery-section .section-subtitle {
+            color: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-top: 40px;
+        }
+
+        .gallery-card {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-xl);
+            padding: 40px 28px;
+            text-align: center;
+            backdrop-filter: blur(8px);
+            transition: var(--transition);
+        }
+
+        .gallery-card:hover {
+            background: rgba(255,255,255,0.18);
+            transform: translateY(-6px);
+        }
+
+        .gallery-card .gallery-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .gallery-card h4 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .gallery-card p {
+            font-size: .92rem;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+        }
+
+        .gallery-card .gallery-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .gallery-card .gallery-indicators span {
+            background: rgba(0, 176, 255, 0.25);
+            border: 1px solid rgba(0, 176, 255, 0.4);
+            padding: 4px 12px;
+            font-size: .8rem;
+            border-radius: 999px;
+        }
+
+        /* ========== TESTIMONIOS ========== */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-top: 40px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 32px 28px;
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--accent);
+            transition: var(--transition);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-card .quote-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            opacity: 0.4;
+            margin-bottom: 12px;
+        }
+
+        .testimonial-card blockquote {
+            font-style: italic;
+            font-size: 1rem;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-card .testimonial-author {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: .9rem;
+        }
+
+        .testimonial-card .testimonial-role {
+            color: #777;
+            font-size: .85rem;
+        }
+
+        /* ========== FORMULARIO DEMO ========== */
+        .demo-form-wrapper {
+            max-width: 800px;
+            margin: 40px auto 0;
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .demo-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .demo-form-grid label {
+            display: block;
+            font-size: .85rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .demo-form-grid input,
+        .demo-form-grid select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e0e8f0;
+            border-radius: 12px;
+            font-size: .95rem;
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+        }
+
+        .demo-form-grid input:focus,
+        .demo-form-grid select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.15);
+        }
+
+        .demo-form-actions {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .demo-form-actions button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 12px 36px;
+            border-radius: 999px;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .demo-form-actions button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(30, 136, 229, 0.35);
+        }
+
+        .demo-result {
+            display: none;
+            margin-top: 28px;
+            padding: 28px;
+            background: var(--light);
+            border-radius: 16px;
+            border: 2px solid #e0e8f0;
+        }
+
+        .demo-result h4 {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .demo-result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .demo-result-item {
+            background: white;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .demo-result-item .label {
+            font-size: .78rem;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .demo-result-item .value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-top: 4px;
+        }
+
+        .demo-disclaimer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: .82rem;
+            color: #999;
+        }
+
+        @media(max-width: 600px) {
+            .demo-form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========== BLOG / NOTAS ========== */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-top: 40px;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-card .blog-tag {
+            display: inline-block;
+            background: rgba(30, 136, 229, 0.1);
+            color: var(--secondary);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .blog-card h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .blog-card .blog-summary {
+            font-size: .92rem;
+            color: #555;
+            line-height: 1.55;
+        }
+
+        .blog-card .blog-content {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #eee;
+            font-size: .92rem;
+            color: #444;
+            line-height: 1.65;
+        }
+
+        .blog-card .blog-content.open {
+            display: block;
+        }
+
+        .blog-toggle {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            font-weight: 500;
+            font-size: .88rem;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family: 'Poppins', sans-serif;
+            padding: 0;
+        }
+
+        .blog-toggle:hover {
+            color: var(--accent);
+        }
+
+        /* ========== CTA BANNER ========== */
+        .cta-banner {
+            background: var(--gradient);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-banner h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .cta-banner p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: 999px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .cta-btn.primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .cta-btn.primary:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+        }
+
+        .cta-btn.secondary {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .cta-btn.secondary:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-3px);
+        }
+
+        @media(max-width: 768px) {
+            .cta-banner h2 { font-size: 1.5rem; }
+            .gallery-grid { grid-template-columns: 1fr; }
         }
 
         /* SECCIONES GENERALES */
@@ -1375,7 +1856,7 @@
                         <div class="spinner"></div>
                     </div>
                     <img 
-                        src="https://github.com/diegomezapy/estadistica_medica/blob/diego/imagenCV.jpeg?raw=1" 
+                        src="https://raw.githubusercontent.com/diegomezapy/estadistica_medica/diego/imagenCV.jpeg" 
                         alt="Diego Bernardo Meza - Máster en Estadística y Tesista de Doctorado en Ciencias Exactas y Naturales"
                         loading="lazy"
                         onload="this.parentElement.querySelector('.image-loader').style.display='none'"
@@ -1401,11 +1882,12 @@
     <!-- NAV -->
     <nav id="navbar">
         <div class="container">
+            <button class="hamburger" id="hamburgerBtn" aria-label="Menú"><i class="fa-solid fa-bars"></i></button>
             <ul>
                 <li><a href="#oferta">Oferta Académica</a></li>
                 <li><a href="#casos">Implementaciones Reales</a></li>
+                <li><a href="#demos">Demos</a></li>
                 <li><a href="#perfil">Perfil Profesional</a></li>
-                <li><a href="#trayectoria">Trayectoria</a></li>
                 <li><a href="#habilidades">Capacidades Técnicas</a></li>
                 <li><a href="#publicaciones">Publicaciones</a></li>
                 <li><a href="#contacto">Contacto</a></li>
@@ -1532,6 +2014,208 @@
         </div>
     </section>
 
+    <!-- HERRAMIENTAS EN VIVO -->
+    <section id="demos">
+        <div class="container">
+            <div class="section-title reveal">Herramientas en Vivo</div>
+            <div class="underline-bar reveal"></div>
+            <div class="section-subtitle reveal">
+                Proyectos funcionales y de acceso libre que demuestran las capacidades aplicadas en contextos reales. Cada herramienta puede probarse directamente en el navegador.
+            </div>
+
+            <div class="demos-grid">
+                <div class="demo-card reveal">
+                    <div class="demo-icon"><i class="fa-solid fa-file-circle-check"></i></div>
+                    <h4>Evaluador de Artículos Científicos</h4>
+                    <p>Analiza automáticamente la calidad metodológica de papers en PDF: detecta p-values, intervalos de confianza, tamaños de efecto y asigna un puntaje 0-100.</p>
+                    <a href="https://diegomezapy.github.io/evalua_articulos_cientificos/" target="_blank" rel="noopener" class="demo-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Probar ahora</a>
+                </div>
+
+                <div class="demo-card reveal">
+                    <div class="demo-icon"><i class="fa-solid fa-flask-vial"></i></div>
+                    <h4>Simulador de Muestreo Complejo</h4>
+                    <p>Laboratorio interactivo que compara métodos de estimación de varianza (Taylor, Bootstrap, Jackknife, BRR) para diseños de encuesta estratificados y por conglomerados.</p>
+                    <a href="https://diegomezapy.github.io/simula_error_muestreo_complejo/" target="_blank" rel="noopener" class="demo-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Probar ahora</a>
+                </div>
+
+                <div class="demo-card reveal">
+                    <div class="demo-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h4>Tablero de Indicadores Socioeconómicos</h4>
+                    <p>Dashboard interactivo con datos de la Encuesta Permanente de Hogares: pobreza, empleo, ingresos, educación y vivienda por departamento, con filtros cruzados.</p>
+                    <a href="https://diegomezapy.github.io/tablero_eph/" target="_blank" rel="noopener" class="demo-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Probar ahora</a>
+                </div>
+
+                <div class="demo-card reveal">
+                    <div class="demo-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h4>Comparador de Fichas (PARACEL)</h4>
+                    <p>Herramienta de reconciliación de datos: pega dos listas de textos y encuentra las coincidencias más similares usando algoritmo LCS, con exportación a Excel.</p>
+                    <a href="https://diegomezapy.github.io/compara_fichas/" target="_blank" rel="noopener" class="demo-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Probar ahora</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERÍA DE TABLEROS CLÍNICOS -->
+    <div class="gallery-section">
+        <div class="container">
+            <div class="section-title reveal">Galería de Tableros Clínicos</div>
+            <div class="underline-bar reveal"></div>
+            <div class="section-subtitle reveal">
+                Tableros operativos implementados en servicios hospitalarios reales. Los datos mostrados son anonimizados para proteger la confidencialidad de pacientes y personal.
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-card reveal">
+                    <div class="gallery-icon"><i class="fa-solid fa-bed-pulse"></i></div>
+                    <h4>Tablero UCI de Adultos</h4>
+                    <p>Monitoreo continuo de pacientes críticos con indicadores de severidad y evolución diaria del servicio.</p>
+                    <div class="gallery-indicators">
+                        <span>SOFA / APACHE</span>
+                        <span>Ocupación</span>
+                        <span>Mortalidad</span>
+                        <span>Días de estancia</span>
+                        <span>Reingresos</span>
+                    </div>
+                </div>
+
+                <div class="gallery-card reveal">
+                    <div class="gallery-icon"><i class="fa-solid fa-kit-medical"></i></div>
+                    <h4>Panel de Quirófano</h4>
+                    <p>Control de actividad quirúrgica, consumo de insumos críticos y documentación de equipos por procedimiento.</p>
+                    <div class="gallery-indicators">
+                        <span>Cirugías/día</span>
+                        <span>Kits usados</span>
+                        <span>Personal</span>
+                        <span>Tiempos</span>
+                        <span>Auditoría</span>
+                    </div>
+                </div>
+
+                <div class="gallery-card reveal">
+                    <div class="gallery-icon"><i class="fa-solid fa-people-group"></i></div>
+                    <h4>Monitoreo de Equipos Asistenciales</h4>
+                    <p>Seguimiento de cobertura de personal, rotaciones, licencias y carga asistencial por unidad y turno.</p>
+                    <div class="gallery-indicators">
+                        <span>Rotaciones</span>
+                        <span>Licencias</span>
+                        <span>Cobertura</span>
+                        <span>Carga laboral</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TESTIMONIOS -->
+    <section id="testimonios">
+        <div class="container">
+            <div class="section-title reveal">Lo que Dicen los Equipos Clínicos</div>
+            <div class="underline-bar reveal"></div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal">
+                    <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+                    <blockquote>Antes registrábamos todo en cuadernos y la información se perdía. Ahora cada paciente tiene un seguimiento digital desde el ingreso hasta el alta, y el tablero nos permite ver la evolución del servicio en tiempo real.</blockquote>
+                    <div class="testimonial-author">Jefe de UCI</div>
+                    <div class="testimonial-role">Hospital público, Paraguay</div>
+                </div>
+
+                <div class="testimonial-card reveal">
+                    <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+                    <blockquote>Aprendí a usar R para mi tesis en cuatro horas. Lo que más me sirvió fue ver cómo los datos que yo misma capturé se transforman automáticamente en las tablas y gráficos del manuscrito.</blockquote>
+                    <div class="testimonial-author">Residente de Cirugía General</div>
+                    <div class="testimonial-role">Programa de residencia</div>
+                </div>
+
+                <div class="testimonial-card reveal">
+                    <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+                    <blockquote>Este programa resuelve un problema que arrastramos hace años: los residentes no saben capturar datos correctamente, y cuando llega la hora de publicar, la base es inutilizable. Ahora el proceso está estructurado desde el primer día.</blockquote>
+                    <div class="testimonial-author">Directora Académica</div>
+                    <div class="testimonial-role">Facultad de Medicina</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULARIO DEMO -->
+    <section id="formulario-demo" class="alt">
+        <div class="container">
+            <div class="section-title reveal">Prueba un Formulario Clínico</div>
+            <div class="underline-bar reveal"></div>
+            <div class="section-subtitle reveal">
+                Este es un ejemplo simplificado de los formularios que se construyen para cada servicio. Completa los campos y genera un resumen estadístico instantáneo.
+            </div>
+
+            <div class="demo-form-wrapper reveal">
+                <div class="demo-form-grid" id="demoForm">
+                    <div>
+                        <label for="demo-id">ID Paciente (anónimo)</label>
+                        <input type="text" id="demo-id" placeholder="Ej: PAC-001" value="PAC-001">
+                    </div>
+                    <div>
+                        <label for="demo-edad">Edad (años)</label>
+                        <input type="number" id="demo-edad" placeholder="Ej: 58" min="0" max="120" value="58">
+                    </div>
+                    <div>
+                        <label for="demo-sexo">Sexo</label>
+                        <select id="demo-sexo">
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="demo-sofa">SOFA Score (0-24)</label>
+                        <input type="number" id="demo-sofa" placeholder="Ej: 8" min="0" max="24" value="8">
+                    </div>
+                    <div>
+                        <label for="demo-ventilacion">Soporte Ventilatorio</label>
+                        <select id="demo-ventilacion">
+                            <option value="ninguno">Sin soporte</option>
+                            <option value="cnaf">Cánula nasal de alto flujo</option>
+                            <option value="vni">Ventilación no invasiva</option>
+                            <option value="vmi" selected>Ventilación mecánica invasiva</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="demo-atb">Antibiótico de Reserva</label>
+                        <select id="demo-atb">
+                            <option value="ninguno">Ninguno</option>
+                            <option value="meropenem" selected>Meropenem</option>
+                            <option value="vancomicina">Vancomicina</option>
+                            <option value="colistina">Colistina</option>
+                            <option value="linezolid">Linezolid</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="demo-dias">Días de internación</label>
+                        <input type="number" id="demo-dias" placeholder="Ej: 12" min="1" value="12">
+                    </div>
+                    <div>
+                        <label for="demo-desenlace">Desenlace</label>
+                        <select id="demo-desenlace">
+                            <option value="alta" selected>Alta médica</option>
+                            <option value="traslado">Traslado</option>
+                            <option value="obito">Óbito</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="demo-form-actions">
+                    <button id="demoSubmitBtn"><i class="fa-solid fa-chart-bar"></i> Ver resumen estadístico</button>
+                </div>
+
+                <div class="demo-result" id="demoResult">
+                    <h4><i class="fa-solid fa-table"></i> Resumen descriptivo del registro</h4>
+                    <div class="demo-result-grid" id="demoResultGrid"></div>
+                </div>
+
+                <div class="demo-disclaimer">
+                    <i class="fa-solid fa-shield-halved"></i> Este formulario es demostrativo. No se almacenan ni transmiten datos.
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- PERFIL PROFESIONAL -->
     <section id="perfil">
         <div class="container">
@@ -1544,7 +2228,7 @@
                         <div class="spinner"></div>
                     </div>
                     <img 
-                        src="https://github.com/diegomezapy/estadistica_medica/blob/diego/imagenCV.jpeg?raw=1" 
+                        src="https://raw.githubusercontent.com/diegomezapy/estadistica_medica/diego/imagenCV.jpeg" 
                         alt="Diego Bernardo Meza - Máster en Estadística y Tesista de Doctorado"
                         loading="lazy"
                         onload="this.parentElement.querySelector('.image-loader').style.display='none'"
@@ -1685,6 +2369,22 @@
             <div class="underline-bar reveal"></div>
 
             <div class="pub-card reveal">
+                <div class="pub-year">2026</div>
+                <div class="pub-title">Errores Inferenciales en Revistas Científicas Sudamericanas</div>
+                <div class="pub-authors">Meza, D.</div>
+                <div class="pub-meta">Investigación en curso · Análisis automatizado con Python</div>
+                <a class="pub-link" href="#"><i class="fa-solid fa-flask"></i> En desarrollo</a>
+            </div>
+
+            <div class="pub-card reveal">
+                <div class="pub-year">2025</div>
+                <div class="pub-title">Herramienta de Evaluación Automática de Calidad de Artículos Científicos</div>
+                <div class="pub-authors">Meza, D.</div>
+                <div class="pub-meta">Herramienta web de acceso libre · HTML5, PDF.js, Chart.js</div>
+                <a class="pub-link" href="https://diegomezapy.github.io/evalua_articulos_cientificos/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver herramienta en línea</a>
+            </div>
+
+            <div class="pub-card reveal">
                 <div class="pub-year">2021</div>
                 <div class="pub-title">Estudio Actuarial del Fondo de Jubilaciones y Pensiones del Instituto de Previsión Social 2021-2100</div>
                 <div class="pub-authors">Asesoría Actuarial del IPS</div>
@@ -1718,6 +2418,71 @@
 
         </div>
     </section>
+
+    <!-- NOTAS Y RECURSOS -->
+    <section id="notas">
+        <div class="container">
+            <div class="section-title reveal">Notas y Recursos</div>
+            <div class="underline-bar reveal"></div>
+            <div class="section-subtitle reveal">
+                Reflexiones prácticas desde la experiencia en captura de datos clínicos, análisis estadístico y publicación científica en el contexto hospitalario latinoamericano.
+            </div>
+
+            <div class="blog-grid">
+                <div class="blog-card reveal">
+                    <div class="blog-tag">Captura de datos</div>
+                    <h4>3 errores frecuentes al capturar datos clínicos</h4>
+                    <p class="blog-summary">La mayoría de los registros clínicos fracasan antes de llegar al análisis. Estos tres errores explican por qué.</p>
+                    <button class="blog-toggle" onclick="toggleBlog(this)">Leer más <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="blog-content">
+                        <p><strong>1. No definir un diccionario de variables antes de empezar.</strong> Sin un catálogo claro de qué significa cada campo, dos personas capturan lo mismo de formas distintas. Ejemplo: "Soporte ventilatorio" puede significar oxígeno por cánula o ventilación mecánica invasiva según quién registre.</p>
+                        <p><strong>2. Usar campos de texto libre donde debería haber opciones cerradas.</strong> Un campo "Antibiótico" que acepta texto libre genera variantes como "meropenem", "Meropenem", "MERO", "mero 1g". Esto invalida cualquier análisis posterior.</p>
+                        <p><strong>3. No validar rangos imposibles.</strong> Un SOFA de 30, una edad de 200 años o una fecha de alta anterior al ingreso pasan desapercibidos si el formulario no tiene controles. Cuando se descubren, ya es tarde para corregirlos.</p>
+                    </div>
+                </div>
+
+                <div class="blog-card reveal">
+                    <div class="blog-tag">Publicación científica</div>
+                    <h4>Por qué tu tabla de resultados puede tener p-values mal reportados</h4>
+                    <p class="blog-summary">Un estudio en revistas sudamericanas muestra que más del 40% de los artículos reportan errores inferenciales evitables.</p>
+                    <button class="blog-toggle" onclick="toggleBlog(this)">Leer más <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="blog-content">
+                        <p>Los errores más comunes incluyen: reportar p=0.000 (el p-value nunca es exactamente cero), no indicar el test utilizado, presentar intervalos de confianza sin especificar el nivel, y confundir significancia estadística con relevancia clínica.</p>
+                        <p>La solución no es solo capacitar a los investigadores, sino automatizar la generación de tablas de resultados desde el código estadístico en R, eliminando la transcripción manual y los errores de redondeo. Exactamente lo que hace un reporte reproducible en RMarkdown.</p>
+                    </div>
+                </div>
+
+                <div class="blog-card reveal">
+                    <div class="blog-tag">Tableros</div>
+                    <h4>De la planilla de Excel al tablero clínico en 4 pasos</h4>
+                    <p class="blog-summary">No necesitas licencias costosas ni un departamento de IT. Con una planilla bien diseñada y R, tu servicio puede tener un tablero en horas.</p>
+                    <button class="blog-toggle" onclick="toggleBlog(this)">Leer más <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="blog-content">
+                        <p><strong>Paso 1:</strong> Diseñar la planilla con validaciones en Google Sheets (listas desplegables, rangos, formatos de fecha). Esto toma 2 horas bien invertidas.</p>
+                        <p><strong>Paso 2:</strong> Conectar R directamente a la planilla vía googlesheets4. Cada vez que alguien registra un paciente, R puede leerlo automáticamente.</p>
+                        <p><strong>Paso 3:</strong> Construir el tablero con flexdashboard o Shiny, calculando los indicadores que jefatura necesita: ocupación, mortalidad, promedios de estancia, uso de antibióticos de reserva.</p>
+                        <p><strong>Paso 4:</strong> Publicar en RPubs o un servidor interno. El tablero se actualiza cada vez que se ejecuta el script, sin intervención manual.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <div class="cta-banner">
+        <div class="container">
+            <h2 class="reveal">¿Listo para transformar los datos de tu servicio?</h2>
+            <p class="reveal">Conversemos sobre cómo implementar captura estructurada, tableros operativos y reportes reproducibles en tu unidad clínica.</p>
+            <div class="cta-buttons reveal">
+                <a href="mailto:dmeza.py@gmail.com?subject=Consulta%20sobre%20Programa%20de%20Estadística%20Clínica&body=Hola%20Diego%2C%20me%20interesa%20conocer%20más%20sobre%20el%20programa%20de%20entrenamiento%20clínico-estadístico." class="cta-btn primary">
+                    <i class="fa-solid fa-envelope"></i> Agendar una reunión
+                </a>
+                <a href="https://wa.me/595971100835?text=Hola%20Diego%2C%20me%20interesa%20el%20programa%20de%20estadística%20clínica%20asistida%20por%20IA." target="_blank" rel="noopener" class="cta-btn secondary">
+                    <i class="fa-brands fa-whatsapp"></i> Enviar mensaje por WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- CONTACTO / FOOTER -->
     <footer id="contacto">
@@ -1753,7 +2518,7 @@
         </div>
 
         <div class="copyright">
-            © 2025 Diego Bernardo Meza · Todos los derechos reservados
+            © 2025–2026 Diego Bernardo Meza · Todos los derechos reservados
         </div>
     </footer>
 
@@ -1901,6 +2666,24 @@
             }
         });
 
+        // Hamburger menu toggle
+        document.getElementById('hamburgerBtn').addEventListener('click', function() {
+            const ul = document.querySelector('nav ul');
+            ul.classList.toggle('open');
+            this.innerHTML = ul.classList.contains('open')
+                ? '<i class="fa-solid fa-xmark"></i>'
+                : '<i class="fa-solid fa-bars"></i>';
+        });
+
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                const ul = document.querySelector('nav ul');
+                ul.classList.remove('open');
+                document.getElementById('hamburgerBtn').innerHTML = '<i class="fa-solid fa-bars"></i>';
+            });
+        });
+
         // Scroll suave en los enlaces internos
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -1941,14 +2724,90 @@
         window.addEventListener('scroll', checkReveal);
         checkReveal();
         
-        // Efecto de paralaje suave en el hero
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
+        // Formulario demo - generar resumen estadístico
+        document.getElementById('demoSubmitBtn').addEventListener('click', function() {
+            const edad = parseInt(document.getElementById('demo-edad').value) || 0;
+            const sofa = parseInt(document.getElementById('demo-sofa').value) || 0;
+            const dias = parseInt(document.getElementById('demo-dias').value) || 0;
+            const sexo = document.getElementById('demo-sexo').value;
+            const ventilacion = document.getElementById('demo-ventilacion').value;
+            const atb = document.getElementById('demo-atb').value;
+            const desenlace = document.getElementById('demo-desenlace').value;
+
+            // Mortalidad estimada por SOFA (aproximación académica)
+            let mortalidadEstimada;
+            if (sofa <= 1) mortalidadEstimada = '< 5%';
+            else if (sofa <= 3) mortalidadEstimada = '5-10%';
+            else if (sofa <= 6) mortalidadEstimada = '15-20%';
+            else if (sofa <= 9) mortalidadEstimada = '20-35%';
+            else if (sofa <= 12) mortalidadEstimada = '35-50%';
+            else mortalidadEstimada = '> 50%';
+
+            const ventilacionLabels = {
+                'ninguno': 'Sin soporte',
+                'cnaf': 'CNAF',
+                'vni': 'VNI',
+                'vmi': 'VMI'
+            };
+
+            const desenlaceLabels = {
+                'alta': 'Alta médica',
+                'traslado': 'Traslado',
+                'obito': 'Óbito'
+            };
+
+            const grid = document.getElementById('demoResultGrid');
+            grid.innerHTML = `
+                <div class="demo-result-item">
+                    <div class="label">Edad</div>
+                    <div class="value">${edad} años</div>
+                </div>
+                <div class="demo-result-item">
+                    <div class="label">Sexo</div>
+                    <div class="value">${sexo === 'M' ? 'Masculino' : 'Femenino'}</div>
+                </div>
+                <div class="demo-result-item">
+                    <div class="label">SOFA Score</div>
+                    <div class="value">${sofa}/24</div>
+                </div>
+                <div class="demo-result-item">
+                    <div class="label">Mortalidad estimada</div>
+                    <div class="value">${mortalidadEstimada}</div>
+                </div>
+                <div class="demo-result-item">
+                    <div class="label">Soporte ventilatorio</div>
+                    <div class="value">${ventilacionLabels[ventilacion]}</div>
+                </div>
+                <div class="demo-result-item">
+                    <div class="label">Antibiótico reserva</div>
+                    <div class="value">${atb === 'ninguno' ? 'No' : atb.charAt(0).toUpperCase() + atb.slice(1)}</div>
+                </div>
+                <div class="demo-result-item">
+                    <div class="label">Estancia</div>
+                    <div class="value">${dias} días</div>
+                </div>
+                <div class="demo-result-item">
+                    <div class="label">Desenlace</div>
+                    <div class="value">${desenlaceLabels[desenlace]}</div>
+                </div>
+            `;
+            document.getElementById('demoResult').style.display = 'block';
+            document.getElementById('demoResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
+
+        // Blog toggle expandir/colapsar
+        function toggleBlog(btn) {
+            const content = btn.nextElementSibling;
+            content.classList.toggle('open');
+            if (content.classList.contains('open')) {
+                btn.innerHTML = 'Leer menos <i class="fa-solid fa-chevron-up"></i>';
+            } else {
+                btn.innerHTML = 'Leer más <i class="fa-solid fa-chevron-down"></i>';
+            }
+        }
+
+        // Efecto de paralaje suave en el hero (solo mueve pseudo-elementos, no el contenedor)
+        // REMOVIDO: translateY en .hero causaba un espacio vacío enorme al hacer scroll
     </script>
 </body>
 </html>
