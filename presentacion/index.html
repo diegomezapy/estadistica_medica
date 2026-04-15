@@ -1,656 +1,1207 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taller de Capacitación: Software R y IA en Análisis Hospitalario</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #0c2e4a;
-            --secondary: #1e88e5;
-            --accent: #00b0ff;
-            --light: #f5f9ff;
-            --bg-page: #eef3f9;
-            --dark: #1a1a1a;
-            --gradient: linear-gradient(135deg, #0c2e4a 0%, #1e88e5 100%);
-            --card-shadow: 0 16px 40px rgba(8, 23, 38, 0.18);
-            --transition: all 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --radius-xl: 24px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller · R & IA en Análisis Hospitalario</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --ink:#05111f;--ink-2:#0c2340;
+  --blue:#1e88e5;--cyan:#00d4ff;--teal:#14b8a6;
+  --coral:#ff6b6b;--amber:#fbbf24;--violet:#8b5cf6;
+  --white:#fff;--paper:#f6f9fd;
+  --line:rgba(12,35,64,.1);--muted:#5b6b80;
+  --card-bg:#fff;--list-bg:var(--paper);
+  --grad-main:linear-gradient(135deg,#0c2340 0%,#1e88e5 55%,#00d4ff 100%);
+  --grad-warm:linear-gradient(135deg,#ff6b6b 0%,#fbbf24 100%);
+  --grad-cool:linear-gradient(135deg,#14b8a6 0%,#1e88e5 100%);
+  --grad-violet:linear-gradient(135deg,#8b5cf6 0%,#1e88e5 100%);
+  --shadow-sm:0 4px 14px rgba(8,23,38,.08);
+  --shadow:0 18px 50px rgba(8,23,38,.12);
+  --shadow-lg:0 30px 80px rgba(8,23,38,.18);
+  --radius:22px;--radius-lg:28px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+[data-theme="dark"]{
+  --ink:#e8edf5;--ink-2:#c5cee0;--paper:#0a1628;
+  --line:rgba(255,255,255,.07);--muted:#8b9ab5;
+  --card-bg:#111d33;--list-bg:#0d1a2e;
+  --shadow-sm:0 4px 14px rgba(0,0,0,.25);
+  --shadow:0 18px 50px rgba(0,0,0,.35);
+  --shadow-lg:0 30px 80px rgba(0,0,0,.45);
+}
+[data-theme="dark"] .card,[data-theme="dark"] .panel,[data-theme="dark"] .s-head,
+[data-theme="dark"] .tech,[data-theme="dark"] .impact,[data-theme="dark"] .case-body,
+[data-theme="dark"] .pipe{background:var(--card-bg);border-color:var(--line)}
+[data-theme="dark"] .list li{background:var(--list-bg);color:var(--ink)}
+[data-theme="dark"] .metric{background:linear-gradient(135deg,var(--card-bg),#162240)}
+[data-theme="dark"] header{background:rgba(10,22,40,.88)}
+[data-theme="dark"] .nav{background:rgba(10,22,40,.92)}
+[data-theme="dark"] .btn.sec{background:var(--card-bg);color:var(--ink)}
+[data-theme="dark"] .ghost{background:var(--card-bg);color:var(--ink)}
+[data-theme="dark"] .callout{background:linear-gradient(135deg,rgba(30,136,229,.1),rgba(0,212,255,.06))}
+[data-theme="dark"] .callout.warn{background:linear-gradient(135deg,rgba(251,191,36,.14),rgba(255,107,107,.08))}
+[data-theme="dark"] .callout.good{background:linear-gradient(135deg,rgba(20,184,166,.12),rgba(30,136,229,.08))}
+[data-theme="dark"] #bg{
+  background:
+    radial-gradient(ellipse at 10% 0%,rgba(30,136,229,.1),transparent 50%),
+    radial-gradient(ellipse at 90% 100%,rgba(0,212,255,.08),transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(139,92,246,.05),transparent 60%),
+    linear-gradient(180deg,#0a1628,#0d1a2e);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{overflow-x:hidden}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper);color:var(--ink);
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+  transition:background .5s,color .5s;
+}
+#bg{position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(ellipse at 10% 0%,rgba(30,136,229,.18),transparent 50%),
+    radial-gradient(ellipse at 90% 100%,rgba(0,212,255,.15),transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(139,92,246,.08),transparent 60%),
+    linear-gradient(180deg,#eef4fb,#f6f9fd);
+  transition:background .5s;
+}
+#bg::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+#particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* HEADER */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(18px) saturate(150%);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);
+  border-bottom:1px solid var(--line);
+  transition:background .5s;
+}
+.bar{
+  max-width:1280px;margin:0 auto;padding:14px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:var(--grad-main);
+  display:grid;place-items:center;color:#fff;font-size:1.1rem;
+  box-shadow:0 10px 22px rgba(30,136,229,.35);
+  animation:heartbeat 2s ease-in-out infinite;
+}
+@keyframes heartbeat{
+  0%,100%{transform:scale(1)}14%{transform:scale(1.15)}
+  28%{transform:scale(1)}42%{transform:scale(1.08)}56%{transform:scale(1)}
+}
+.brand-text h1{font-size:.95rem;font-weight:700;color:var(--ink);letter-spacing:-.01em;transition:color .5s}
+.brand-text p{font-size:.75rem;color:var(--muted);margin-top:-2px;transition:color .5s}
+.bar-nav{display:flex;gap:8px;align-items:center}
+.chip{
+  padding:8px 14px;border-radius:999px;font-size:.78rem;font-weight:600;
+  background:rgba(30,136,229,.09);color:var(--blue);border:1px solid rgba(30,136,229,.18);
+  display:inline-flex;align-items:center;gap:6px;
+}
+.icon-btn{
+  width:40px;height:40px;border-radius:10px;border:1px solid var(--line);
+  background:var(--card-bg);color:var(--ink);cursor:pointer;
+  display:grid;place-items:center;font-size:.95rem;
+  transition:all .3s var(--ease);
+}
+.icon-btn:hover{border-color:var(--blue);color:var(--blue);transform:rotate(12deg) scale(1.05)}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-page);
-            color: var(--dark);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+/* PROGRESS */
+.progress-wrap{height:3px;background:transparent;position:sticky;top:71px;z-index:99}
+.progress-bar{
+  height:100%;width:0;background:var(--grad-main);position:relative;overflow:hidden;
+  transition:width .5s var(--ease);box-shadow:0 0 14px rgba(0,212,255,.6);
+}
+.progress-bar::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);
+  animation:shimmer 2s infinite;
+}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: linear-gradient(135deg, #eef3f9 0%, #f5f9ff 100%);
-        }
+/* STAGE */
+.stage{max-width:1280px;margin:0 auto;padding:40px 28px 20px}
+.slide{display:none}
+.slide.active{display:block;animation:slideEnter .7s var(--ease) both}
+@keyframes slideEnter{
+  from{opacity:0;transform:translateY(36px) scale(.98);filter:blur(6px)}
+  to{opacity:1;transform:none;filter:none}
+}
 
-        header {
-            background: var(--gradient);
-            color: white;
-            padding: 28px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
+/* STAGGER */
+[data-st]{opacity:0;transform:translateY(22px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.slide.active [data-st]{opacity:1;transform:none}
 
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
+/* HERO */
+.hero{
+  position:relative;border-radius:var(--radius-lg);
+  padding:72px 56px;color:#fff;
+  background:var(--grad-main);overflow:hidden;
+  box-shadow:var(--shadow-lg);
+}
+.hero-glow{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(0,212,255,.25),transparent 60%);
+  transition:background .1s;
+}
+.hero::before{
+  content:"";position:absolute;inset:-40%;z-index:0;
+  background:conic-gradient(from 0deg,rgba(255,255,255,.1),transparent 25%,rgba(255,255,255,.07) 50%,transparent 75%,rgba(255,255,255,.1));
+  animation:spin 28s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-inner{position:relative;z-index:2;max-width:900px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 16px;border-radius:999px;
+  background:rgba(255,255,255,.16);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.28);
+  font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+}
+.eyebrow .dot{
+  width:8px;height:8px;border-radius:50%;background:#00ff9c;
+  box-shadow:0 0 12px #00ff9c;animation:pulse 1.6s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{
+  font-size:clamp(2.2rem,5vw,4.4rem);font-weight:800;line-height:1.02;
+  letter-spacing:-.03em;margin:22px 0 20px;
+}
+.hero h1 span{
+  background:linear-gradient(90deg,#fff 0%,#00d4ff 50%,#fff 100%);
+  background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 6s linear infinite;
+}
+@keyframes shine{to{background-position:-200% center}}
+.hero p.sub{font-size:1.15rem;opacity:.92;max-width:640px;font-weight:300;line-height:1.6}
+.hero-meta{
+  display:flex;gap:28px;flex-wrap:wrap;margin-top:36px;
+  padding-top:28px;border-top:1px solid rgba(255,255,255,.2);
+}
+.hero-meta .m{display:flex;align-items:center;gap:10px;font-size:.88rem}
+.hero-meta .m i{
+  width:36px;height:36px;display:grid;place-items:center;border-radius:10px;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);
+}
 
-        .header-title h1 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin: 0;
-        }
+/* FLOAT ICONS */
+.fi{
+  position:absolute;color:rgba(255,255,255,.07);font-size:2.2rem;z-index:0;
+  pointer-events:none;
+}
+.fi:nth-child(1){top:12%;right:8%;animation:floatA 7s ease-in-out infinite}
+.fi:nth-child(2){bottom:18%;right:15%;animation:floatB 9s ease-in-out infinite;font-size:1.8rem}
+.fi:nth-child(3){top:55%;left:5%;animation:floatA 8s ease-in-out infinite 1s;font-size:1.6rem}
+.fi:nth-child(4){top:20%;left:42%;animation:floatB 10s ease-in-out infinite .5s;font-size:2rem}
+.fi:nth-child(5){bottom:10%;left:30%;animation:floatA 6s ease-in-out infinite 2s;font-size:1.5rem}
+@keyframes floatA{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(8deg)}}
+@keyframes floatB{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(14px) rotate(-6deg)}}
 
-        .header-actions a {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.4);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 999px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
+/* SLIDE HEADER */
+.s-head{
+  background:var(--card-bg);border-radius:var(--radius-lg);padding:44px 48px;
+  margin-bottom:28px;box-shadow:var(--shadow);border:1px solid var(--line);
+  position:relative;overflow:hidden;transition:background .5s,border-color .5s;
+}
+.s-head::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:5px;
+  background:var(--grad-main);
+}
+.s-head .tag{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--blue);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:6px 12px;border-radius:8px;background:rgba(30,136,229,.08);
+}
+.s-head h2{
+  font-size:clamp(1.6rem,3.4vw,2.6rem);font-weight:800;line-height:1.15;
+  letter-spacing:-.02em;margin:16px 0 12px;color:var(--ink);transition:color .5s;
+}
+.s-head h2 em{font-style:normal;background:var(--grad-main);-webkit-background-clip:text;background-clip:text;color:transparent}
+.s-head .lead{color:var(--muted);font-size:1.05rem;max-width:780px;line-height:1.6;transition:color .5s}
 
-        .header-actions a:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
+/* CARDS */
+.grid{display:grid;gap:22px}
+.g-2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.g-3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g-4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{
+  background:var(--card-bg);border-radius:var(--radius);padding:28px;
+  border:1px solid var(--line);box-shadow:var(--shadow-sm);
+  transition:all .4s var(--ease),background .5s,border-color .5s;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--grad-main);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);
+}
+.card:hover{transform:translateY(-8px);box-shadow:var(--shadow);border-color:rgba(30,136,229,.3)}
+.card:hover::before{transform:scaleX(1)}
+.card.warm::before{background:var(--grad-warm)}
+.card.cool::before{background:var(--grad-cool)}
+.card.violet::before{background:var(--grad-violet)}
+.card .ico{
+  width:52px;height:52px;border-radius:14px;display:grid;place-items:center;
+  background:var(--grad-main);color:#fff;font-size:1.2rem;margin-bottom:18px;
+  box-shadow:0 10px 22px rgba(30,136,229,.28);
+  transition:transform .3s var(--ease);
+}
+.card:hover .ico{transform:scale(1.1) rotate(-3deg)}
+.card.warm .ico{background:var(--grad-warm);box-shadow:0 10px 22px rgba(255,107,107,.28)}
+.card.cool .ico{background:var(--grad-cool);box-shadow:0 10px 22px rgba(20,184,166,.28)}
+.card.violet .ico{background:var(--grad-violet);box-shadow:0 10px 22px rgba(139,92,246,.28)}
+.card h3{font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:10px;letter-spacing:-.01em;transition:color .5s}
+.card p{color:var(--muted);font-size:.95rem;line-height:1.6;transition:color .5s}
+.card .step{
+  position:absolute;top:22px;right:22px;
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;
+  color:var(--blue);background:rgba(30,136,229,.08);padding:4px 10px;border-radius:6px;
+}
 
-        .presentation-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
+/* PANEL */
+.panel{
+  background:var(--card-bg);border-radius:var(--radius-lg);padding:40px 44px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:24px;
+  transition:background .5s,border-color .5s;
+}
+.panel h3.sec{
+  font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:22px;
+  display:flex;align-items:center;gap:12px;letter-spacing:-.01em;transition:color .5s;
+}
+.panel h3.sec::before{content:"";width:4px;height:22px;background:var(--grad-main);border-radius:3px}
+.panel p{color:var(--muted);transition:color .5s}
 
-        .slide {
-            display: none;
-            animation: fadeIn 0.6s ease-in-out;
-            min-height: 600px;
-        }
+/* LIST */
+.list{display:grid;gap:12px;margin-top:6px}
+.list li{
+  list-style:none;padding:14px 16px 14px 48px;position:relative;
+  background:var(--list-bg);border-radius:12px;border:1px solid var(--line);
+  font-size:.95rem;color:var(--ink);line-height:1.55;
+  transition:all .3s var(--ease),background .5s,color .5s,border-color .5s;
+}
+.list li::before{
+  content:"";position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  width:22px;height:22px;border-radius:50%;background:var(--grad-main);
+}
+.list li::after{
+  content:"\f00c";font-family:'Font Awesome 6 Free';font-weight:900;
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  width:22px;height:22px;display:grid;place-items:center;color:#fff;font-size:.65rem;
+}
+.list li:hover{transform:translateX(6px);border-color:rgba(30,136,229,.3);background:var(--card-bg)}
+.list li strong{color:var(--ink);font-weight:700}
 
-        .slide.active {
-            display: block;
-        }
+/* METRICS con ring */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin:8px 0}
+.metric{
+  background:linear-gradient(135deg,var(--card-bg),#f0f7ff);
+  border:1px solid var(--line);border-radius:18px;padding:28px 20px 22px;text-align:center;
+  position:relative;overflow:hidden;
+  transition:all .3s var(--ease),background .5s,border-color .5s;
+}
+[data-theme="dark"] .metric{background:linear-gradient(135deg,var(--card-bg),#162240)}
+.metric:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.ring-svg{
+  position:absolute;top:8px;right:8px;width:52px;height:52px;
+  transform:rotate(-90deg);opacity:.35;
+}
+.ring-bg{fill:none;stroke:rgba(30,136,229,.1);stroke-width:3.5}
+.ring-fill{
+  fill:none;stroke:url(#ringGrad);stroke-width:3.5;
+  stroke-dasharray:131.95;stroke-dashoffset:131.95;
+  stroke-linecap:round;transition:stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1);
+}
+.metric .num{
+  font-size:2.4rem;font-weight:800;letter-spacing:-.03em;
+  background:var(--grad-main);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.metric .lbl{font-size:.78rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;transition:color .5s}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+/* CALLOUT */
+.callout{
+  border-radius:var(--radius);padding:24px 26px;margin:18px 0;
+  background:linear-gradient(135deg,rgba(30,136,229,.07),rgba(0,212,255,.05));
+  border-left:4px solid var(--blue);display:flex;gap:18px;align-items:flex-start;
+  transition:background .5s;
+}
+.callout .ci{
+  width:42px;height:42px;border-radius:12px;background:var(--grad-main);color:#fff;
+  display:grid;place-items:center;font-size:1.1rem;flex-shrink:0;
+  box-shadow:0 8px 18px rgba(30,136,229,.3);
+}
+.callout h4{font-weight:700;color:var(--ink);margin-bottom:4px;font-size:1.02rem;transition:color .5s}
+.callout p{color:var(--muted);font-size:.93rem;line-height:1.6;transition:color .5s}
+.callout.warn{background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(255,107,107,.06));border-left-color:var(--amber)}
+.callout.warn .ci{background:var(--grad-warm);box-shadow:0 8px 18px rgba(251,191,36,.35)}
+.callout.good{background:linear-gradient(135deg,rgba(20,184,166,.1),rgba(30,136,229,.06));border-left-color:var(--teal)}
+.callout.good .ci{background:var(--grad-cool);box-shadow:0 8px 18px rgba(20,184,166,.3)}
 
-        .slide-header {
-            background: white;
-            border-radius: var(--radius-xl);
-            padding: 40px;
-            margin-bottom: 32px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(12,46,74,0.08);
-        }
+/* TIMELINE */
+.timeline{position:relative;padding:12px 0 0 40px;margin-top:12px}
+.timeline::before{
+  content:"";position:absolute;left:14px;top:16px;bottom:16px;width:3px;
+  background:linear-gradient(180deg,var(--blue),var(--cyan),var(--teal));border-radius:2px;
+}
+.tl-item{position:relative;padding-bottom:22px}
+.tl-item::before{
+  content:"";position:absolute;left:-32px;top:6px;width:18px;height:18px;border-radius:50%;
+  background:var(--card-bg);border:4px solid var(--blue);
+  box-shadow:0 0 0 4px rgba(30,136,229,.12);transition:background .5s;
+}
+.tl-item h4{font-weight:700;color:var(--ink);font-size:1rem;margin-bottom:4px;transition:color .5s}
+.tl-item p{color:var(--muted);font-size:.9rem;transition:color .5s}
 
-        .slide-chapter {
-            color: var(--secondary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-        }
+/* CODE */
+.code{
+  background:#05111f;color:#e6edf3;padding:22px 24px 22px 54px;border-radius:16px;
+  font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:1.7;
+  overflow-x:auto;border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 14px 40px rgba(5,17,31,.3);position:relative;
+}
+.code::before{
+  content:'R';position:absolute;left:18px;top:22px;
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;
+  color:#ff7b72;background:rgba(255,123,114,.15);padding:2px 6px;border-radius:4px;
+}
+.code .cl{display:block;opacity:0;transform:translateX(-8px);transition:all .35s ease}
+.code .cl.vis{opacity:1;transform:none}
+.code .k{color:#ff7b72}.code .f{color:#d2a8ff}.code .s{color:#7ee787}.code .c{color:#8b949e;font-style:italic}
 
-        .slide-title {
-            color: var(--primary);
-            font-size: 2.2rem;
-            font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: 20px;
-        }
+/* PIPELINE */
+.pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:12px}
+.pipe{
+  position:relative;background:var(--card-bg);border:1px solid var(--line);
+  border-radius:16px;padding:22px 18px;text-align:center;
+  transition:all .35s var(--ease),background .5s,border-color .5s;
+}
+.pipe:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--blue)}
+.pipe .n{
+  width:34px;height:34px;border-radius:10px;background:var(--grad-main);
+  color:#fff;display:grid;place-items:center;font-weight:800;font-size:.85rem;
+  margin:0 auto 12px;box-shadow:0 6px 14px rgba(30,136,229,.3);
+}
+.pipe h4{font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:4px;transition:color .5s}
+.pipe p{font-size:.78rem;color:var(--muted);line-height:1.45;transition:color .5s}
+.pipe:not(:last-child)::after{
+  content:"\f054";font-family:'Font Awesome 6 Free';font-weight:900;
+  position:absolute;right:-14px;top:50%;transform:translateY(-50%);
+  font-size:.8rem;color:var(--blue);z-index:2;
+  animation:pipeArrow 1.5s ease-in-out infinite;
+}
+@keyframes pipeArrow{0%,100%{transform:translateY(-50%) translateX(0)}50%{transform:translateY(-50%) translateX(3px)}}
+@media(max-width:860px){.pipeline{grid-template-columns:repeat(2,1fr)}.pipe:nth-child(2)::after{display:none}}
+@media(max-width:500px){.pipeline{grid-template-columns:1fr}.pipe::after{display:none !important}}
 
-        .slide-subtitle {
-            color: #555;
-            font-size: 1.1rem;
-            font-weight: 400;
-            line-height: 1.6;
-        }
+/* TECH STACK */
+.stack{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
+.tech{
+  background:var(--card-bg);border:1px solid var(--line);border-radius:14px;
+  padding:18px 14px;text-align:center;transition:all .35s var(--ease),background .5s,border-color .5s;
+}
+.tech:hover{transform:translateY(-6px) rotate(-2deg);box-shadow:var(--shadow-sm);border-color:var(--blue)}
+.tech i{font-size:1.8rem;margin-bottom:8px;background:var(--grad-main);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tech .nm{font-weight:700;font-size:.88rem;color:var(--ink);transition:color .5s}
+.tech .dsc{font-size:.72rem;color:var(--muted);margin-top:2px;transition:color .5s}
 
-        .slide-content {
-            background: white;
-            border-radius: var(--radius-xl);
-            padding: 40px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(12,46,74,0.08);
-        }
+/* CASE */
+.case{
+  position:relative;background:var(--card-bg);border-radius:var(--radius-lg);
+  border:1px solid var(--line);box-shadow:var(--shadow-sm);
+  overflow:hidden;transition:all .4s var(--ease),background .5s,border-color .5s;
+}
+.case:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
+.case-banner{
+  padding:28px 28px 22px;color:#fff;position:relative;
+  background:var(--grad-main);
+}
+.case.warm .case-banner{background:var(--grad-warm)}
+.case.cool .case-banner{background:var(--grad-cool)}
+.case.violet .case-banner{background:var(--grad-violet)}
+.case-banner::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at top right,rgba(255,255,255,.2),transparent 60%);
+}
+.case-banner .label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.9;margin-bottom:6px;position:relative}
+.case-banner h3{font-size:1.35rem;font-weight:800;letter-spacing:-.01em;position:relative;line-height:1.25}
+.case-body{padding:24px 28px 28px;background:var(--card-bg);transition:background .5s}
+.case-body p{color:var(--muted);font-size:.93rem;line-height:1.6;margin-bottom:14px;transition:color .5s}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chips span{
+  font-size:.74rem;font-weight:600;padding:6px 12px;border-radius:999px;
+  background:rgba(30,136,229,.08);color:var(--blue);border:1px solid rgba(30,136,229,.18);
+}
 
-        .content-section {
-            margin-bottom: 32px;
-        }
+/* QUOTE */
+.quote{
+  position:relative;padding:36px 40px 36px 72px;
+  background:linear-gradient(135deg,#0c2340,#1e88e5);
+  border-radius:var(--radius-lg);color:#fff;box-shadow:var(--shadow);
+}
+.quote::before{
+  content:"\201C";position:absolute;left:24px;top:8px;
+  font-family:Georgia,serif;font-size:6rem;line-height:1;opacity:.35;
+}
+.quote p{font-size:1.15rem;font-weight:400;line-height:1.6;font-style:italic}
+.quote .attr{margin-top:14px;font-size:.85rem;font-weight:600;opacity:.85;letter-spacing:.04em}
 
-        .content-section:last-child {
-            margin-bottom: 0;
-        }
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:stretch}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
 
-        .section-title {
-            color: var(--primary);
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 3px solid var(--gradient);
-            display: inline-block;
-        }
+/* IMPACT */
+.impact-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.impact{
+  background:var(--card-bg);border-radius:16px;padding:22px;border:1px solid var(--line);
+  position:relative;overflow:hidden;transition:all .3s var(--ease),background .5s,border-color .5s;
+}
+.impact:hover{transform:translateY(-4px);box-shadow:var(--shadow-sm)}
+.impact .i-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.impact .i-top i{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:#fff;font-size:.95rem}
+.impact .big{font-size:1.7rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);transition:color .5s}
+.impact .t{font-size:.82rem;color:var(--muted);font-weight:500;transition:color .5s}
 
-        .section-text {
-            color: #333;
-            font-size: 1rem;
-            line-height: 1.8;
-            margin-bottom: 16px;
-        }
+/* CLOSING */
+.thanks{
+  background:var(--grad-main);color:#fff;border-radius:var(--radius-lg);
+  padding:80px 48px;text-align:center;position:relative;overflow:hidden;
+  box-shadow:var(--shadow-lg);
+}
+.thanks::before{
+  content:"";position:absolute;inset:-50%;
+  background:conic-gradient(from 0deg,transparent,rgba(255,255,255,.15),transparent 30%);
+  animation:spin 18s linear infinite;
+}
+.thanks .inner{position:relative;z-index:2}
+.thanks h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:800;letter-spacing:-.03em;margin-bottom:14px}
+.thanks p{font-size:1.1rem;opacity:.9;max-width:620px;margin:0 auto}
+.thanks .sig{
+  margin-top:38px;padding-top:26px;border-top:1px solid rgba(255,255,255,.25);
+  display:flex;gap:22px;justify-content:center;flex-wrap:wrap;font-size:.88rem;opacity:.92;
+}
+.thanks .sig span{display:inline-flex;gap:8px;align-items:center}
 
-        .section-list {
-            list-style: none;
-            padding: 0;
-            margin: 16px 0;
-        }
+/* NAV */
+.nav-wrap{position:sticky;bottom:20px;z-index:80;padding:0 28px;margin-top:36px}
+.nav{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px 20px;border-radius:999px;
+  background:rgba(255,255,255,.88);backdrop-filter:blur(22px);
+  border:1px solid var(--line);box-shadow:var(--shadow);
+  transition:background .5s,border-color .5s;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;border-radius:999px;font-weight:600;font-size:.9rem;
+  border:none;cursor:pointer;transition:all .3s var(--ease);
+  background:var(--grad-main);color:#fff;
+  box-shadow:0 10px 22px rgba(30,136,229,.3);
+}
+.btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 16px 32px rgba(30,136,229,.45)}
+.btn:active:not(:disabled){transform:translateY(-1px)}
+.btn:disabled{opacity:.3;cursor:not-allowed;box-shadow:none;transform:none}
+.btn.sec{background:var(--card-bg);color:var(--ink);border:1px solid var(--line);box-shadow:none;transition:all .3s var(--ease),background .5s,color .5s}
+.btn.sec:hover:not(:disabled){border-color:var(--blue);color:var(--blue);transform:translateY(-3px);box-shadow:var(--shadow-sm)}
+.dots{display:flex;gap:7px;align-items:center}
+.dot-n{
+  width:9px;height:9px;border-radius:50%;background:rgba(12,35,64,.18);cursor:pointer;
+  transition:all .3s var(--ease);
+}
+.dot-n.active{background:var(--blue);width:28px;border-radius:6px;box-shadow:0 0 14px rgba(30,136,229,.6)}
+.dot-n:hover:not(.active){background:var(--blue);opacity:.5}
+.counter{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--muted);font-weight:600;transition:color .5s}
+.counter b{color:var(--ink);transition:color .5s}
 
-        .section-list li {
-            padding: 12px 0 12px 32px;
-            position: relative;
-            color: #333;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
+/* TOASTS */
+#toasts{position:fixed;top:90px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{
+  padding:12px 20px;border-radius:12px;
+  background:var(--card-bg);color:var(--ink);border:1px solid var(--line);
+  box-shadow:var(--shadow);font-size:.88rem;font-weight:600;
+  display:flex;align-items:center;gap:10px;
+  transform:translateX(120%);opacity:0;transition:all .4s var(--ease);pointer-events:auto;
+}
+.toast.show{transform:none;opacity:1}
+.toast i{color:var(--blue)}
 
-        .section-list li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--secondary);
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
+/* KEYBOARD OVERLAY */
+.kb-overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(5,17,31,.6);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.kb-overlay.open{opacity:1;pointer-events:auto}
+.kb-panel{
+  background:var(--card-bg);border-radius:var(--radius-lg);padding:40px 44px;
+  box-shadow:var(--shadow-lg);border:1px solid var(--line);
+  max-width:420px;width:90%;transition:background .5s;
+}
+.kb-panel h3{font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:20px;transition:color .5s}
+.kb-list{display:grid;gap:12px}
+.kb-list>div{display:flex;align-items:center;gap:12px;font-size:.9rem;color:var(--muted)}
+kbd{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:30px;height:30px;padding:0 8px;border-radius:8px;
+  background:var(--paper);border:1px solid var(--line);
+  font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;
+  color:var(--ink);box-shadow:0 2px 0 var(--line);transition:background .5s,color .5s;
+}
 
-        .highlight-box {
-            background: linear-gradient(135deg, rgba(30,136,229,0.08) 0%, rgba(0,176,255,0.08) 100%);
-            border-left: 5px solid var(--secondary);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 24px 0;
-        }
-
-        .highlight-box h4 {
-            color: var(--primary);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .highlight-box p {
-            color: #444;
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            margin-top: 40px;
-            padding: 24px;
-            background: rgba(255,255,255,0.7);
-            border-radius: var(--radius-xl);
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-btn {
-            background: var(--gradient);
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 999px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(30, 136, 229, 0.35);
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .slide-counter {
-            text-align: center;
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .slide-indicator {
-            height: 4px;
-            background: #e0e8f0;
-            border-radius: 2px;
-            overflow: hidden;
-            margin-top: 24px;
-        }
-
-        .slide-progress {
-            height: 100%;
-            background: var(--gradient);
-            border-radius: 2px;
-            transition: width 0.4s ease;
-        }
-
-        @media(max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .header-title h1 {
-                font-size: 1.1rem;
-            }
-
-            .slide-title {
-                font-size: 1.6rem;
-            }
-
-            .slide-header,
-            .slide-content {
-                padding: 24px;
-            }
-
-            .navigation {
-                flex-wrap: wrap;
-            }
-
-            .nav-btn {
-                flex: 1;
-                min-width: 120px;
-            }
-        }
-    </style>
+/* MOBILE */
+@media(max-width:720px){
+  .hero{padding:48px 28px}
+  .s-head,.panel{padding:30px 24px}
+  .bar{padding:12px 18px}
+  .brand-text p{display:none}
+  .stage{padding:24px 16px}
+  .nav-wrap{padding:0 12px}
+  .nav{padding:10px 14px;gap:8px}
+  .btn{padding:10px 16px;font-size:.82rem}
+  .counter{display:none}
+  .chip{display:none}
+  .two-col{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
 </head>
 <body>
-    <canvas id="particles-canvas"></canvas>
 
-    <header>
-        <div class="header-container">
-            <div class="header-title">
-                <h1>Taller de Capacitación<br/>Software R y IA en Análisis Hospitalario</h1>
-            </div>
-            <div class="header-actions">
-                <a href="../" class="nav-btn"><i class="fa-solid fa-arrow-left"></i> Volver</a>
-            </div>
-        </div>
-    </header>
+<!-- SVG defs para rings -->
+<svg style="position:absolute;width:0;height:0">
+  <defs>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e88e5"/>
+      <stop offset="100%" stop-color="#00d4ff"/>
+    </linearGradient>
+  </defs>
+</svg>
 
-    <div class="presentation-container">
+<div id="bg"></div>
+<canvas id="particles"></canvas>
+<div id="toasts"></div>
 
-        <!-- SLIDE 1: CAPÍTULO 1 -->
-        <div class="slide active">
-            <div class="slide-header">
-                <div class="slide-chapter">Capítulo 1</div>
-                <h1 class="slide-title">La ciencia en tiempos de la Inteligencia Artificial</h1>
-                <p class="slide-subtitle">Contexto y transformación del proceso científico hospitalario</p>
-            </div>
-
-            <div class="slide-content">
-                <div class="content-section">
-                    <h2 class="section-title">La generación de información es cíclica</h2>
-                    <p class="section-text">
-                        En la actualidad existe una conciencia generalizada de la influencia que tienen las Inteligencias Artificiales en la sociedad, en especial en entornos científicos. La generación de información sigue etapas casi siempre repetidas de igual manera:
-                    </p>
-                    <ul class="section-list">
-                        <li><strong>Etapa 1 - Necesidad:</strong> Surge un problema que requiere atención en el servicio hospitalario.</li>
-                        <li><strong>Etapa 2 - Captura de datos:</strong> Encontrar la forma de generar, capturar o recabar la información. Esta etapa es el cimiento de toda la estructura.</li>
-                        <li><strong>Etapa 3 - Análisis:</strong> Decidir qué hacer con los datos generados. Aquí encontramos múltiples formas de analizar.</li>
-                        <li><strong>Etapa 4 - Comunicación:</strong> Presentar y comunicar los resultados a los actores clave.</li>
-                    </ul>
-                </div>
-
-                <div class="content-section">
-                    <h2 class="section-title">La IA en cada paso</h2>
-                    <p class="section-text">
-                        La Inteligencia Artificial se ha entrometido en todos y cada uno de estos pasos.
-                    </p>
-                    <div class="highlight-box">
-                        <h4><i class="fa-solid fa-cube"></i> Captura inteligente</h4>
-                        <p>Sistemas sofisticados de captura de datos con validaciones automáticas.</p>
-                    </div>
-                    <div class="highlight-box">
-                        <h4><i class="fa-solid fa-gears"></i> Procesamiento</h4>
-                        <p>Limpieza y transformación de datos con detección automática de anomalías.</p>
-                    </div>
-                    <div class="highlight-box">
-                        <h4><i class="fa-solid fa-chart-bar"></i> Presentación</h4>
-                        <p>Generación automática de reportes y visualizaciones listos para uso clínico.</p>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <h2 class="section-title">Sin límites visibles</h2>
-                    <p class="section-text">
-                        Sin lugar a dudas, ya cuesta imaginarse si existen límites en lo que se podrá llegar a lograr acompañando de la IA.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 2: CAPÍTULO 2 -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-chapter">Capítulo 2</div>
-                <h1 class="slide-title">Recursos digitales disponibles</h1>
-                <p class="slide-subtitle">Herramientas sofisticadas, confiables y portátiles</p>
-            </div>
-
-            <div class="slide-content">
-                <div class="content-section">
-                    <h2 class="section-title">R y RStudio: La respuesta estadística</h2>
-                    <p class="section-text">
-                        R es un lenguaje diseñado específicamente para análisis estadístico. RStudio proporciona un entorno integrado para análisis clínicos.
-                    </p>
-                    <ul class="section-list">
-                        <li>Análisis descriptivo de datos clínicos reales.</li>
-                        <li>Comparaciones entre grupos de pacientes.</li>
-                        <li>Regresiones logísticas para desenlaces binarios.</li>
-                        <li>Generación automática de tablas listas para publicación.</li>
-                        <li>Visualizaciones reproducibles y publicables.</li>
-                    </ul>
-                </div>
-
-                <div class="content-section">
-                    <h2 class="section-title">Python: Versatilidad en desarrollo</h2>
-                    <p class="section-text">
-                        Python aporta flexibilidad en el desarrollo e implementación de soluciones tecnológicas personalizadas.
-                    </p>
-                    <ul class="section-list">
-                        <li>Automatización de flujos de trabajo.</li>
-                        <li>Integración con bases de datos hospitalarias.</li>
-                        <li>Desarrollo de herramientas web interactivas.</li>
-                        <li>Machine learning y análisis predictivo responsable.</li>
-                    </ul>
-                </div>
-
-                <div class="content-section">
-                    <h2 class="section-title">Google y su ecosistema</h2>
-                    <p class="section-text">
-                        Google Sheets, Forms y Apps Script constituyen una plataforma accesible para diseñar soluciones científicas sin infraestructura costosa.
-                    </p>
-                    <ul class="section-list">
-                        <li>Formularios estructurados con validaciones.</li>
-                        <li>Almacenamiento seguro en la nube.</li>
-                        <li>Integración directa con R.</li>
-                        <li>Automatización de tareas con Apps Script.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 3: CAPÍTULO 3 -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-chapter">Capítulo 3</div>
-                <h1 class="slide-title">Necesidades de datos en entornos hospitalarios</h1>
-                <p class="slide-subtitle">Desde el registro hasta la decisión clínica basada en evidencia</p>
-            </div>
-
-            <div class="slide-content">
-                <div class="content-section">
-                    <h2 class="section-title">El problema actual</h2>
-                    <p class="section-text">
-                        La mayoría de los registros clínicos fracasan no en el análisis, sino en la etapa de captura de datos.
-                    </p>
-                    <ul class="section-list">
-                        <li>Ausencia de diccionario de variables claro.</li>
-                        <li>Campos de texto libre que generan inconsistencia.</li>
-                        <li>Falta de validaciones que detecten datos imposibles.</li>
-                        <li>Información duplicada o conflictiva.</li>
-                        <li>Pérdida de trazabilidad sobre quién registró cada dato.</li>
-                    </ul>
-                </div>
-
-                <div class="content-section">
-                    <h2 class="section-title">Requisitos para datos confiables</h2>
-                    <p class="section-text">
-                        Para que los datos hospitalarios sean útiles para análisis y publicación necesitan:
-                    </p>
-                    <div class="highlight-box">
-                        <h4><i class="fa-solid fa-check-double"></i> Validación estructurada</h4>
-                        <p>Listas desplegables, rangos permitidos, formatos de fecha consistentes.</p>
-                    </div>
-                    <div class="highlight-box">
-                        <h4><i class="fa-solid fa-fingerprint"></i> Trazabilidad</h4>
-                        <p>Registro de quién capturó, cuándo, y cualquier modificación posterior.</p>
-                    </div>
-                    <div class="highlight-box">
-                        <h4><i class="fa-solid fa-database"></i> Diccionario</h4>
-                        <p>Documento que define cada campo y sus valores posibles.</p>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <h2 class="section-title">De la captura al tablero operativo</h2>
-                    <p class="section-text">
-                        Una vez que la captura es correcta, los datos alimentan tableros en tiempo casi real que informan decisiones diarias: ocupación, mortalidad, uso de antibióticos, disponibilidad de personal.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 4: CAPÍTULO 4 -->
-        <div class="slide">
-            <div class="slide-header">
-                <div class="slide-chapter">Capítulo 4</div>
-                <h1 class="slide-title">Casos de implementación real</h1>
-                <p class="slide-subtitle">Soluciones aplicadas en hospitales públicos</p>
-            </div>
-
-            <div class="slide-content">
-                <div class="content-section">
-                    <h2 class="section-title">UCI de Adultos: Registro Clínico</h2>
-                    <p class="section-text">
-                        Se diseñó un formulario digital para pacientes críticos con captura de puntuaciones de severidad (SOFA/APACHE), soporte ventilatorio, antibióticos de reserva y desenlace.
-                    </p>
-                    <div class="highlight-box">
-                        <h4>Componentes principales</h4>
-                        <p>✓ Validaciones automáticas<br/>
-                        ✓ Control de duplicados<br/>
-                        ✓ Trazabilidad completa<br/>
-                        ✓ Integración con tablero</p>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <h2 class="section-title">Tablero Clínico en Tiempo Real</h2>
-                    <p class="section-text">
-                        A partir de la planilla de registro, se genera automáticamente un panel web que actualiza indicadores sin intervención manual.
-                    </p>
-                    <div class="highlight-box">
-                        <h4>Indicadores</h4>
-                        <p>🏥 Ocupación de camas<br/>
-                        ☠️ Mortalidad<br/>
-                        📊 Días de internación<br/>
-                        🦠 Eventos infecciosos<br/>
-                        ↩️ Reingreso</p>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <h2 class="section-title">Reporte Científico Reproducible</h2>
-                    <p class="section-text">
-                        A partir de la base clínica se genera automáticamente un documento RMarkdown listo para revista.
-                    </p>
-                    <ul class="section-list">
-                        <li>Introducción contextualizada.</li>
-                        <li>Sección de Métodos con detalles del registro.</li>
-                        <li>Resultados Descriptivos con tablas.</li>
-                        <li>Comparaciones entre Grupos.</li>
-                        <li>Tablas y Figuras para revista.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
+<!-- KEYBOARD OVERLAY -->
+<div class="kb-overlay" id="kbOverlay">
+  <div class="kb-panel">
+    <h3><i class="fa-regular fa-keyboard" style="margin-right:8px;color:var(--blue)"></i> Atajos de teclado</h3>
+    <div class="kb-list">
+      <div><kbd>&larr;</kbd><kbd>&rarr;</kbd> Navegar diapositivas</div>
+      <div><kbd>1</kbd>&ndash;<kbd>6</kbd> Ir a diapositiva</div>
+      <div><kbd>F</kbd> Pantalla completa</div>
+      <div><kbd>D</kbd> Cambiar tema claro/oscuro</div>
+      <div><kbd>?</kbd> Mostrar this panel</div>
+      <div><kbd>Esc</kbd> Cerrar panel</div>
     </div>
+  </div>
+</div>
 
-    <div class="presentation-container">
-        <div class="navigation">
-            <button class="nav-btn" onclick="previousSlide()" id="prevBtn">
-                <i class="fa-solid fa-chevron-left"></i> Anterior
-            </button>
-            <span class="slide-counter">
-                Slide <span id="currentSlide">1</span> de <span id="totalSlides">4</span>
-            </span>
-            <button class="nav-btn" onclick="nextSlide()" id="nextBtn">
-                Siguiente <i class="fa-solid fa-chevron-right"></i>
-            </button>
-        </div>
-        <div class="slide-indicator">
-            <div class="slide-progress" id="slideProgress"></div>
-        </div>
+<header>
+  <div class="bar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+      <div class="brand-text">
+        <h1>Taller · R & IA en Análisis Hospitalario</h1>
+        <p>Contribuciones en el área médica · Capacitación para profesionales</p>
+      </div>
     </div>
+    <div class="bar-nav">
+      <span class="chip"><i class="fa-solid fa-circle-play"></i> Presentación interactiva</span>
+      <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema"><i class="fa-solid fa-moon"></i></button>
+      <button class="icon-btn" id="fsBtn" aria-label="Pantalla completa"><i class="fa-solid fa-expand"></i></button>
+      <button class="icon-btn" id="kbBtn" aria-label="Atajos de teclado"><i class="fa-regular fa-keyboard"></i></button>
+    </div>
+  </div>
+</header>
+<div class="progress-wrap"><div class="progress-bar" id="pb"></div></div>
 
-    <script>
-        const canvas = document.getElementById('particles-canvas');
-        const ctx = canvas.getContext('2d');
+<div class="stage">
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+<!-- SLIDE 0 — PORTADA -->
+<section class="slide active" data-slide="0">
+  <div class="hero" id="hero">
+    <div class="hero-glow" id="heroGlow"></div>
+    <i class="fi fa-solid fa-dna"></i>
+    <i class="fi fa-solid fa-microscope"></i>
+    <i class="fi fa-solid fa-syringe"></i>
+    <i class="fi fa-solid fa-lungs"></i>
+    <i class="fi fa-solid fa-staff-snake"></i>
+    <div class="hero-inner">
+      <span class="eyebrow" data-st="0"><span class="dot"></span> Taller de capacitación · 2026</span>
+      <h1 data-st="1">Datos, <span>código</span> y decisiones<br/>que salvan vidas.</h1>
+      <p class="sub" data-st="2">Una muestra curada de contribuciones en el ecosistema hospitalario: registros clínicos, tableros operativos en tiempo real y reportes científicos reproducibles construidos con R, Python y el ecosistema Google.</p>
+      <div class="hero-meta" data-st="3">
+        <div class="m"><i class="fa-solid fa-stethoscope"></i> Dirigido a profesionales médicos</div>
+        <div class="m"><i class="fa-solid fa-flask"></i> Enfoque aplicado y reproducible</div>
+        <div class="m"><i class="fa-solid fa-shield-halved"></i> Validado en hospitales públicos</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:28px" class="grid g-4" data-st="4">
+    <div class="metric">
+      <svg class="ring-svg" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="21"/><circle class="ring-fill" cx="50" cy="50" r="21" data-p="100"/></svg>
+      <div class="num" data-count="4">0</div><div class="lbl">Capítulos</div>
+    </div>
+    <div class="metric">
+      <svg class="ring-svg" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="21"/><circle class="ring-fill" cx="50" cy="50" r="21" data-p="75"/></svg>
+      <div class="num" data-count="3">0</div><div class="lbl">Casos reales</div>
+    </div>
+    <div class="metric">
+      <svg class="ring-svg" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="21"/><circle class="ring-fill" cx="50" cy="50" r="21" data-p="100"/></svg>
+      <div class="num">R·Py·GS</div><div class="lbl">Stack</div>
+    </div>
+    <div class="metric">
+      <svg class="ring-svg" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="21"/><circle class="ring-fill" cx="50" cy="50" r="21" data-p="100"/></svg>
+      <div class="num">24/7</div><div class="lbl">Tablero vivo</div>
+    </div>
+  </div>
+</section>
 
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+<!-- SLIDE 1 — CAP 1 -->
+<section class="slide" data-slide="1">
+  <div class="s-head" data-st="0">
+    <span class="tag"><i class="fa-solid fa-atom"></i> Capítulo 1</span>
+    <h2>La ciencia en tiempos de la <em>Inteligencia Artificial</em></h2>
+    <p class="lead">El proceso científico hospitalario es un ciclo. La IA ya no es una promesa futura: está presente en cada una de sus etapas, redefiniendo lo posible desde la captura del dato hasta la comunicación de resultados.</p>
+  </div>
+  <div class="panel" data-st="1">
+    <h3 class="sec">El ciclo de la información clínica</h3>
+    <div class="pipeline">
+      <div class="pipe"><div class="n">1</div><h4>Necesidad</h4><p>Surge un problema clínico que requiere atención.</p></div>
+      <div class="pipe"><div class="n">2</div><h4>Captura</h4><p>Generar, capturar o recabar la información. El cimiento.</p></div>
+      <div class="pipe"><div class="n">3</div><h4>Análisis</h4><p>Transformar datos en evidencia usando métodos robustos.</p></div>
+      <div class="pipe"><div class="n">4</div><h4>Comunicación</h4><p>Presentar resultados a los actores clave de forma efectiva.</p></div>
+    </div>
+  </div>
+  <div class="grid g-3" data-st="2">
+    <div class="card">
+      <div class="ico"><i class="fa-solid fa-cube"></i></div>
+      <h3>Captura inteligente</h3>
+      <p>Formularios digitales con validaciones automáticas, controles de rango y trazabilidad del capturador.</p>
+      <span class="step">01</span>
+    </div>
+    <div class="card cool">
+      <div class="ico"><i class="fa-solid fa-gears"></i></div>
+      <h3>Procesamiento</h3>
+      <p>Limpieza y transformación de datos con detección automática de anomalías y duplicados.</p>
+      <span class="step">02</span>
+    </div>
+    <div class="card violet">
+      <div class="ico"><i class="fa-solid fa-chart-line"></i></div>
+      <h3>Presentación</h3>
+      <p>Reportes reproducibles y visualizaciones listas para uso clínico, académico o gerencial.</p>
+      <span class="step">03</span>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:24px" data-st="3">
+    <div class="ci"><i class="fa-solid fa-infinity"></i></div>
+    <div>
+      <h4>Sin límites visibles</h4>
+      <p>La combinación de IA con buenas prácticas de registro amplía el horizonte de lo que un servicio clínico puede responder con sus propios datos — sin depender de infraestructuras costosas ni de terceros.</p>
+    </div>
+  </div>
+</section>
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = Math.random() * 0.3 - 0.15;
-                this.speedY = Math.random() * 0.3 - 0.15;
-                this.opacity = Math.random() * 0.3 + 0.1;
-            }
+<!-- SLIDE 2 — CAP 2 -->
+<section class="slide" data-slide="2">
+  <div class="s-head" data-st="0">
+    <span class="tag"><i class="fa-solid fa-toolbox"></i> Capítulo 2</span>
+    <h2>Recursos digitales <em>disponibles</em></h2>
+    <p class="lead">Herramientas sofisticadas, confiables, portátiles y de código abierto. El profesional de salud ya no necesita depender exclusivamente de software propietario para hacer ciencia rigurosa.</p>
+  </div>
+  <div class="panel" data-st="1">
+    <h3 class="sec">Stack tecnológico</h3>
+    <div class="stack">
+      <div class="tech"><i class="fa-brands fa-r-project"></i><div class="nm">R & RStudio</div><div class="dsc">Estadística reproducible</div></div>
+      <div class="tech"><i class="fa-brands fa-python"></i><div class="nm">Python</div><div class="dsc">Automatización y ML</div></div>
+      <div class="tech"><i class="fa-brands fa-google"></i><div class="nm">Google Sheets</div><div class="dsc">Almacenamiento en nube</div></div>
+      <div class="tech"><i class="fa-solid fa-file-lines"></i><div class="nm">Google Forms</div><div class="dsc">Captura estructurada</div></div>
+      <div class="tech"><i class="fa-solid fa-code"></i><div class="nm">Apps Script</div><div class="dsc">Lógica de validación</div></div>
+      <div class="tech"><i class="fa-solid fa-chart-column"></i><div class="nm">RMarkdown</div><div class="dsc">Reportes científicos</div></div>
+    </div>
+  </div>
+  <div class="grid g-2" style="margin-top:6px" data-st="2">
+    <div class="panel" style="margin:0">
+      <h3 class="sec">R · La respuesta estadística</h3>
+      <p style="color:var(--muted);margin-bottom:14px">Lenguaje diseñado para análisis estadístico, con miles de paquetes especializados en ciencias de la salud.</p>
+      <ul class="list">
+        <li>Análisis descriptivo de datos clínicos reales.</li>
+        <li>Comparaciones entre grupos de pacientes.</li>
+        <li>Regresiones logísticas para desenlaces binarios.</li>
+        <li>Tablas publicables con <strong>gtsummary</strong>.</li>
+        <li>Visualizaciones reproducibles con <strong>ggplot2</strong>.</li>
+      </ul>
+    </div>
+    <div class="panel" style="margin:0">
+      <h3 class="sec">Python · Versatilidad</h3>
+      <p style="color:var(--muted);margin-bottom:14px">Flexibilidad para construir soluciones tecnológicas personalizadas e integraciones a medida.</p>
+      <ul class="list">
+        <li>Automatización de flujos de trabajo.</li>
+        <li>Integración con bases de datos hospitalarias.</li>
+        <li>Herramientas web interactivas.</li>
+        <li><strong>Machine learning</strong> y análisis predictivo.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel" data-st="3">
+    <h3 class="sec">Ecosistema Google · Accesible y en la nube</h3>
+    <div class="grid g-4">
+      <div class="card"><div class="ico"><i class="fa-regular fa-file-lines"></i></div><h3>Forms</h3><p>Formularios estructurados con validaciones.</p></div>
+      <div class="card cool"><div class="ico"><i class="fa-solid fa-cloud"></i></div><h3>Drive</h3><p>Almacenamiento seguro y compartido en la nube.</p></div>
+      <div class="card violet"><div class="ico"><i class="fa-solid fa-table-cells"></i></div><h3>Sheets</h3><p>Integración directa con R y automatizaciones.</p></div>
+      <div class="card warm"><div class="ico"><i class="fa-solid fa-robot"></i></div><h3>Apps Script</h3><p>Lógica server-side para validación y envío.</p></div>
+    </div>
+  </div>
+</section>
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
-                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
-                this.x = Math.max(0, Math.min(canvas.width, this.x));
-                this.y = Math.max(0, Math.min(canvas.height, this.y));
-            }
+<!-- SLIDE 3 — CAP 3 -->
+<section class="slide" data-slide="3">
+  <div class="s-head" data-st="0">
+    <span class="tag"><i class="fa-solid fa-database"></i> Capítulo 3</span>
+    <h2>Necesidades de datos en <em>entornos hospitalarios</em></h2>
+    <p class="lead">La mayoría de los registros clínicos no fracasan en el análisis: fracasan mucho antes, en la etapa de captura. Si el dato nace mal, ningún algoritmo lo redime.</p>
+  </div>
+  <div class="two-col" data-st="1">
+    <div class="panel" style="margin:0">
+      <h3 class="sec">Problemas frecuentes</h3>
+      <div class="callout warn">
+        <div class="ci"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+          <h4>Registros frágiles</h4>
+          <p>Bases de datos que parecen completas pero colapsan al intentar analizarlas.</p>
+        </div>
+      </div>
+      <ul class="list">
+        <li>Ausencia de <strong>diccionario de variables</strong> claro.</li>
+        <li>Campos de <strong>texto libre</strong> que generan inconsistencia.</li>
+        <li>Falta de validaciones para detectar datos imposibles.</li>
+        <li>Información duplicada o conflictiva.</li>
+        <li>Pérdida de trazabilidad sobre quién registró cada dato.</li>
+      </ul>
+    </div>
+    <div class="panel" style="margin:0">
+      <h3 class="sec">Requisitos para datos confiables</h3>
+      <div class="callout good">
+        <div class="ci"><i class="fa-solid fa-circle-check"></i></div>
+        <div>
+          <h4>Registros robustos</h4>
+          <p>Tres pilares fundamentales que transforman captura en evidencia.</p>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item"><h4>Validación estructurada</h4><p>Listas desplegables, rangos permitidos, formatos de fecha consistentes.</p></div>
+        <div class="tl-item"><h4>Trazabilidad</h4><p>Registro de quién capturó, cuándo, y cualquier modificación posterior.</p></div>
+        <div class="tl-item"><h4>Diccionario</h4><p>Documento vivo que define cada campo y sus valores posibles.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel" data-st="2">
+    <h3 class="sec">De la captura al tablero operativo</h3>
+    <p style="color:var(--muted);margin-bottom:18px">Cuando la captura es correcta, los datos alimentan tableros que informan decisiones <strong>diarias</strong>: ocupación, mortalidad, uso de antibióticos, disponibilidad de personal. El ciclo se cierra: decisión → registro → evidencia → nueva decisión.</p>
+    <div class="impact-row">
+      <div class="impact"><div class="i-top"><i class="fa-solid fa-bed-pulse" style="background:var(--grad-main)"></i><div class="t">Ocupación</div></div><div class="big">Cama a cama</div></div>
+      <div class="impact"><div class="i-top"><i class="fa-solid fa-heart-circle-exclamation" style="background:var(--grad-warm)"></i><div class="t">Mortalidad</div></div><div class="big">En vivo</div></div>
+      <div class="impact"><div class="i-top"><i class="fa-solid fa-pills" style="background:var(--grad-cool)"></i><div class="t">Antibióticos</div></div><div class="big">Stewardship</div></div>
+      <div class="impact"><div class="i-top"><i class="fa-solid fa-user-doctor" style="background:var(--grad-violet)"></i><div class="t">Personal</div></div><div class="big">Turnos</div></div>
+    </div>
+  </div>
+</section>
 
-            draw() {
-                ctx.fillStyle = `rgba(30, 136, 229, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+<!-- SLIDE 4 — CAP 4 -->
+<section class="slide" data-slide="4">
+  <div class="s-head" data-st="0">
+    <span class="tag"><i class="fa-solid fa-rocket"></i> Capítulo 4</span>
+    <h2>Casos de <em>implementación real</em></h2>
+    <p class="lead">Tres soluciones desplegadas en hospitales públicos, con pacientes reales, decisiones reales y resultados verificables. De la idea a la práctica clínica diaria.</p>
+  </div>
+  <div class="grid g-3" data-st="1">
+    <div class="case">
+      <div class="case-banner">
+        <div class="label">Caso 01</div>
+        <h3>UCI Adultos · Registro Clínico Digital</h3>
+      </div>
+      <div class="case-body">
+        <p>Formulario digital para pacientes críticos con captura de SOFA/APACHE, soporte ventilatorio, antibióticos de reserva y desenlace.</p>
+        <div class="chips"><span>SOFA/APACHE</span><span>Ventilación</span><span>Validación</span><span>Trazabilidad</span></div>
+      </div>
+    </div>
+    <div class="case cool">
+      <div class="case-banner">
+        <div class="label">Caso 02</div>
+        <h3>Tablero Clínico en Tiempo Real</h3>
+      </div>
+      <div class="case-body">
+        <p>Panel web que actualiza indicadores sin intervención manual a partir de la planilla de registro.</p>
+        <div class="chips"><span>Ocupación</span><span>Mortalidad</span><span>Días de internación</span><span>Reingreso</span></div>
+      </div>
+    </div>
+    <div class="case violet">
+      <div class="case-banner">
+        <div class="label">Caso 03</div>
+        <h3>Reporte Científico Reproducible</h3>
+      </div>
+      <div class="case-body">
+        <p>Documento RMarkdown que, partiendo de la base clínica, genera automáticamente un reporte listo para revista.</p>
+        <div class="chips"><span>RMarkdown</span><span>Tablas</span><span>Figuras</span><span>IMRyD</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel" data-st="2">
+    <h3 class="sec">Arquitectura del reporte reproducible</h3>
+    <div class="code" id="codeBlock">
+<span class="cl"><span class="c"># informe_uci.Rmd — se ejecuta en segundos</span></span>
+<span class="cl"><span class="k">library</span>(gtsummary); <span class="k">library</span>(dplyr); <span class="k">library</span>(ggplot2)</span>
+<span class="cl">&nbsp;</span>
+<span class="cl">datos &lt;- <span class="f">leer_drive</span>(<span class="s">"UCI_registro"</span>) |></span>
+<span class="cl">  <span class="f">validar</span>() |></span>
+<span class="cl">  <span class="f">deduplicar</span>()</span>
+<span class="cl">&nbsp;</span>
+<span class="cl">datos |></span>
+<span class="cl">  <span class="f">tbl_summary</span>(by = desenlace) |></span>
+<span class="cl">  <span class="f">add_p</span>() |></span>
+<span class="cl">  <span class="f">bold_labels</span>()</span>
+<span class="cl">&nbsp;</span>
+<span class="cl"><span class="c"># → Introducción · Métodos · Resultados · Discusión · Figuras</span></span>
+    </div>
+  </div>
+  <div class="grid g-4" style="margin-top:24px" data-st="3">
+    <div class="metric">
+      <svg class="ring-svg" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="21"/><circle class="ring-fill" cx="50" cy="50" r="21" data-p="100"/></svg>
+      <div class="num">100%</div><div class="lbl">Reproducible</div>
+    </div>
+    <div class="metric">
+      <svg class="ring-svg" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="21"/><circle class="ring-fill" cx="50" cy="50" r="21" data-p="0"/></svg>
+      <div class="num" data-count="0">0</div><div class="lbl">Copia manual</div>
+    </div>
+    <div class="metric">
+      <svg class="ring-svg" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="21"/><circle class="ring-fill" cx="50" cy="50" r="21" data-p="100"/></svg>
+      <div class="num">1 clic</div><div class="lbl">Regeneración</div>
+    </div>
+    <div class="metric">
+      <svg class="ring-svg" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="21"/><circle class="ring-fill" cx="50" cy="50" r="21" data-p="100"/></svg>
+      <div class="num">&infin;</div><div class="lbl">Actualizable</div>
+    </div>
+  </div>
+</section>
 
-        const particles = [];
-        for (let i = 0; i < 30; i++) {
-            particles.push(new Particle());
-        }
+<!-- SLIDE 5 — CIERRE -->
+<section class="slide" data-slide="5">
+  <div class="s-head" data-st="0">
+    <span class="tag"><i class="fa-solid fa-compass"></i> Hacia adelante</span>
+    <h2>De los datos a la <em>decisión clínica</em></h2>
+    <p class="lead">Invertir en la captura disciplinada del dato es invertir en cada paciente futuro. La tecnología ya existe; lo que falta es la decisión institucional de usarla bien.</p>
+  </div>
+  <div class="quote" data-st="1">
+    <p>Los mejores algoritmos del mundo no compensan un registro mal diseñado. Un formulario bien pensado, en cambio, convierte a cualquier servicio en un generador de evidencia.</p>
+    <div class="attr">— Reflexión del taller</div>
+  </div>
+  <div class="thanks" style="margin-top:28px" data-st="2">
+    <div class="inner">
+      <h1>¡Gracias!</h1>
+      <p>Preguntas, colaboraciones y replicaciones son muy bienvenidas. El código, los formularios y los dashboards aquí presentados están pensados para ser <strong>adoptados y adaptados</strong> por otros servicios.</p>
+      <div class="sig">
+        <span><i class="fa-solid fa-envelope"></i> Contacto profesional</span>
+        <span><i class="fa-brands fa-github"></i> Repositorios abiertos</span>
+        <span><i class="fa-solid fa-handshake"></i> Colaboración hospitalaria</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-            requestAnimationFrame(animate);
-        }
+</div>
 
-        animate();
+<div class="nav-wrap">
+  <div class="nav">
+    <button class="btn sec" id="prev"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+    <div class="dots" id="dots"></div>
+    <div class="counter"><b id="cur">01</b> / <span id="tot">06</span></div>
+    <button class="btn" id="next">Siguiente <i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+</div>
 
-        let currentSlideIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
+<script>
+/* ═══════════════════════════════════════════
+   PARTÍCULAS CON INTERACCIÓN DE MOUSE
+   ═══════════════════════════════════════════ */
+const cv = document.getElementById('particles');
+const ctx = cv.getContext('2d');
+let W, H;
+function resize() { W = cv.width = innerWidth; H = cv.height = innerHeight; }
+resize();
+addEventListener('resize', resize);
 
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active');
-                if (i === index) slide.classList.add('active');
-            });
+let mx = -9999, my = -9999;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+document.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
 
-            document.getElementById('currentSlide').textContent = index + 1;
-            document.getElementById('prevBtn').disabled = index === 0;
-            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+const pts = [];
+for (let i = 0; i < 65; i++) {
+  const bright = Math.random() < 0.12;
+  pts.push({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
+    r: bright ? Math.random() * 2.2 + 1.5 : Math.random() * 1.4 + 0.4,
+    o: bright ? Math.random() * 0.45 + 0.35 : Math.random() * 0.25 + 0.05,
+    ph: Math.random() * Math.PI * 2, bright
+  });
+}
 
-            const progress = ((index + 1) / totalSlides) * 100;
-            document.getElementById('slideProgress').style.width = progress + '%';
+(function drawP() {
+  ctx.clearRect(0, 0, W, H);
+  const t = performance.now() * 0.001;
+  for (const p of pts) {
+    p.x += p.vx + Math.sin(t + p.ph) * 0.12;
+    p.y += p.vy + Math.cos(t + p.ph * 1.3) * 0.12;
+    /* Repulsión del mouse */
+    const dx = p.x - mx, dy = p.y - my;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    if (d < 130 && d > 0) {
+      const f = (130 - d) / 130 * 0.9;
+      p.x += (dx / d) * f;
+      p.y += (dy / d) * f;
+    }
+    /* Bordes suaves */
+    if (p.x < -20) p.x = W + 20;
+    if (p.x > W + 20) p.x = -20;
+    if (p.y < -20) p.y = H + 20;
+    if (p.y > H + 20) p.y = -20;
+    /* Dibujar */
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, Math.max(0.1, p.r), 0, Math.PI * 2);
+    if (p.bright) {
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = 'rgba(0,212,255,0.55)';
+      ctx.fillStyle = `rgba(0,212,255,${p.o})`;
+    } else {
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = `rgba(30,136,229,${p.o})`;
+    }
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+  /* Conexiones */
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = i + 1; j < pts.length; j++) {
+      const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 105) {
+        ctx.beginPath();
+        ctx.moveTo(pts[i].x, pts[i].y);
+        ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.strokeStyle = `rgba(30,136,229,${(1 - d / 105) * 0.1})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawP);
+})();
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+/* ═══════════════════════════════════════════
+   HERO MOUSE GLOW
+   ═══════════════════════════════════════════ */
+const hero = document.getElementById('hero');
+const heroGlow = document.getElementById('heroGlow');
+if (hero) {
+  hero.addEventListener('mousemove', e => {
+    const r = hero.getBoundingClientRect();
+    heroGlow.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    heroGlow.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+}
 
-        function nextSlide() {
-            if (currentSlideIndex < totalSlides - 1) {
-                currentSlideIndex++;
-                showSlide(currentSlideIndex);
-            }
-        }
+/* ═══════════════════════════════════════════
+   NAVEGACIÓN DE SLIDES
+   ═══════════════════════════════════════════ */
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let idx = 0, transitioning = false;
+const dotsBox = document.getElementById('dots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot-n';
+  d.setAttribute('role', 'button');
+  d.setAttribute('aria-label', `Diapositiva ${i + 1}`);
+  d.onclick = () => go(i);
+  dotsBox.appendChild(d);
+}
+const dots = document.querySelectorAll('.dot-n');
+document.getElementById('tot').textContent = String(total).padStart(2, '0');
 
-        function previousSlide() {
-            if (currentSlideIndex > 0) {
-                currentSlideIndex--;
-                showSlide(currentSlideIndex);
-            }
-        }
+/* Circunferencia del ring pequeño (r=21) */
+const CIRC = 2 * Math.PI * 21; // ≈131.95
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') previousSlide();
-        });
+function go(i) {
+  if (i < 0 || i >= total || transitioning || i === idx) return;
+  transitioning = true;
+  /* Desactivar slide anterior */
+  slides[idx].classList.remove('active');
+  dots[idx].classList.remove('active');
+  idx = i;
+  /* Activar nuevo slide */
+  slides[idx].classList.add('active');
+  dots[idx].classList.add('active');
+  /* Stagger animations */
+  runStagger(slides[idx]);
+  /* Contadores animados */
+  animateCounters(slides[idx]);
+  /* Anillos SVG */
+  animateRings(slides[idx]);
+  /* Código typing (solo slide 4) */
+  if (idx === 4) revealCode();
+  /* UI updates */
+  document.getElementById('cur').textContent = String(idx + 1).padStart(2, '0');
+  document.getElementById('prev').disabled = idx === 0;
+  document.getElementById('next').disabled = idx === total - 1;
+  document.getElementById('pb').style.width = ((idx + 1) / total * 100) + '%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => { transitioning = false; }, 500);
+}
 
-        document.getElementById('totalSlides').textContent = totalSlides;
-        showSlide(0);
-    </script>
+document.getElementById('prev').onclick = () => go(idx - 1);
+document.getElementById('next').onclick = () => go(idx + 1);
+
+/* ═══════════════════════════════════════════
+   STAGGER ANIMATIONS
+   ═══════════════════════════════════════════ */
+function runStagger(slide) {
+  const items = slide.querySelectorAll('[data-st]');
+  items.forEach((el, i) => {
+    el.style.transitionDelay = '';
+    /* Forzar reflow para reiniciar transición */
+    void el.offsetWidth;
+    el.style.transitionDelay = (i * 0.1) + 's';
+  });
+}
+
+/* ═══════════════════════════════════════════
+   CONTADORES ANIMADOS
+   ═══════════════════════════════════════════ */
+function animateCounters(slide) {
+  slide.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseFloat(el.getAttribute('data-count'));
+    if (isNaN(target)) return;
+    const dur = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(target * ease);
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ═══════════════════════════════════════════
+   ANILLOS SVG DE PROGRESO
+   ═══════════════════════════════════════════ */
+function animateRings(slide) {
+  slide.querySelectorAll('.ring-fill').forEach(ring => {
+    const p = parseFloat(ring.getAttribute('data-p')) || 0;
+    ring.style.strokeDasharray = CIRC;
+    ring.style.strokeDashoffset = CIRC;
+    void ring.offsetWidth;
+    ring.style.strokeDashoffset = CIRC * (1 - p / 100);
+  });
+}
+
+/* ═══════════════════════════════════════════
+   CÓDIGO LÍNEA POR LÍNEA
+   ═══════════════════════════════════════════ */
+function revealCode() {
+  const lines = document.querySelectorAll('#codeBlock .cl');
+  lines.forEach(l => l.classList.remove('vis'));
+  lines.forEach((l, i) => {
+    setTimeout(() => l.classList.add('vis'), 200 + i * 130);
+  });
+}
+
+/* ═══════════════════════════════════════════
+   TOAST NOTIFICATIONS
+   ═══════════════════════════════════════════ */
+function toast(msg, icon = 'fa-solid fa-circle-info') {
+  const box = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<i class="${icon}"></i> ${msg}`;
+  box.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  setTimeout(() => {
+    t.classList.remove('show');
+    setTimeout(() => t.remove(), 400);
+  }, 2600);
+}
+
+/* ═══════════════════════════════════════════
+   TEMA CLARO / OSCURO
+   ═══════════════════════════════════════════ */
+const themeBtn = document.getElementById('themeBtn');
+const saved = localStorage.getItem('theme');
+if (saved) {
+  document.documentElement.setAttribute('data-theme', saved);
+  themeBtn.innerHTML = saved === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+}
+themeBtn.onclick = () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  themeBtn.innerHTML = next === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+  toast(next === 'dark' ? 'Modo oscuro activado' : 'Modo claro activado', next === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun');
+};
+
+/* ═══════════════════════════════════════════
+   PANTALLA COMPLETA
+   ═══════════════════════════════════════════ */
+const fsBtn = document.getElementById('fsBtn');
+fsBtn.onclick = toggleFS;
+function toggleFS() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+    toast('Pantalla completa', 'fa-solid fa-expand');
+  } else {
+    document.exitFullscreen();
+    toast('Ventana normal', 'fa-solid fa-compress');
+  }
+}
+document.addEventListener('fullscreenchange', () => {
+  fsBtn.innerHTML = document.fullscreenElement ? '<i class="fa-solid fa-compress"></i>' : '<i class="fa-solid fa-expand"></i>';
+});
+
+/* ═══════════════════════════════════════════
+   ATAJOS DE TECLADO
+   ═══════════════════════════════════════════ */
+const kbOverlay = document.getElementById('kbOverlay');
+const kbBtn = document.getElementById('kbBtn');
+kbBtn.onclick = () => kbOverlay.classList.toggle('open');
+kbOverlay.onclick = e => { if (e.target === kbOverlay) kbOverlay.classList.remove('open'); };
+
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); go(idx + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(idx - 1); }
+  else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFS(); }
+  else if (e.key === 'd' || e.key === 'D') { e.preventDefault(); themeBtn.click(); }
+  else if (e.key === '?') { e.preventDefault(); kbOverlay.classList.toggle('open'); }
+  else if (e.key === 'Escape') { kbOverlay.classList.remove('open'); }
+  else if (e.key >= '1' && e.key <= String(total)) { go(parseInt(e.key) - 1); }
+});
+
+/* ═══════════════════════════════════════════
+   INICIALIZACIÓN
+   ═══════════════════════════════════════════ */
+go(0);
+</script>
 </body>
 </html>
